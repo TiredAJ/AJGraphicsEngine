@@ -5,47 +5,61 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
-        TimeSpan Start, End;
-        bool Run = true;
-        Thread DrawThread;
+        private List<Shapes> ShapeList = new List<Shapes>();
+        
+        public RectangleF Display = new RectangleF();
 
+        public Drawer(Rectangle _Display)
+        {Display = _Display;}
 
-        public void StartDrawThread()
+        public void Add(Shapes _NewShape)
+        {ShapeList.Add(_NewShape);}
+
+        public Bitmap CallDraw()
         {
-            DrawThread = new Thread(CallDraw);
+            Bitmap Canvas = new Bitmap
+            (
+                (int)Display.Width, 
+                (int)Display.Height
+            );
+
+            Frame();
+
+            foreach (Shapes S in ShapeList)
+            {S.Draw(Canvas);}
+
+            return Canvas;
         }
 
-        public void CallDraw()
+        public Bitmap InitDraw()
         {
             SetUp();
 
-            while (Run)
-            {
-                Start = DateTime.Now.TimeOfDay;
+            Bitmap Canvas = new Bitmap
+            (
+                (int)Display.Width,
+                (int)Display.Height
+            );
 
-                Frame();
+            foreach (Shapes S in ShapeList)
+            { S.Draw(Canvas); }
 
-                End = DateTime.Now.TimeOfDay;
-                Debug.WriteLine("Render time: {0}s", (End - Start));
-            }
+            return Canvas;
         }
+    }
 
-        public void Stop()
-        {Run = false;}
-
-        public void Restart()
-        {
-            Run = false;
-            Thread.Sleep(100);
-            Run = true;
-
-            StartDrawThread();
-        }
+    public struct ShapeColours
+    {
+        Color Primary;
+        Color Secondary;
+        Color Tertiary;
+        Color Border;
     }
 
     public class Vector2
@@ -128,6 +142,15 @@ namespace BasicGraphicsEngine
             }
         }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Radian radian &&
+                   Rad == radian.Rad;
+        }
+
+        public override int GetHashCode()
+        {return HashCode.Combine(Rad);}
+
         public static Radian operator +(Radian Ra, Radian Rb)
         => new Radian(Ra.Rad + Rb.Rad);
 
@@ -143,7 +166,7 @@ namespace BasicGraphicsEngine
         public static Radian operator --(Radian Ra)
         => new Radian(Ra.Rad--);
 
-        public static bool operator ==(Radian Ra, Radian Rb)
+        public static bool operator ==(Radian? Ra, Radian? Rb)
         {
             if (Ra == null && Rb == null) return true;
             if (Ra == null || Rb == null) return false;
@@ -151,7 +174,7 @@ namespace BasicGraphicsEngine
             return Ra.Rad == Rb.Rad;
         }
         
-        public static bool operator !=(Radian Ra, Radian Rb)
+        public static bool operator !=(Radian? Ra, Radian? Rb)
         {
             if (Ra != null && Rb != null) return true;
             if (Ra != null || Rb != null) return false;
