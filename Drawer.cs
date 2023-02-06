@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
         private List<Shapes> ShapeList = new List<Shapes>();
-        
+
         public RectangleF Display = new RectangleF();
 
         public Drawer(Rectangle _Display)
@@ -52,6 +48,9 @@ namespace BasicGraphicsEngine
 
             return Canvas;
         }
+
+        public void CleanUp()
+        {ShapeList.Clear();}
     }
 
     public struct ShapeColours

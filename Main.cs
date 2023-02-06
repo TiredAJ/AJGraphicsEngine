@@ -36,17 +36,21 @@ namespace BasicGraphicsEngine
             {
                 Start = DateTime.Now.TimeOfDay;
 
-                //Task Refresher = Task.Run(() =>
-                //{
                 pbx_DisplayCanvas.Invoke(new Action(() =>
                 {
                     pbx_DisplayCanvas.Image = DrawerHandler.CallDraw();
                 }));
-                //});
 
                 End = DateTime.Now.TimeOfDay;
-                Debug.WriteLine("Render time: {0}s", (End - Start));
+                //Debug.WriteLine("Render time: {0}s", (End - Start));
             }
+        }
+
+        private void btn_Stop_Click(object sender, EventArgs e)
+        {
+            Run = false;
+
+            DrawerHandler.CleanUp();
         }
     }
 }

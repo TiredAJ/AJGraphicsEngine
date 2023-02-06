@@ -30,6 +30,7 @@
         {
             pbx_DisplayCanvas = new PictureBox();
             btn_Start = new Button();
+            btn_Stop = new Button();
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).BeginInit();
             SuspendLayout();
             // 
@@ -55,12 +56,24 @@
             btn_Start.UseVisualStyleBackColor = true;
             btn_Start.Click += btn_Start_Click;
             // 
+            // btn_Stop
+            // 
+            btn_Stop.Location = new Point(907, 82);
+            btn_Stop.Margin = new Padding(3, 4, 3, 4);
+            btn_Stop.Name = "btn_Stop";
+            btn_Stop.Size = new Size(147, 60);
+            btn_Stop.TabIndex = 2;
+            btn_Stop.Text = "Stop";
+            btn_Stop.UseVisualStyleBackColor = true;
+            btn_Stop.Click += btn_Stop_Click;
+            // 
             // frm_Main
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDark;
             ClientSize = new Size(1063, 529);
+            Controls.Add(btn_Stop);
             Controls.Add(btn_Start);
             Controls.Add(pbx_DisplayCanvas);
             DoubleBuffered = true;
@@ -75,5 +88,6 @@
         #endregion
         private Button btn_Start;
         public PictureBox pbx_DisplayCanvas;
+        private Button btn_Stop;
     }
 }
