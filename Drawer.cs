@@ -61,9 +61,10 @@ namespace BasicGraphicsEngine
         Color Border;
     }
 
-    public class Vector2
+    public struct Vector2
     {
         public float Speed;
+        public float XSpeed, YSpeed;
         public Radian Direction;
 
         public Vector2()
@@ -76,6 +77,12 @@ namespace BasicGraphicsEngine
         {
             Speed = _Speed;
             Direction = _Direction;
+        }
+        
+        public Vector2(float _XSpeed, float _YSpeed)
+        {
+            XSpeed = _XSpeed;
+            YSpeed = _YSpeed;
         }
 
         public void SetSpeed(float _Speed)
@@ -111,7 +118,7 @@ namespace BasicGraphicsEngine
         => new Vector2(Va.Speed * Scalar, Va.Direction);
     }
 
-    public class Radian
+    public struct Radian
     {
         private double Rad;
 
@@ -165,7 +172,7 @@ namespace BasicGraphicsEngine
         public static Radian operator --(Radian Ra)
         => new Radian(Ra.Rad--);
 
-        public static bool operator ==(Radian? Ra, Radian? Rb)
+        public static bool operator ==(Radian Ra, Radian Rb)
         {
             if (Ra == null && Rb == null) return true;
             if (Ra == null || Rb == null) return false;
@@ -173,7 +180,7 @@ namespace BasicGraphicsEngine
             return Ra.Rad == Rb.Rad;
         }
         
-        public static bool operator !=(Radian? Ra, Radian? Rb)
+        public static bool operator !=(Radian Ra, Radian Rb)
         {
             if (Ra != null && Rb != null) return true;
             if (Ra != null || Rb != null) return false;

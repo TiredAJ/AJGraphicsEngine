@@ -13,8 +13,11 @@ namespace BasicGraphicsEngine
         //Declaration
             Square SQ = new Square();
             Square SQ2 = new Square();
-            static float XPace = 1;
-            static float YPace = 0.5f;
+            Vector2 SQV = new Vector2(1f, 0.5f);
+            Vector2 SQ2V = new Vector2(2f, 1f);
+
+            //static float XPace = 1;
+            //static float YPace = 0.5f;
         //
 
         public void SetUp()
@@ -37,23 +40,32 @@ namespace BasicGraphicsEngine
 
 		private void Frame()
 		{
-            SQ.Centre.X += XPace;
-            SQ.Centre.Y += YPace;
+            SQ.Centre.X += SQV.XSpeed;
+            SQ.Centre.Y += SQV.YSpeed;
 
-            SQ2.Centre.X += YPace;
-            SQ2.Centre.Y += XPace;
+            SQ2.Centre.X += SQ2V.XSpeed;
+            SQ2.Centre.Y += SQ2V.YSpeed;
 
-            if ((SQ.Centre.X + (SQ.Width / 2)) >= (Display.X + Display.Width))
-            { XPace *= -1; }
+            if 
+            ((SQ.Centre.X + (SQ.Width / 2)) >= (Display.X + Display.Width) ||
+             (SQ.Centre.X - (SQ.Width / 2)) <= Display.X)
+            {SQV.XSpeed *= -1;}
 
-            if ((SQ.Centre.X - (SQ.Width / 2)) <= Display.X)
-            { XPace *= -1; }
+            if 
+            ((SQ.Centre.Y + (SQ.Height / 2)) >= (Display.Y + Display.Height) ||
+             (SQ.Centre.Y - (SQ.Height / 2)) <= Display.Y)
+            {SQV.YSpeed *= -1;}
+            
+            if 
+            ((SQ2.Centre.X + (SQ2.Width / 2)) >= (Display.X + Display.Width) ||
+             (SQ2.Centre.X - (SQ2.Width / 2)) <= Display.X)
+            {SQ2V.XSpeed *= -1;}
 
-            if ((SQ.Centre.Y + (SQ.Height / 2)) >= (Display.Y + Display.Height))
-            { YPace *= -1; }
+            if 
+            ((SQ2.Centre.Y + (SQ2.Height / 2)) >= (Display.Y + Display.Height) ||
+             (SQ2.Centre.Y - (SQ2.Height / 2)) <= Display.Y)
+            {SQ2V.YSpeed *= -1;}
 
-            if ((SQ.Centre.Y - (SQ.Height / 2)) <= Display.Y)
-            { YPace *= -1; }
         }
 	}
 }

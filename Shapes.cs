@@ -103,6 +103,7 @@ namespace BasicGraphicsEngine
         {
             Graphics G = Graphics.FromImage(_Canvas);
 
+
             G.FillRectangle
             (
                 new SolidBrush(SecondaryCol),
@@ -111,7 +112,7 @@ namespace BasicGraphicsEngine
                 (float)Width, 
                 (float)Height
             );
-            
+                        
             G.DrawRectangle
             (
                 new Pen(PrimaryCol,BorderWidth),

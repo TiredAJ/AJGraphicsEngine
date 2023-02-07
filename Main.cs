@@ -7,7 +7,7 @@ namespace BasicGraphicsEngine
         private Drawer DrawerHandler;
         private bool Run = false;
         private Bitmap Canvas;
-        private TimeSpan Start, End;
+        private TimeSpan Start, End, LastTime = new TimeSpan(), Delta;
         private Thread TDrawer;
 
         public frm_Main()
@@ -30,7 +30,7 @@ namespace BasicGraphicsEngine
             TDrawer.Start();
         }
 
-        private void Refresher()
+        private async void Refresher()
         {
             while (Run)
             {
@@ -42,7 +42,12 @@ namespace BasicGraphicsEngine
                 }));
 
                 End = DateTime.Now.TimeOfDay;
-                //Debug.WriteLine("Render time: {0}s", (End - Start));
+                Delta = (End - Start) - LastTime;
+                Debug.WriteLine("Render time: {0}s", (End-Start));
+                Debug.WriteLine("Render time Delta: {0}s", Delta);
+                Debug.WriteLine("--------------------------------");
+                //Logger(LastTime, (End - Start), Delta);
+                LastTime = End - Start;
             }
         }
 
@@ -51,6 +56,21 @@ namespace BasicGraphicsEngine
             Run = false;
 
             DrawerHandler.CleanUp();
+        }
+
+        private void Logger(TimeSpan Last, TimeSpan Current, TimeSpan Delta)
+        {
+            if (!File.Exists("./Log.csv"))
+            {
+                StreamWriter Temp = new StreamWriter("./Log.csv");
+                Temp.WriteLineAsync("Last time (ms), current time (ms), delta (ms)");
+                Temp.Close();
+            }
+
+            StreamWriter Writer = new StreamWriter("./Log.csv", true);
+
+            Writer.WriteLineAsync($"{Last.Ticks},{Current.Ticks},{Delta.Ticks}");
+            Writer.Close();
         }
     }
 }
