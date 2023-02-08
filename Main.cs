@@ -72,5 +72,17 @@ namespace BasicGraphicsEngine
             Writer.WriteLineAsync($"{Last.Ticks},{Current.Ticks},{Delta.Ticks}");
             Writer.Close();
         }
+
+        private void pbx_DisplayCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            Task.Run(new Action(() =>
+            { DrawerHandler.SetCursorPos(e.Location); }));
+        }
+
+        private void frm_Main_MouseMove(object sender, MouseEventArgs e)
+        {
+            Task.Run(new Action(() =>
+            { DrawerHandler.SetCursorPos(e.Location); }));
+        }
     }
 }

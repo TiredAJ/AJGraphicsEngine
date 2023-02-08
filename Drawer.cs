@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace BasicGraphicsEngine
     public partial class Drawer
     {
         private List<Shapes> ShapeList = new List<Shapes>();
-
         public RectangleF Display = new RectangleF();
+        public PointF Cursor = new PointF(0f, 0f);
 
         public Drawer(Rectangle _Display)
         {Display = _Display;}
@@ -52,6 +53,16 @@ namespace BasicGraphicsEngine
 
         public void CleanUp()
         {ShapeList.Clear();}
+
+        public int RandomValue(int Min, int Max)
+        {
+            Random R = new Random(DateTime.Now.Microsecond);
+            return R.Next(Min, Max);
+        }
+
+        public void SetCursorPos(PointF _Loc)
+        {Cursor = _Loc;}
+        
     }
 
     public struct ShapeColours
@@ -80,9 +91,18 @@ namespace BasicGraphicsEngine
 
         public void SpeedUp(float _Scalar)
         {
-            if (X < 0) X -= _Scalar;
-            if (Y < 0) Y -= _Scalar;
+            X = X < 0 ? X -= _Scalar : X += _Scalar;
+            Y = Y < 0 ? Y -= _Scalar : Y += _Scalar;
+        }
 
+        public float GetMagnitude()
+        {return MathF.Sqrt((X * X) + (Y * Y));}
+
+        public Vector2 Normalise()
+        {
+            if (GetMagnitude() > 0)
+            {return new Vector2((X / GetMagnitude()), (Y / GetMagnitude()));}
+            throw new DivideByZeroException();
         }
 
         public override string ToString()
@@ -110,6 +130,9 @@ namespace BasicGraphicsEngine
 
         public static Vector2 operator *(Vector2 Va, float Scalar)
         => new Vector2(Va.X * Scalar, Va.Y * Scalar);
+
+        public static Vector2 operator /(Vector2 Va, float Scalar) 
+        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
     }
 
     public struct Radian

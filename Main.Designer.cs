@@ -44,6 +44,7 @@
             pbx_DisplayCanvas.Size = new Size(887, 501);
             pbx_DisplayCanvas.TabIndex = 0;
             pbx_DisplayCanvas.TabStop = false;
+            pbx_DisplayCanvas.MouseMove += pbx_DisplayCanvas_MouseMove;
             // 
             // btn_Start
             // 
@@ -81,6 +82,7 @@
             Name = "frm_Main";
             Text = "Form1";
             Load += frm_Main_Load;
+            MouseMove += frm_Main_MouseMove;
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).EndInit();
             ResumeLayout(false);
         }
