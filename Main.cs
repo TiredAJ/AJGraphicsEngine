@@ -43,9 +43,9 @@ namespace BasicGraphicsEngine
 
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;
-                Debug.WriteLine("Render time: {0}s", (End-Start));
-                Debug.WriteLine("Render time Delta: {0}s", Delta);
-                Debug.WriteLine("--------------------------------");
+                //Debug.WriteLine("Render time: {0}s", (End-Start));
+                //Debug.WriteLine("Render time Delta: {0}s", Delta);
+                //Debug.WriteLine("--------------------------------");
                 //Logger(LastTime, (End - Start), Delta);
                 LastTime = End - Start;
             }

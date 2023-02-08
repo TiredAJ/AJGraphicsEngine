@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -63,59 +64,52 @@ namespace BasicGraphicsEngine
 
     public struct Vector2
     {
-        public float Speed;
-        public float XSpeed, YSpeed;
-        public Radian Direction;
+        public float X, Y;
 
         public Vector2()
         {
-            Speed = 0f;
-            Direction = 0d;
-        }
-
-        public Vector2(float _Speed, Radian _Direction)
-        {
-            Speed = _Speed;
-            Direction = _Direction;
+            X = 0f;
+            Y = 0f;
         }
         
-        public Vector2(float _XSpeed, float _YSpeed)
+        public Vector2(float _X, float _Y)
         {
-            XSpeed = _XSpeed;
-            YSpeed = _YSpeed;
+            X = _X;
+            Y = _Y;
         }
 
-        public void SetSpeed(float _Speed)
-        { Speed = _Speed; }
+        public void SpeedUp(float _Scalar)
+        {
+            if (X < 0) X -= _Scalar;
+            if (Y < 0) Y -= _Scalar;
 
-        public void SetDirection(Radian _Direction)
-        { Direction = _Direction; }
+        }
 
-        public Radian GetAngleDifference(Vector2 Vb)
-        {return this.Direction - Vb.Direction;}
+        public override string ToString()
+        {return $"X:{X}, Y:{Y}";}
 
         public static Vector2 operator +(Vector2 Va, Vector2 Vb)
         => new Vector2
         (
-            Va.Speed + Vb.Speed, 
-            Va.Direction + Vb.Direction
+            Va.X + Vb.X,
+            Va.Y + Vb.Y
         );
 
         public static Vector2 operator +(Vector2 Va, float Scalar)
-        => new Vector2(Va.Speed + Scalar, Va.Direction);
+        => new Vector2(Va.X + Scalar, Va.Y);
 
         public static Vector2 operator -(Vector2 Va, Vector2 Vb)
         => new Vector2
         (
-            -(Va.Speed) + Vb.Speed,
-            -(Va.Direction) + Vb.Direction
+            Va.X - Vb.X,
+            Va.Y - Vb.Y
         );
 
         public static Vector2 operator -(Vector2 Va, float Scalar)
-        => new Vector2(Va.Speed - Scalar, Va.Direction);
+        => new Vector2(Va.X - Scalar, Va.Y - Scalar);
 
         public static Vector2 operator *(Vector2 Va, float Scalar)
-        => new Vector2(Va.Speed * Scalar, Va.Direction);
+        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
     }
 
     public struct Radian
