@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace BasicGraphicsEngine
 {
     public partial class frm_Main : Form
@@ -11,10 +13,21 @@ namespace BasicGraphicsEngine
         { InitializeComponent(); }
         private void frm_Main_Load(object sender, EventArgs e)
         {
-            DrawerHandler = new Drawer(pbx_DisplayCanvas.DisplayRectangle);
-            Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width, pbx_DisplayCanvas.Height);
+            DrawerHandler = new Drawer
+                ( new Rectangle
+                    (
+                        pbx_DisplayCanvas.DisplayRectangle.Location,
+                    new Size
+                        (
+                            pbx_DisplayCanvas.DisplayRectangle.Width/2,
+                            pbx_DisplayCanvas.DisplayRectangle.Height/2
+                        )
+                ));
+            Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width / 2, pbx_DisplayCanvas.Height / 2);
 
-            pbx_DisplayCanvas.Image = DrawerHandler.InitDraw(Canvas);
+            pbx_DisplayCanvas.Image = DrawerHandler.InitDraw((Bitmap)Canvas.Clone());
+
+            Canvas.Dispose();
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -35,9 +48,11 @@ namespace BasicGraphicsEngine
 
                 Bitmap Canvas = new Bitmap
                 (
-                    pbx_DisplayCanvas.Width, 
-                    pbx_DisplayCanvas.Height
+                    pbx_DisplayCanvas.Width / 2,
+                    pbx_DisplayCanvas.Height / 2
                 );
+
+                //Debug.WriteLine(pbx_DisplayCanvas.DisplayRectangle);
 
                 await Task.Run(async () =>
                 {
@@ -45,10 +60,10 @@ namespace BasicGraphicsEngine
                     {
                         pbx_DisplayCanvas.Image = (Bitmap)DrawerHandler.CallDraw(Canvas).Clone();
                     }));
-                    
+
                     Canvas.Dispose();
                 });
-                
+
 
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;

@@ -76,9 +76,8 @@ namespace BasicGraphicsEngine
                 (float)Height
             );
 
-            CalculateBounds();
+            //CalculateBounds();
 
-            //G.Dispose();
 
             return _Canvas;
         }
