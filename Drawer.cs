@@ -1,58 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
-        private List<Shapes> ShapeList = new List<Shapes>();
+        private List<DrawObject> ShapeList = new List<DrawObject>();
         public RectangleF Display = new RectangleF();
         public PointF Cursor = new PointF(0f, 0f);
 
         public Drawer(Rectangle _Display)
-        {Display = _Display;}
+        { Display = _Display; }
 
-        public void Add(Shapes _NewShape)
-        {ShapeList.Add(_NewShape);}
+        public void Add(DrawObject _NewShape)
+        { ShapeList.Add(_NewShape); }
 
-        public Bitmap CallDraw()
+        public Bitmap CallDraw(Bitmap _Canvas)
         {
-            Bitmap Canvas = new Bitmap
-            (
-                (int)Display.Width, 
-                (int)Display.Height
-            );
-
             Frame();
 
-            foreach (Shapes S in ShapeList)
-            {S.Draw(Canvas);}
+            foreach (DrawObject S in ShapeList)
+            { S.Draw(_Canvas); }
 
-            return Canvas;
+            //Debug.WriteLine(ShapeList.Count);
+
+            return _Canvas;
         }
 
-        public Bitmap InitDraw()
+        public Bitmap InitDraw(Bitmap _Canvas)
         {
             SetUp();
 
-            Bitmap Canvas = new Bitmap
-            (
-                (int)Display.Width,
-                (int)Display.Height
-            );
+            foreach (DrawObject S in ShapeList)
+            { S.Draw(_Canvas); }
 
-            foreach (Shapes S in ShapeList)
-            { S.Draw(Canvas); }
+            ShapeList.Clear();
 
-            return Canvas;
+            return _Canvas;
         }
 
         public void CleanUp()
-        {ShapeList.Clear();}
+        { ShapeList.Clear(); }
 
         public int RandomValue(int Min, int Max)
         {
@@ -61,8 +48,8 @@ namespace BasicGraphicsEngine
         }
 
         public void SetCursorPos(PointF _Loc)
-        {Cursor = _Loc;}
-        
+        { Cursor = _Loc; }
+
     }
 
     public struct ShapeColours
@@ -82,31 +69,25 @@ namespace BasicGraphicsEngine
             X = 0f;
             Y = 0f;
         }
-        
+
         public Vector2(float _X, float _Y)
         {
             X = _X;
             Y = _Y;
         }
 
-        public void SpeedUp(float _Scalar)
-        {
-            X = X < 0 ? X -= _Scalar : X += _Scalar;
-            Y = Y < 0 ? Y -= _Scalar : Y += _Scalar;
-        }
-
         public float GetMagnitude()
-        {return MathF.Sqrt((X * X) + (Y * Y));}
+        { return MathF.Sqrt((X * X) + (Y * Y)); }
 
         public Vector2 Normalise()
         {
             if (GetMagnitude() > 0)
-            {return new Vector2((X / GetMagnitude()), (Y / GetMagnitude()));}
+            { return new Vector2((X / GetMagnitude()), (Y / GetMagnitude())); }
             throw new DivideByZeroException();
         }
 
         public override string ToString()
-        {return $"X:{X}, Y:{Y}";}
+        { return $"X:{X}, Y:{Y}"; }
 
         public static Vector2 operator +(Vector2 Va, Vector2 Vb)
         => new Vector2
@@ -131,7 +112,7 @@ namespace BasicGraphicsEngine
         public static Vector2 operator *(Vector2 Va, float Scalar)
         => new Vector2(Va.X * Scalar, Va.Y * Scalar);
 
-        public static Vector2 operator /(Vector2 Va, float Scalar) 
+        public static Vector2 operator /(Vector2 Va, float Scalar)
         => new Vector2(Va.X / Scalar, Va.Y / Scalar);
     }
 
@@ -145,10 +126,10 @@ namespace BasicGraphicsEngine
         { }
 
         public double GetDegree()
-        {return (Rad * 180) / Math.PI;}
+        { return (Rad * 180) / Math.PI; }
 
         public void FromDegrees(double _Degrees)
-        {Rad = (_Degrees * Math.PI) / 180;}
+        { Rad = (_Degrees * Math.PI) / 180; }
 
         public override string ToString() => $"{Rad} Rad";
 
@@ -157,11 +138,11 @@ namespace BasicGraphicsEngine
             switch (Format)
             {
                 case "Rads":
-                {return $"{Rad} Rad";}
+                { return $"{Rad} Rad"; }
                 case "Degrees":
-                {return $"{GetDegree()}°";}
+                { return $"{GetDegree()}°"; }
                 default:
-                {return $"{Rad} Rad [{GetDegree()}°]";}
+                { return $"{Rad} Rad [{GetDegree()}°]"; }
             }
         }
 
@@ -172,7 +153,7 @@ namespace BasicGraphicsEngine
         }
 
         public override int GetHashCode()
-        {return HashCode.Combine(Rad);}
+        { return HashCode.Combine(Rad); }
 
         public static Radian operator +(Radian Ra, Radian Rb)
         => new Radian(Ra.Rad + Rb.Rad);
@@ -196,7 +177,7 @@ namespace BasicGraphicsEngine
 
             return Ra.Rad == Rb.Rad;
         }
-        
+
         public static bool operator !=(Radian Ra, Radian Rb)
         {
             if (Ra != null && Rb != null) return true;

@@ -1,23 +1,20 @@
-using System.Diagnostics;
-
 namespace BasicGraphicsEngine
 {
     public partial class frm_Main : Form
     {
-        private Drawer DrawerHandler;
+        private Drawer? DrawerHandler;
         private bool Run = false;
-        private Bitmap Canvas;
         private TimeSpan Start, End, LastTime = new TimeSpan(), Delta;
-        private Thread TDrawer;
+        private Thread? TDrawer;
 
         public frm_Main()
         { InitializeComponent(); }
         private void frm_Main_Load(object sender, EventArgs e)
         {
             DrawerHandler = new Drawer(pbx_DisplayCanvas.DisplayRectangle);
-            Canvas = new Bitmap(pbx_DisplayCanvas.Width, pbx_DisplayCanvas.Height);
+            Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width, pbx_DisplayCanvas.Height);
 
-            pbx_DisplayCanvas.Image = DrawerHandler.InitDraw();
+            pbx_DisplayCanvas.Image = DrawerHandler.InitDraw(Canvas);
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -36,10 +33,22 @@ namespace BasicGraphicsEngine
             {
                 Start = DateTime.Now.TimeOfDay;
 
-                pbx_DisplayCanvas.Invoke(new Action(() =>
+                Bitmap Canvas = new Bitmap
+                (
+                    pbx_DisplayCanvas.Width, 
+                    pbx_DisplayCanvas.Height
+                );
+
+                await Task.Run(async () =>
                 {
-                    pbx_DisplayCanvas.Image = DrawerHandler.CallDraw();
-                }));
+                    pbx_DisplayCanvas.Invoke(new Action(() =>
+                    {
+                        pbx_DisplayCanvas.Image = (Bitmap)DrawerHandler.CallDraw(Canvas).Clone();
+                    }));
+                    
+                    Canvas.Dispose();
+                });
+                
 
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;

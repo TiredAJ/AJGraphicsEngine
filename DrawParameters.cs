@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BasicGraphicsEngine
+﻿namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
 
         //      Declaration     //
-            Square SQ = new Square();
-            Square SQ2 = new Square();
-            Vector2 SQV = new Vector2(1f, 0.5f);
-            Vector2 SQ2V = new Vector2(2f, 1f);
+        BasicSquare SQ = new BasicSquare();
+        BasicSquare SQ2 = new BasicSquare();
+        Vector2 SQV = new Vector2(1f, 0.5f);
+        Vector2 SQ2V = new Vector2(2f, 1f);
 
         //                      //
 
@@ -36,54 +29,32 @@ namespace BasicGraphicsEngine
             Add(SQ2);
         }
 
-		private void Frame()
-		{
+        private void Frame()
+        {
             SQ.Centre.X += SQV.X;
             SQ.Centre.Y += SQV.Y;
 
             //SQ2.Centre.X += SQ2V.X;
             //SQ2.Centre.Y += SQ2V.Y;
 
-            SQ2.Centre = Cursor;
+            //SQ2.Centre = Cursor;
 
-            
 
-            if 
+
+            if
             ((SQ.Centre.X + (SQ.Width / 2)) >= (Display.X + Display.Width) ||
              (SQ.Centre.X - (SQ.Width / 2)) <= Display.X)
-            {
-                //SQV.SpeedUp((float)(RandomValue(1,10)/10));
-                SQV.X *= -1;
-            }
+            {SQV.X *= -1;}
 
-            if 
+            if
             ((SQ.Centre.Y + (SQ.Height / 2)) >= (Display.Y + Display.Height) ||
              (SQ.Centre.Y - (SQ.Height / 2)) <= Display.Y)
-            {
-                //SQV.SpeedUp((float)(RandomValue(1, 10) / 10));
-                SQV.Y *= -1;
-            }
-            
-            //if 
-            //((SQ2.Centre.X + (SQ2.Width / 2)) >= (Display.X + Display.Width) ||
-            // (SQ2.Centre.X - (SQ2.Width / 2)) <= Display.X)
-            //{
-            //    SQ2V.SpeedUp(0.5f);
-            //    SQ2V.X *= -1;
-            //}
-            //
-            //if 
-            //((SQ2.Centre.Y + (SQ2.Height / 2)) >= (Display.Y + Display.Height) ||
-            // (SQ2.Centre.Y - (SQ2.Height / 2)) <= Display.Y)
-            //{
-            //    SQ2V.SpeedUp(0.5f); 
-            //    SQ2V.Y *= -1;
-            //}
+            {SQV.Y *= -1;}
 
             //Debug.WriteLine(SQV.ToString());
             //Debug.WriteLine(SQ2V.ToString());
             //Debug.WriteLine("--------------------------");
 
         }
-	}
+    }
 }
