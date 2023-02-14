@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BasicGraphicsEngine.DrawObject" Collapsed="true">
+    <Position X="10.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.LineBase" Collapsed="true">
+    <Position X="9.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.Line" Collapsed="true">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.Lines" Collapsed="true">
+    <Position X="8.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.AdvShapes" Collapsed="true">
+    <Position X="12.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBCAAAAAAABAAwAAAAJAAAAAAABAAAAAAABAAABAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.Square" Collapsed="true">
+    <Position X="12.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdvShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.BasicShape" Collapsed="true">
+    <Position X="5.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBCAAAAABABAAwAAAABAAEAAAABAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>BasicShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.BasicSquare" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>BasicShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.BasicCircle" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>BasicShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.Drawer" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAYAgAAhAAABAAQAAAgAAAAAAQAAAAEAAAAE=</HashCode>
+      <FileName>Drawer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicGraphicsEngine.frm_Main" Collapsed="true">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAEAAiIIAAAAABCBAAACoAICAAAAECAAAAEAAAI=</HashCode>
+      <FileName>Main.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="BasicGraphicsEngine.ShapeColours" Collapsed="true">
+    <Position X="2.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Drawer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BasicGraphicsEngine.Vector2" Collapsed="true">
+    <Position X="2.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEEYAUAAAAAAAAAAAAAAAAAAgAAYAA=</HashCode>
+      <FileName>Drawer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BasicGraphicsEngine.Radian" Collapsed="true">
+    <Position X="2.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAEwAEAIEAAAAAAQIIAAAAAAAAAEiA=</HashCode>
+      <FileName>Drawer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

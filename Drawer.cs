@@ -14,28 +14,22 @@ namespace BasicGraphicsEngine
         public void Add(DrawObject _NewShape)
         { ShapeList.Add(_NewShape); }
 
-        public Bitmap CallDraw(Bitmap _Canvas)
+        public void CallDraw(Graphics G)
         {
             Frame();
 
             foreach (DrawObject S in ShapeList)
-            { S.Draw(_Canvas); }
-
-            //Debug.WriteLine(ShapeList.Count);
-
-            return _Canvas;
+            { S.Draw(G); }
         }
 
-        public Bitmap InitDraw(Bitmap _Canvas)
+        public void InitDraw(Graphics G)
         {
             SetUp();
 
             foreach (DrawObject S in ShapeList)
-            { S.Draw(_Canvas); }
+            { S.Draw(G); }
 
             ShapeList.Clear();
-
-            return _Canvas;
         }
 
         public void CleanUp()

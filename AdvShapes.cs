@@ -5,8 +5,8 @@
         public Color PrimaryCol = new Color();
         //public Bitmap? Canvas;
 
-        public virtual Bitmap Draw(Bitmap _Canvas)
-        { return _Canvas; }
+        public virtual void Draw(Graphics G)
+        { }
     }
 
     public class LineBase : DrawObject
@@ -17,8 +17,8 @@
 
         public LineBase() { }
 
-        public override Bitmap Draw(Bitmap _Canvas)
-        { return _Canvas; }
+        public override void Draw(Graphics G)
+        {}
     }
 
     public class Line : LineBase
@@ -41,15 +41,15 @@
             PrimaryCol = _L.PrimaryCol;
         }
 
-        public override Bitmap Draw(Bitmap _Canvas)
+        public override void Draw(Graphics G)
         {
-            Graphics.FromImage(_Canvas).DrawLine
+            G.DrawLine
             (
                 new Pen(PrimaryCol, LineWidth),
                 A, B
             );
 
-            return _Canvas;
+            //G.Dispose();
         }
     }
 
@@ -69,19 +69,15 @@
             PrimaryCol = _L.PrimaryCol;
         }
 
-        public override Bitmap Draw(Bitmap _Canvas)
+        public override void Draw(Graphics G)
         {
-            Graphics G = Graphics.FromImage(_Canvas);
-
             G.DrawLines
             (
                 new Pen(PrimaryCol, LineWidth),
                 Points.ToArray()
             );
 
-            G.Dispose();
-
-            return _Canvas;
+            //G.Dispose();
         }
     }
 
@@ -97,8 +93,8 @@
         public virtual void CalculateBounds()
         {}
 
-        public override Bitmap Draw(Bitmap _Canvas)
-        {return _Canvas;}
+        public override void Draw(Graphics G)
+        {}
     }
 
     public class Square : AdvShapes
@@ -121,5 +117,8 @@
             SecondaryCol = _S.SecondaryCol;
             TertiaryCol = _S.TertiaryCol;
         }
+
+        public override void Draw(Graphics G) 
+        {/*stuff*/ }
     }
 }

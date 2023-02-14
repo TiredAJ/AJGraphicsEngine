@@ -10,15 +10,15 @@ namespace BasicGraphicsEngine
     {
         public float BorderWidth = 2f;
         public PointF Centre = new PointF();
-        public float TopEdge, BottomEdge, LeftEdge, RightEdge;
+        //public float TopEdge, BottomEdge, LeftEdge, RightEdge;
         public float Width, Height;
         public Color SecondaryCol, TertiaryCol = Color.Transparent;
 
         public BasicShape()
         { }
 
-        public override Bitmap Draw(Bitmap _Canvas)
-        { return _Canvas; }
+        public override void Draw(Graphics G)
+        {}
 
         public virtual void CalculateBounds()
         { }
@@ -50,15 +50,15 @@ namespace BasicGraphicsEngine
 
         public override void CalculateBounds()
         {
-            TopEdge = Centre.Y - (Height / 2);
-            BottomEdge = Centre.Y + (Height / 2);
-            LeftEdge = Centre.X - (Width / 2);
-            RightEdge = Centre.X + (Width / 2);
+            //TopEdge = Centre.Y - (Height / 2);
+            //BottomEdge = Centre.Y + (Height / 2);
+            //LeftEdge = Centre.X - (Width / 2);
+            //RightEdge = Centre.X + (Width / 2);
         }
 
-        public override Bitmap Draw(Bitmap _Canvas)
+        public override void Draw(Graphics G)
         {
-            Graphics.FromImage(_Canvas).FillRectangle
+            G.FillRectangle
             (
                 new SolidBrush(SecondaryCol),
                 Centre.X - ((float)Width) / 2,
@@ -67,7 +67,7 @@ namespace BasicGraphicsEngine
                 (float)Height
             );
 
-            Graphics.FromImage(_Canvas).DrawRectangle
+            G.DrawRectangle
             (
                 new Pen(PrimaryCol, BorderWidth),
                 Centre.X - ((float)Width) / 2,
@@ -77,9 +77,6 @@ namespace BasicGraphicsEngine
             );
 
             //CalculateBounds();
-
-
-            return _Canvas;
         }
     }
 
@@ -106,16 +103,14 @@ namespace BasicGraphicsEngine
 
         public override void CalculateBounds()
         {
-            TopEdge = Centre.Y - (Height / 2);
-            BottomEdge = Centre.Y + (Height / 2);
-            LeftEdge = Centre.X - (Width / 2);
-            RightEdge = Centre.X + (Width / 2);
+            //TopEdge = Centre.Y - (Height / 2);
+            //BottomEdge = Centre.Y + (Height / 2);
+            //LeftEdge = Centre.X - (Width / 2);
+            //RightEdge = Centre.X + (Width / 2);
         }
 
-        public override Bitmap Draw(Bitmap _Canvas)
+        public override void Draw(Graphics G)
         {
-            Graphics G = Graphics.FromImage(_Canvas);
-
             G.FillEllipse
             (
                 new SolidBrush(SecondaryCol),
@@ -135,10 +130,6 @@ namespace BasicGraphicsEngine
             );
 
             CalculateBounds();
-
-            G.Dispose();
-
-            return _Canvas;
         }
     }
 }
