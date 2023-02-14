@@ -52,8 +52,6 @@ namespace BasicGraphicsEngine
                     pbx_DisplayCanvas.Height / 2
                 );
 
-                //Debug.WriteLine(pbx_DisplayCanvas.DisplayRectangle);
-
                 await Task.Run(async () =>
                 {
                     pbx_DisplayCanvas.Invoke(new Action(() =>
@@ -62,15 +60,12 @@ namespace BasicGraphicsEngine
                     }));
 
                     Canvas.Dispose();
+                    //System.GC.Collect();
                 });
 
 
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;
-                //Debug.WriteLine("Render time: {0}s", (End-Start));
-                //Debug.WriteLine("Render time Delta: {0}s", Delta);
-                //Debug.WriteLine("--------------------------------");
-                //Logger(LastTime, (End - Start), Delta);
                 LastTime = End - Start;
             }
         }
