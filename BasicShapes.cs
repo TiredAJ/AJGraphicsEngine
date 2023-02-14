@@ -101,6 +101,9 @@ namespace BasicGraphicsEngine
             TertiaryCol = _C.TertiaryCol;
         }
 
+        public BasicCircle(float _Radius)
+        {Width = Height = _Radius * 2;}
+
         public override void CalculateBounds()
         {
             //TopEdge = Centre.Y - (Height / 2);
