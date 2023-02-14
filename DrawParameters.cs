@@ -5,9 +5,9 @@
 
         //      Declaration     //
         BasicSquare SQ = new BasicSquare();
-        //BasicSquare SQ2 = new BasicSquare();
+        BasicSquare SQ2 = new BasicSquare();
         Vector2 SQV = new Vector2(1f, 0.5f);
-        //Vector2 SQ2V = new Vector2(2f, 1f);
+        Vector2 SQ2V = new Vector2(2f, 1f);
 
         //                      //
 
@@ -26,7 +26,7 @@
             SQ.BorderWidth = /*SQ2.BorderWidth =*/ 5f;
             
             Add(SQ);
-            //Add(SQ2);
+            Add(SQ2);
         }
 
         private void Frame()
@@ -34,10 +34,10 @@
             SQ.Centre.X += SQV.X;
             SQ.Centre.Y += SQV.Y;
 
-            //SQ2.Centre.X += SQ2V.X;
-            //SQ2.Centre.Y += SQ2V.Y;
+            SQ2.Centre.X += SQ2V.X;
+            SQ2.Centre.Y += SQ2V.Y;
 
-            //SQ2.Centre = Cursor;
+            SQ2.Centre = Cursor;
 
 
 

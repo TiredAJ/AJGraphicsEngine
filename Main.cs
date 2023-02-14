@@ -5,7 +5,7 @@ namespace BasicGraphicsEngine
     public partial class frm_Main : Form
     {
         private Drawer? DrawerHandler;
-        private bool Run = false;
+        private bool Run = false, FirstTime = true;
         private TimeSpan Start, End, LastTime = new TimeSpan(), Delta;
         private Thread? TDrawer;
 
@@ -14,20 +14,25 @@ namespace BasicGraphicsEngine
         private void frm_Main_Load(object sender, EventArgs e)
         {
             DrawerHandler = new Drawer
-                ( new Rectangle
+                (new Rectangle
                     (
                         pbx_DisplayCanvas.DisplayRectangle.Location,
                     new Size
                         (
-                            pbx_DisplayCanvas.DisplayRectangle.Width/2,
-                            pbx_DisplayCanvas.DisplayRectangle.Height/2
+                            pbx_DisplayCanvas.DisplayRectangle.Width,
+                            pbx_DisplayCanvas.DisplayRectangle.Height
                         )
                 ));
-            Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width / 2, pbx_DisplayCanvas.Height / 2);
+            //Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width / 2, pbx_DisplayCanvas.Height / 2);
 
-            pbx_DisplayCanvas.Image = DrawerHandler.InitDraw((Bitmap)Canvas.Clone());
+            Task.Run(() =>
+            {
+                pbx_DisplayCanvas.Invalidate();
+            });
 
-            Canvas.Dispose();
+            //pbx_DisplayCanvas.Image = DrawerHandler.InitDraw();
+
+            //Canvas.Dispose();
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -46,20 +51,20 @@ namespace BasicGraphicsEngine
             {
                 Start = DateTime.Now.TimeOfDay;
 
-                Bitmap Canvas = new Bitmap
-                (
-                    pbx_DisplayCanvas.Width / 2,
-                    pbx_DisplayCanvas.Height / 2
-                );
+                //Bitmap Canvas = new Bitmap
+                //(
+                //    pbx_DisplayCanvas.Width / 2,
+                //    pbx_DisplayCanvas.Height / 2
+                //);
 
                 await Task.Run(async () =>
                 {
                     pbx_DisplayCanvas.Invoke(new Action(() =>
                     {
-                        pbx_DisplayCanvas.Image = (Bitmap)DrawerHandler.CallDraw(Canvas).Clone();
+                        pbx_DisplayCanvas.Invalidate();
                     }));
 
-                    Canvas.Dispose();
+                    //Canvas.Dispose();
                     //System.GC.Collect();
                 });
 
@@ -102,6 +107,17 @@ namespace BasicGraphicsEngine
         {
             Task.Run(new Action(() =>
             { DrawerHandler.SetCursorPos(e.Location); }));
+        }
+
+        private void pbx_DisplayCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            if (FirstTime)
+            {
+                DrawerHandler.InitDraw(e.Graphics);
+                FirstTime = false;
+            }
+            else
+            {DrawerHandler.CallDraw(e.Graphics);}
         }
     }
 }

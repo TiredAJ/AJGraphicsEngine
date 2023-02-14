@@ -45,6 +45,7 @@
             pbx_DisplayCanvas.SizeMode = PictureBoxSizeMode.Zoom;
             pbx_DisplayCanvas.TabIndex = 0;
             pbx_DisplayCanvas.TabStop = false;
+            pbx_DisplayCanvas.Paint += pbx_DisplayCanvas_Paint;
             pbx_DisplayCanvas.MouseMove += pbx_DisplayCanvas_MouseMove;
             // 
             // btn_Start
