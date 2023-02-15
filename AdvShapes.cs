@@ -23,11 +23,11 @@
 
     public class Line : LineBase
     {
-        public PointF A, B;
+        public Point A, B;
 
         public Line() { }
 
-        public Line(PointF _A, PointF _B)
+        public Line(Point _A, Point _B)
         {
             A = _A;
             B = _B;
@@ -55,11 +55,11 @@
 
     public class Lines : LineBase
     {
-        public List<PointF> Points = new List<PointF>();
+        public List<Point> Points = new List<Point>();
 
         public Lines() { }
 
-        public Lines(List<PointF> _Points)
+        public Lines(List<Point> _Points)
         { Points = _Points; }
 
         public Lines(Lines _L)
@@ -84,7 +84,7 @@
     public class AdvShapes : DrawObject
     {
         public float BorderWidth = 2f;
-        public PointF Centre = new PointF();
+        public Point Centre = new Point();
         public float TopEdge, BottomEdge, LeftEdge, RightEdge;
         public Color PrimaryCol = new Color();
         public Color SecondaryCol, TertiaryCol = Color.Transparent;
@@ -99,18 +99,18 @@
 
     public class Square : AdvShapes
     {
-        public PointF[] Corners = new PointF[4];
+        public Point[] Corners = new Point[4];
 
         public Square() { }
 
-        public Square(PointF[] _Corners)
+        public Square(Point[] _Corners)
         {Corners = _Corners;}
 
         public Square(Square _S)
         {
             _S.Corners.CopyTo(Corners, 0);
             BorderWidth = _S.BorderWidth;
-            Centre = new PointF(_S.Centre.X, _S.Centre.Y);
+            Centre = new Point(_S.Centre.X, _S.Centre.Y);
             TopEdge = _S.TopEdge; BottomEdge = _S.BottomEdge;
             LeftEdge = _S.LeftEdge; RightEdge = _S.RightEdge;
             PrimaryCol = _S.PrimaryCol;

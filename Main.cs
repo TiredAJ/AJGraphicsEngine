@@ -113,6 +113,8 @@ namespace BasicGraphicsEngine
         {
             if (FirstTime)
             {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
                 DrawerHandler.InitDraw(e.Graphics);
                 FirstTime = false;
             }

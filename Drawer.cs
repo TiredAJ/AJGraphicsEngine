@@ -6,7 +6,7 @@ namespace BasicGraphicsEngine
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
         public RectangleF Display = new RectangleF();
-        public PointF Cursor = new PointF(0f, 0f);
+        public Point Cursor = new Point(0, 0);
 
         public Drawer(Rectangle _Display)
         { Display = _Display; }
@@ -41,7 +41,7 @@ namespace BasicGraphicsEngine
             return R.Next(Min, Max);
         }
 
-        public void SetCursorPos(PointF _Loc)
+        public void SetCursorPos(Point _Loc)
         { Cursor = _Loc; }
 
     }
@@ -56,22 +56,22 @@ namespace BasicGraphicsEngine
 
     public struct Vector2
     {
-        public float X, Y;
+        public int X, Y;
 
         public Vector2()
         {
-            X = 0f;
-            Y = 0f;
+            X = 0;
+            Y = 0;
         }
 
-        public Vector2(float _X, float _Y)
+        public Vector2(int _X, int _Y)
         {
             X = _X;
             Y = _Y;
         }
 
-        public float GetMagnitude()
-        { return MathF.Sqrt((X * X) + (Y * Y)); }
+        public int GetMagnitude()
+        { return (int)MathF.Sqrt((X * X) + (Y * Y)); }
 
         public Vector2 Normalise()
         {
@@ -90,7 +90,7 @@ namespace BasicGraphicsEngine
             Va.Y + Vb.Y
         );
 
-        public static Vector2 operator +(Vector2 Va, float Scalar)
+        public static Vector2 operator +(Vector2 Va, int Scalar)
         => new Vector2(Va.X + Scalar, Va.Y);
 
         public static Vector2 operator -(Vector2 Va, Vector2 Vb)
@@ -100,13 +100,13 @@ namespace BasicGraphicsEngine
             Va.Y - Vb.Y
         );
 
-        public static Vector2 operator -(Vector2 Va, float Scalar)
+        public static Vector2 operator -(Vector2 Va, int Scalar)
         => new Vector2(Va.X - Scalar, Va.Y - Scalar);
 
-        public static Vector2 operator *(Vector2 Va, float Scalar)
+        public static Vector2 operator *(Vector2 Va, int Scalar)
         => new Vector2(Va.X * Scalar, Va.Y * Scalar);
 
-        public static Vector2 operator /(Vector2 Va, float Scalar)
+        public static Vector2 operator /(Vector2 Va, int Scalar)
         => new Vector2(Va.X / Scalar, Va.Y / Scalar);
     }
 }

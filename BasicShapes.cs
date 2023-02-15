@@ -9,9 +9,9 @@ namespace BasicGraphicsEngine
     public class BasicShape : DrawObject
     {
         public float BorderWidth = 2f;
-        public PointF Centre = new PointF();
+        public Point Centre = new Point();
         //public float TopEdge, BottomEdge, LeftEdge, RightEdge;
-        public float Width, Height;
+        public int Width, Height;
         public Color SecondaryCol, TertiaryCol = Color.Transparent;
 
         public BasicShape()
@@ -31,7 +31,7 @@ namespace BasicGraphicsEngine
 
         public BasicSquare(Rectangle _Rect)
         {
-            Centre = new PointF(0, 0);
+            Centre = new Point(0, 0);
 
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
@@ -84,10 +84,10 @@ namespace BasicGraphicsEngine
     {
         public BasicCircle() { }
 
-        public BasicCircle(PointF _Centre, float _Radius)
+        public BasicCircle(Point _Centre, float _Radius)
         {
             Centre = _Centre;
-            Width = Height = _Radius * 2;
+            Width = Height = (int)_Radius * 2;
         }
 
         public BasicCircle(BasicCircle _C)
@@ -102,7 +102,7 @@ namespace BasicGraphicsEngine
         }
 
         public BasicCircle(float _Radius)
-        {Width = Height = _Radius * 2;}
+        {Width = Height = (int)_Radius * 2;}
 
         public override void CalculateBounds()
         {
