@@ -72,6 +72,8 @@ namespace BasicGraphicsEngine
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;
                 LastTime = End - Start;
+
+                Thread.Sleep(1);
             }
         }
 
