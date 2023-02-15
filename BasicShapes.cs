@@ -35,6 +35,8 @@ namespace BasicGraphicsEngine
 
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
+
+
         }
 
         public BasicSquare(BasicSquare _S)
