@@ -91,12 +91,22 @@
 
     public class Square : AdvShapes
     {
-        public Vector2[] Corners = new Vector2[4];
+        Vector2 CornerA, CornerB, CornerC, CornerD;
 
         public Square() { }
 
         public Square(Vector2[] _Corners)
-        {Corners = _Corners;}
+        {
+            if (_Corners.Length < 4 || _Corners.Length > 4)
+            {
+                throw new ArgumentException("Array must contain 4 values!");
+            }
+
+            CornerA = _Corners[0];
+            CornerB = _Corners[1];
+            CornerC = _Corners[2];
+            CornerD = _Corners[3];
+        }
 
         public Square(Square _S)
         {
