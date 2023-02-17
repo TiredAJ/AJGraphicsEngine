@@ -94,6 +94,15 @@ namespace BasicGraphicsEngine
                 (float)Height
             );
         }
+
+        public Rectangle ToRectangle()
+        {
+            return new Rectangle
+            (
+                Centre.X - (Width/2), Centre.Y - (Height/2),
+                Width, Height
+            );
+        }
     }
 
     /// <summary>
@@ -137,6 +146,53 @@ namespace BasicGraphicsEngine
         /// </summary>
         public override void CalculateBounds()
         {}
+
+        /// <summary>
+        /// Method <c>Draw</c> renders the object using the inputted Graphics object.
+        /// </summary>
+        public override void Draw(Graphics G)
+        {
+            G.FillEllipse
+            (
+                new SolidBrush(SecondaryCol),
+                Centre.X - ((float)Width) / 2,
+                Centre.Y - ((float)Height) / 2,
+                (float)Width,
+                (float)Height
+            );
+
+            G.DrawEllipse
+            (
+                new Pen(PrimaryCol, BorderWidth),
+                Centre.X - ((float)Width) / 2,
+                Centre.Y - ((float)Height) / 2,
+                (float)Width,
+                (float)Height
+            );
+
+            CalculateBounds();
+        }
+    }
+    
+    public class DebugCircle : BasicShape
+    {
+        public DebugCircle() 
+        {
+            PrimaryCol = Color.Green;
+            SecondaryCol = Color.Red;
+            Width = Height = 10;
+        }
+
+        /// <summary>
+        /// Method <c>DebugCircle</c>. Constructor that takes in a Vector2 for a centre point and a <c>float</c> for radius.
+        /// </summary>
+        public DebugCircle(Vector2 _Centre)
+        {
+            PrimaryCol = Color.Green;
+            SecondaryCol = Color.Red;
+            Centre = _Centre;
+            Width = Height = 5;
+        }
 
         /// <summary>
         /// Method <c>Draw</c> renders the object using the inputted Graphics object.

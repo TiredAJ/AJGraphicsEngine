@@ -9,7 +9,7 @@ namespace BasicGraphicsEngine
     public partial class Drawer
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
-        public RectangleF Display = new RectangleF();
+        public Rectangle Display = new Rectangle();
         public Vector2 Cursor = new Vector2(0, 0);
 
         /// <summary>
