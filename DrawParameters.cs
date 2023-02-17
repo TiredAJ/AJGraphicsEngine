@@ -19,8 +19,10 @@ namespace BasicGraphicsEngine
 
         Vector2 SQ1V = new Vector2(2, 1);
         Vector2 SQ2V = new Vector2(2, 1);
+        Vector2 CollisionNormal = new Vector2();
+        Vector2 Reflect = new Vector2();
 
-        int Distance;
+        int Distance; float DotP;
 
         Vector2 DSQ_SQ = new Vector2();
         Vector2 T_SQ = new Vector2();
@@ -84,22 +86,20 @@ namespace BasicGraphicsEngine
              (SQ1.Centre.Y - (SQ1.Height / 2)) <= Display.Y)
             { SQ1V.Y *= -1; }
 
-            //SQ1A = new Point(SQ1.Centre.X + (SQ1.Width / 2), SQ1.Centre.Y + (SQ1.Height / 2));
-            //SQ1B = new Point(SQ1.Centre.X + (SQ1.Width / 2), SQ1.Centre.Y - (SQ1.Height / 2));
-            //
-            //SQ2A = new Point(SQ2.Centre.X - (SQ2.Width / 2), SQ2.Centre.Y + (SQ2.Height / 2));
-            //SQ2B = new Point(SQ2.Centre.X - (SQ2.Width / 2), SQ2.Centre.Y - (SQ2.Height / 2));
-
             DSQ_SQ.X = SQ1.Centre.X - SQ2.Centre.X;
             DSQ_SQ.Y = SQ1.Centre.Y - SQ2.Centre.Y;
 
             Distance = (int)Math.Sqrt((DSQ_SQ.X * DSQ_SQ.X) + (DSQ_SQ.Y * DSQ_SQ.Y));
 
-            if (Distance <= 50)
+            if (Distance <= 51)
             {
                 //Debug.WriteLine("Collision!");
 
-                SQ1V.Normalise();
+                CollisionNormal = (new Vector2(((Vector2)SQ1.Centre) - ((Vector2)SQ2.Centre))).Normalise();
+
+                DotP = Vector2.Dot(CollisionNormal, (Vector2)SQ1.Centre);
+
+                Reflect = ((int)(DotP * 2)) * (CollisionNormal * 2) - SQ1V;
 
                 if ((SQ1.Centre.X - SQ2.Centre.X) < (SQ1.Centre.Y - SQ2.Centre.Y))
                 {SQ1V.X *= -1;}
@@ -113,9 +113,13 @@ namespace BasicGraphicsEngine
 }
 
 /*
- It looks like you're on the right track, but the current condition for checking whether to invert the X or Y speed may not be correct.
+ It looks like you're on the right track, but the current condition for checking 
+whether to invert the X or Y speed may not be correct.
 
-Assuming that you want to reflect the velocity of SQ1 about the line connecting the centers of SQ1 and SQ2, you need to calculate the unit normal vector of that line, which is simply the vector connecting the centers of the squares, normalized. Here's the updated C# code:
+Assuming that you want to reflect the velocity of SQ1 about the line connecting the 
+centers of SQ1 and SQ2, you need to calculate the unit normal vector of that line, 
+which is simply the vector connecting the centers of the squares, normalized. Here's 
+the updated C# code:
 
 scss
 Copy code

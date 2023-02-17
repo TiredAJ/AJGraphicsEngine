@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BasicGraphicsEngine
 {
@@ -70,6 +71,18 @@ namespace BasicGraphicsEngine
             Y = _Y;
         }
 
+        public Vector2(Vector2 _V)
+        {
+            X = _V.X;
+            Y = _V.Y;
+        }
+
+        public Vector2(Point _P)
+        {
+            X = _P.X;
+            Y = _P.Y;
+        }
+
         public int GetMagnitude()
         { return (int)MathF.Sqrt((X * X) + (Y * Y)); }
 
@@ -79,6 +92,21 @@ namespace BasicGraphicsEngine
             { return new Vector2((X / GetMagnitude()), (Y / GetMagnitude())); }
             throw new DivideByZeroException();
         }
+
+        public Vector2 Normalise(int _Scalar)
+        {
+            if (_Scalar > 0)
+            {return new Vector2((X / _Scalar), (Y / _Scalar));}
+            throw new DivideByZeroException();
+        }
+        
+        public Vector2 Normalise(Vector2 _V)
+        {
+            return new Vector2(_V.Normalise());
+        }
+
+        public static float Dot(Vector2 _VA, Vector2 _VB)
+        {return (_VA.X * _VB.X) + (_VA.Y * _VB.Y);}
 
         public override string ToString()
         { return $"X:{X}, Y:{Y}"; }
@@ -108,5 +136,8 @@ namespace BasicGraphicsEngine
 
         public static Vector2 operator /(Vector2 Va, int Scalar)
         => new Vector2(Va.X / Scalar, Va.Y / Scalar);
+        
+        public static explicit operator Vector2(Point _P) => new Vector2(_P);
+
     }
 }
