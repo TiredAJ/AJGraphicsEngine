@@ -23,16 +23,11 @@ namespace BasicGraphicsEngine
                             pbx_DisplayCanvas.DisplayRectangle.Height
                         )
                 ));
-            //Bitmap Canvas = new Bitmap(pbx_DisplayCanvas.Width / 2, pbx_DisplayCanvas.Height / 2);
 
             Task.Run(() =>
             {
                 pbx_DisplayCanvas.Invalidate();
             });
-
-            //pbx_DisplayCanvas.Image = DrawerHandler.InitDraw();
-
-            //Canvas.Dispose();
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -51,23 +46,13 @@ namespace BasicGraphicsEngine
             {
                 Start = DateTime.Now.TimeOfDay;
 
-                //Bitmap Canvas = new Bitmap
-                //(
-                //    pbx_DisplayCanvas.Width / 2,
-                //    pbx_DisplayCanvas.Height / 2
-                //);
-
                 await Task.Run(async () =>
                 {
                     pbx_DisplayCanvas.Invoke(new Action(() =>
                     {
                         pbx_DisplayCanvas.Invalidate();
                     }));
-
-                    //Canvas.Dispose();
-                    //System.GC.Collect();
                 });
-
 
                 End = DateTime.Now.TimeOfDay;
                 Delta = (End - Start) - LastTime;

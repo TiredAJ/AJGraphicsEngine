@@ -7,7 +7,7 @@ namespace BasicGraphicsEngine
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
         public RectangleF Display = new RectangleF();
-        public Point Cursor = new Point(0, 0);
+        public Vector2 Cursor = new Vector2(0, 0);
 
         public Drawer(Rectangle _Display)
         { Display = _Display; }
@@ -43,7 +43,7 @@ namespace BasicGraphicsEngine
         }
 
         public void SetCursorPos(Point _Loc)
-        { Cursor = _Loc; }
+        { Cursor = (Vector2)_Loc; }
 
     }
 
@@ -110,6 +110,28 @@ namespace BasicGraphicsEngine
 
         public override string ToString()
         { return $"X:{X}, Y:{Y}"; }
+
+        public Point ToPoint()
+        {return new Point(X, Y);}
+
+        public static Point[] ToPointArray(Vector2[] _V2Arr)
+        {
+            List<Point> Temp = new List<Point>();
+            for (int i = 0; i < _V2Arr.Length; i++)
+            {Temp.Add(_V2Arr[i].ToPoint());}
+
+            return Temp.ToArray();
+        }
+        
+        public static Point[] ToPointArray(List<Vector2> _V2List)
+        {
+            List<Point> Temp = new List<Point>();
+
+            foreach (Vector2 V2 in _V2List)
+            {Temp.Add(V2.ToPoint());}
+
+            return Temp.ToArray();
+        }
 
         public static Vector2 operator +(Vector2 Va, Vector2 Vb)
         => new Vector2

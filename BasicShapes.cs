@@ -9,8 +9,7 @@ namespace BasicGraphicsEngine
     public class BasicShape : DrawObject
     {
         public float BorderWidth = 2f;
-        public Point Centre = new Point();
-        //public float TopEdge, BottomEdge, LeftEdge, RightEdge;
+        public Vector2 Centre = new Vector2();
         public int Width, Height;
         public Color SecondaryCol, TertiaryCol = Color.Transparent;
 
@@ -31,7 +30,7 @@ namespace BasicGraphicsEngine
 
         public BasicSquare(Rectangle _Rect)
         {
-            Centre = new Point(0, 0);
+            Centre = new Vector2(0, 0);
 
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
@@ -51,12 +50,7 @@ namespace BasicGraphicsEngine
         }
 
         public override void CalculateBounds()
-        {
-            //TopEdge = Centre.Y - (Height / 2);
-            //BottomEdge = Centre.Y + (Height / 2);
-            //LeftEdge = Centre.X - (Width / 2);
-            //RightEdge = Centre.X + (Width / 2);
-        }
+        {}
 
         public override void Draw(Graphics G)
         {
@@ -77,8 +71,6 @@ namespace BasicGraphicsEngine
                 (float)Width,
                 (float)Height
             );
-
-            //CalculateBounds();
         }
     }
 
@@ -86,7 +78,7 @@ namespace BasicGraphicsEngine
     {
         public BasicCircle() { }
 
-        public BasicCircle(Point _Centre, float _Radius)
+        public BasicCircle(Vector2 _Centre, float _Radius)
         {
             Centre = _Centre;
             Width = Height = (int)_Radius * 2;
@@ -107,12 +99,7 @@ namespace BasicGraphicsEngine
         {Width = Height = (int)_Radius * 2;}
 
         public override void CalculateBounds()
-        {
-            //TopEdge = Centre.Y - (Height / 2);
-            //BottomEdge = Centre.Y + (Height / 2);
-            //LeftEdge = Centre.X - (Width / 2);
-            //RightEdge = Centre.X + (Width / 2);
-        }
+        {}
 
         public override void Draw(Graphics G)
         {
