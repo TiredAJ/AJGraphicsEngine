@@ -11,6 +11,7 @@ namespace BasicGraphicsEngine
 
         public frm_Main()
         { InitializeComponent(); }
+
         private void frm_Main_Load(object sender, EventArgs e)
         {
             DrawerHandler = new Drawer
@@ -67,21 +68,6 @@ namespace BasicGraphicsEngine
             Run = false;
 
             DrawerHandler.CleanUp();
-        }
-
-        private void Logger(TimeSpan Last, TimeSpan Current, TimeSpan Delta)
-        {
-            if (!File.Exists("./Log.csv"))
-            {
-                StreamWriter Temp = new StreamWriter("./Log.csv");
-                Temp.WriteLineAsync("Last time (ms), current time (ms), delta (ms)");
-                Temp.Close();
-            }
-
-            StreamWriter Writer = new StreamWriter("./Log.csv", true);
-
-            Writer.WriteLineAsync($"{Last.Ticks},{Current.Ticks},{Delta.Ticks}");
-            Writer.Close();
         }
 
         private void pbx_DisplayCanvas_MouseMove(object sender, MouseEventArgs e)

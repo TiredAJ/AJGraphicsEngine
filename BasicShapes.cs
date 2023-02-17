@@ -112,6 +112,9 @@ namespace BasicGraphicsEngine
             Width = Height = (int)_Radius * 2;
         }
 
+        /// <summary>
+        /// Method <c>BasicCircle</c>. Constructor that takes a pre-existing BasicCircle object.
+        /// </summary>
         public BasicCircle(BasicCircle _C)
         {
             BorderWidth = _C.BorderWidth;
@@ -123,12 +126,21 @@ namespace BasicGraphicsEngine
             TertiaryCol = _C.TertiaryCol;
         }
 
+        /// <summary>
+        /// Method <c>BasicCircle</c>. Constructor that takes a float for radius.
+        /// </summary>
         public BasicCircle(float _Radius)
         {Width = Height = (int)_Radius * 2;}
 
+        /// <summary>
+        /// Method <c>CalculateBounds</c>. Potentially subject to removal. Calculates the bounds of the object.
+        /// </summary>
         public override void CalculateBounds()
         {}
 
+        /// <summary>
+        /// Method <c>Draw</c> renders the object using the inputted Graphics object.
+        /// </summary>
         public override void Draw(Graphics G)
         {
             G.FillEllipse
