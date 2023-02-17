@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BasicGraphicsEngine
 {
+    /// <summary>
+    /// Class <c>BasicShape</c>. Base object for all basic shapes. Do not use directly.
+    /// </summary>
     public class BasicShape : DrawObject
     {
         public float BorderWidth = 2f;
@@ -16,28 +19,41 @@ namespace BasicGraphicsEngine
         public BasicShape()
         { }
 
+        /// <summary>
+        /// Method <c>Draw</c> renders the basic square object using the inputted Graphics object.
+        /// </summary>
         public override void Draw(Graphics G)
         {}
 
+        /// <summary>
+        /// Method <c>CalculateBounds</c> Potentially subject to removal. Calculates the bounds of the object.
+        /// </summary>
         public virtual void CalculateBounds()
         { }
     }
 
+    /// <summary>
+    /// Class <c>BasicSquare</c> Basic square class.
+    /// </summary>
     public class BasicSquare : BasicShape
     {
         public BasicSquare()
         { }
 
+        /// <summary>
+        /// Method <c>BasicSquare</c>. Constructor that takes in a rectangle.
+        /// </summary>
         public BasicSquare(Rectangle _Rect)
         {
             Centre = new Vector2(0, 0);
 
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
-
-
         }
-
+        
+        /// <summary>
+        /// Method <c>BasicSquare</c>. Constructor that takes in a pre-existing BasicSquare object.
+        /// </summary>
         public BasicSquare(BasicSquare _S)
         {
             BorderWidth = _S.BorderWidth;
@@ -49,9 +65,15 @@ namespace BasicGraphicsEngine
             TertiaryCol = _S.TertiaryCol;
         }
 
+        /// <summary>
+        /// Method <c>CalculateBounds</c>. Potentially subject to removal. Calculates the bounds of the object.
+        /// </summary>
         public override void CalculateBounds()
         {}
 
+        /// <summary>
+        /// Method <c>Draw</c> renders the BasicSquare object using the inputted Graphics object.
+        /// </summary>
         public override void Draw(Graphics G)
         {
             G.FillRectangle
@@ -74,10 +96,16 @@ namespace BasicGraphicsEngine
         }
     }
 
+    /// <summary>
+    /// Class <c>BasicCircle</c>. Basic circle class.
+    /// </summary>
     public class BasicCircle : BasicShape
     {
         public BasicCircle() { }
 
+        /// <summary>
+        /// Method <c>BasicCircle</c>. Constructor that takes in a Vector2 for a centre point and a <c>float</c> for radius.
+        /// </summary>
         public BasicCircle(Vector2 _Centre, float _Radius)
         {
             Centre = _Centre;
