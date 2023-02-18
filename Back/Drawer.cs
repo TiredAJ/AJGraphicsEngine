@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BasicGraphicsEngine
 {
@@ -60,7 +59,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Method <c>RandomValue</c> Returns a random value between two integers.
         /// </summary>
-        public int RandomValue(int Min, int Max)
+        public static int RandomValue(int Min, int Max)
         {
             Random R = new Random(DateTime.Now.Microsecond);
             return R.Next(Min, Max);

@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-
+﻿
 namespace BasicGraphicsEngine
 {
     /// <summary>
@@ -88,7 +87,7 @@ namespace BasicGraphicsEngine
         { Points = _Points; }
 
         /// <summary>
-        /// Method <c>Lines</c>. Constructor that takes in a pre-exising Lines object.
+        /// Method <c>Lines</c>. Constructor that takes in a pre-existing Lines object.
         /// </summary>
         public Lines(Lines _L)
         {
