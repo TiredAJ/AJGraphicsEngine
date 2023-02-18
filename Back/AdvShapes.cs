@@ -8,6 +8,7 @@ namespace BasicGraphicsEngine
     public class DrawObject
     {
         public Color PrimaryCol = new Color();
+        public Color SecondaryCol = new Color();
 
         /// <summary>
         /// Method <c>Draw</c> renders the object using the inputted Graphics object.
@@ -117,8 +118,7 @@ namespace BasicGraphicsEngine
         public float BorderWidth = 5f;
         public Vector2 Centre = new Vector2();
         public float TopEdge, BottomEdge, LeftEdge, RightEdge;
-        public Color PrimaryCol = new Color();
-        public Color SecondaryCol, TertiaryCol = Color.Transparent;
+        public Color TertiaryCol = Color.Transparent;
 
         /// <summary>
         /// Method <c>CalculateBounds</c>. Potentially subject to removal. Calculates the bounds of the object
@@ -138,7 +138,6 @@ namespace BasicGraphicsEngine
     /// </summary>
     public class Square : AdvShapes
     {
-        public Vector2 Centre { get; private set;}
         public int Width { get; private set; }
         public int Height { get; private set; }
 

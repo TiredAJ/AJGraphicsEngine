@@ -4,7 +4,7 @@ namespace BasicGraphicsEngine
 {
     public partial class frm_Main : Form
     {
-        private Drawer? DrawerHandler;
+        private Drawer DrawerHandler = new Drawer();
         private bool Run = false, FirstTime = true;
         private TimeSpan Start, End, LastTime = new TimeSpan(), Delta;
         private Thread? TDrawer;
@@ -14,7 +14,7 @@ namespace BasicGraphicsEngine
 
         private void frm_Main_Load(object sender, EventArgs e)
         {
-            DrawerHandler = new Drawer
+            DrawerHandler.Init
                 (new Rectangle
                     (
                         pbx_DisplayCanvas.DisplayRectangle.Location,
@@ -41,13 +41,13 @@ namespace BasicGraphicsEngine
             TDrawer.Start();
         }
 
-        private async void Refresher()
+        private void Refresher()
         {
             while (Run)
             {
                 Start = DateTime.Now.TimeOfDay;
 
-                await Task.Run(async () =>
+                Task.Run(() =>
                 {
                     pbx_DisplayCanvas.Invoke(new Action(() =>
                     {
@@ -84,10 +84,10 @@ namespace BasicGraphicsEngine
 
         private void pbx_DisplayCanvas_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             if (FirstTime)
             {
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
                 DrawerHandler.InitDraw(e.Graphics);
                 FirstTime = false;
             }

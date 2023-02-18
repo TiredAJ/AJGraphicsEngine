@@ -14,7 +14,7 @@ namespace BasicGraphicsEngine
         public float BorderWidth = 2f;
         public Vector2 Centre = new Vector2();
         public int Width, Height;
-        public Color SecondaryCol, TertiaryCol = Color.Transparent;
+        public Color TertiaryCol = Color.Transparent;
 
         public BasicShape()
         { }
@@ -174,24 +174,34 @@ namespace BasicGraphicsEngine
         }
     }
     
-    public class DebugCircle : BasicShape
+    public class DebugShape : DrawObject
     {
-        public DebugCircle() 
+        public int Width, Height;
+        public Vector2 Centre = new Vector2();
+
+        public DebugShape()
         {
             PrimaryCol = Color.Green;
             SecondaryCol = Color.Red;
+
             Width = Height = 10;
         }
+    }
+
+    public class DebugCircle : DebugShape
+    {
+        public DebugCircle() 
+        {}
 
         /// <summary>
         /// Method <c>DebugCircle</c>. Constructor that takes in a Vector2 for a centre point and a <c>float</c> for radius.
         /// </summary>
-        public DebugCircle(Vector2 _Centre)
+        public DebugCircle(Vector2 _Centre, int _Size)
         {
             PrimaryCol = Color.Green;
             SecondaryCol = Color.Red;
             Centre = _Centre;
-            Width = Height = 5;
+            Width = Height = _Size;
         }
 
         /// <summary>
@@ -210,14 +220,12 @@ namespace BasicGraphicsEngine
 
             G.DrawEllipse
             (
-                new Pen(PrimaryCol, BorderWidth),
+                new Pen(PrimaryCol, 2f),
                 Centre.X - ((float)Width) / 2,
                 Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
-
-            CalculateBounds();
         }
     }
 }

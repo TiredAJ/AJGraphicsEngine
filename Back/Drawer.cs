@@ -12,10 +12,13 @@ namespace BasicGraphicsEngine
         public Rectangle Display = new Rectangle();
         public Vector2 Cursor = new Vector2(0, 0);
 
+        public Drawer()
+        {}
+        
         /// <summary>
-        /// Method <c>Drawer</c> Constructor :P.
+        /// Method <c>Init</c> Sets up the display area.
         /// </summary>
-        public Drawer(Rectangle _Display)
+        public void Init(Rectangle _Display)
         { Display = _Display; }
 
         /// <summary>
@@ -71,13 +74,13 @@ namespace BasicGraphicsEngine
 
     }
 
-    public struct ShapeColours
-    {
-        Color Primary;
-        Color Secondary;
-        Color Tertiary;
-        Color Border;
-    }
+    //public struct ShapeColours
+    //{
+    //    Color Primary;
+    //    Color Secondary;
+    //    Color Tertiary;
+    //    Color Border;
+    //}
 
     /// <summary>
     /// Class <c>Vector2</c> A class representing a 2D Vector datatype.
