@@ -80,7 +80,9 @@ namespace BasicGraphicsEngine
 
             Distance = (int)Math.Sqrt((DSQ_SQ.X * DSQ_SQ.X) + (DSQ_SQ.Y * DSQ_SQ.Y));
 
-            if (Distance <= 50)
+            //Debug.WriteLine($"Dist:{Distance}, SQ_ADV.X:{SQ_ADV.Centre.X}, SQ_ADV.Y:{SQ_ADV.Centre.Y}");
+
+            if (Distance <= 51)
             {
                 //Debug.WriteLine("Collision!");
 

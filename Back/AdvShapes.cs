@@ -2,7 +2,7 @@
 namespace BasicGraphicsEngine
 {
     /// <summary>
-    /// Class <c>DrawObject</c> Base object for all drawn objects. Do not use directly.
+    /// Base object for all drawn objects. Do not use directly.
     /// </summary>
     public class DrawObject
     {
@@ -17,7 +17,7 @@ namespace BasicGraphicsEngine
     }
 
     /// <summary>
-    /// Class <c>LineBase</c>. Base object for lines. Do not use directly.
+    /// Base object for lines. Do not use directly.
     /// </summary>
     public class LineBase : DrawObject
     {
@@ -30,7 +30,7 @@ namespace BasicGraphicsEngine
     }
 
     /// <summary>
-    /// Class <c>Line</c> For drawing basic 2-point lines
+    /// For drawing basic 2-point lines
     /// </summary>
     public class Line : LineBase
     {
@@ -39,16 +39,16 @@ namespace BasicGraphicsEngine
         public Line() { }
 
         /// <summary>
-        /// Method <c>Line</c>. Constructor that takes in two vectors for points.
+        /// Constructor that takes in two <c>Vectors</c> for points.
         /// </summary>
         public Line(Vector2 _A, Vector2 _B)
         {
             A = _A;
             B = _B;
         }
-        
+
         /// <summary>
-        /// Method <c>Line</c>. Constructor that takes in a pre-existing line object.
+        /// Constructor that takes in a pre-existing <c>Line</c> object.
         /// </summary>
         public Line(Line _L)
         {
@@ -59,7 +59,7 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>Draw</c> renders the Line object using the inputted Graphics object.
+        /// Renders the Line object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
         {
@@ -72,7 +72,7 @@ namespace BasicGraphicsEngine
     }
 
     /// <summary>
-    /// Class <c>Lines</c>. For drawing a multi-point line.
+    /// For drawing a multi-point line.
     /// </summary>
     public class Lines : LineBase
     {
@@ -81,13 +81,13 @@ namespace BasicGraphicsEngine
         public Lines() { }
 
         /// <summary>
-        /// Method <c>Lines</c>. Constructor that takes a list of Vector2's.
+        /// Constructor that takes a list of <c>Vector2</c>s.
         /// </summary>
         public Lines(List<Vector2> _Points)
         { Points = _Points; }
 
         /// <summary>
-        /// Method <c>Lines</c>. Constructor that takes in a pre-existing Lines object.
+        /// Constructor that takes in a pre-existing <c>Lines</c> object.
         /// </summary>
         public Lines(Lines _L)
         {
@@ -97,7 +97,7 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>Draw</c> renders the Lines object using the inputted Graphics object.
+        /// Renders the Lines object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
         {
@@ -110,30 +110,29 @@ namespace BasicGraphicsEngine
     }
 
     /// <summary>
-    /// Class <c>DrawObject</c> Base object for all drawn objects. Do not use directly.
+    /// Base object for all drawn objects. Do not use directly.
     /// </summary>
     public class AdvShapes : DrawObject
     {
         public float BorderWidth = 5f;
         public Vector2 Centre = new Vector2();
-        public float TopEdge, BottomEdge, LeftEdge, RightEdge;
         public Color TertiaryCol = Color.Transparent;
 
         /// <summary>
-        /// Method <c>CalculateBounds</c>. Potentially subject to removal. Calculates the bounds of the object
+        /// Potentially subject to removal. Calculates the bounds of the object
         /// </summary>
         public virtual void CalculateBounds()
         {}
 
         /// <summary>
-        /// Method <c>Draw</c> renders the object using the inputted Graphics object.
+        /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
         {}
     }
 
     /// <summary>
-    /// Class <c>Square</c>. "Advanced" square object.
+    /// "Advanced" square object.
     /// </summary>
     public class Square : AdvShapes
     {
@@ -147,9 +146,9 @@ namespace BasicGraphicsEngine
 
         public Square() 
         {Centre = new Vector2();}
-        
+
         /// <summary>
-        /// Method <c>Square</c>. Square constructor, takes in an array of Vector2's.
+        /// Square constructor, takes in an array of <c>Vector2</c>s.
         /// </summary>
         public Square(Vector2[] _Corners)
         {
@@ -169,7 +168,7 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>Square</c> Constructor that takes in a pre-existing (advance) Square object.
+        /// Constructor that takes in a pre-existing <c>Square</c> object.
         /// </summary>
         public Square(Square _S)
         {
@@ -199,9 +198,9 @@ namespace BasicGraphicsEngine
                 CornerA.Y + (Height / 2)
             );
         }
-        
+
         /// <summary>
-        /// Method <c>Draw</c> renders the object using the inputted Graphics object.
+        /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G) 
         {
@@ -225,10 +224,12 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>SetCentre</c> Sets the centre of the object.
+        /// Sets the centre of the object.
         /// </summary>
         public void SetCentre(Vector2 _Centre)
         {
+            Centre = _Centre;
+
             CornerA = new Vector2(_Centre.X - (Width / 2), _Centre.Y - (Height / 2));
             CornerB = new Vector2(_Centre.X + (Width / 2), _Centre.Y - (Height / 2));
             CornerC = new Vector2(_Centre.X + (Width / 2), _Centre.Y + (Height / 2));

@@ -132,8 +132,10 @@ namespace BasicGraphicsEngine
         /// </summary>
         public Vector2 Normalise()
         {
-            if (GetMagnitude() > 0)
-            { return new Vector2((X / GetMagnitude()), (Y / GetMagnitude())); }
+            int Temp = GetMagnitude();
+
+            if (Temp != 0)
+            { return new Vector2((X / Temp), (Y / Temp)); }
             throw new DivideByZeroException();
         }
 
