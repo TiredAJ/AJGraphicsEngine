@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Media;
 
 namespace BasicGraphicsEngine
 {
@@ -6,102 +7,64 @@ namespace BasicGraphicsEngine
     {
 
         //      Declaration     //
-        BasicSquare SQ1 = new BasicSquare();
-        BasicSquare SQ2 = new BasicSquare();
-        Square SQ_ADV = new Square( new Rectangle(0,0,50,50));
+        BasicCircle[] CircleArray = new BasicCircle[50];
+        Line[] LineArray = new Line[50];
 
-        DebugCircle DCA = new DebugCircle(), DCB = new DebugCircle();
-        DebugCircle DCC = new DebugCircle(), DCD = new DebugCircle();
-
-        Vector2 SQ1V = new Vector2(2, 1);
-        //Vector2 SQ2V = new Vector2(2, 1);
-        Vector2 CollisionNormal = new Vector2();
-        Vector2 Reflect = new Vector2();
-
-        int Distance; float DotP;
-
-        Vector2 DSQ_SQ = new Vector2();
+        Vector2[] BC_Vel = new Vector2[50];
 
         //                      //
 
+
+
         public void SetUp()
         {
-            SQ1.Width = SQ2.Width = 50;
-            SQ1.Height = SQ2.Height = 50;
-            //
-            SQ1.Centre = new Vector2
-            (
-                (int)Display.Width / 2,
-                (int)Display.Height / 2
-            );
+            for (int i = 0; i < BC_Vel.Count(); i++)
+            {
+                BC_Vel[i] = new Vector2
+                (
+                    RandomValue(-8, 8, false),
+                    RandomValue(-8, 8, false)
+                );
 
-            SQ_ADV.PrimaryCol = SQ1.PrimaryCol = SQ2.PrimaryCol = Color.Green;
-            SQ_ADV.SecondaryCol = SQ1.SecondaryCol = SQ2.SecondaryCol = Color.Azure;
-            SQ_ADV.BorderWidth = SQ1.BorderWidth = SQ2.BorderWidth = 5f;
+                LineArray[i] = new Line();
 
-            SQ_ADV.SetCentre(new Vector2(100, 100));
+                LineArray[i].PrimaryCol = Color.DeepPink;
 
-            Add(SQ1);
-            //Add(SQ2);
-            Add(SQ_ADV);
-            Add(DCA);
-            Add(DCB);
-            Add(DCC);
-            Add(DCD);
+                CircleArray[i] = new BasicCircle(DisplayCentre, 25);
+
+                CircleArray[i].PrimaryCol = Color.Blue;
+                CircleArray[i].SecondaryCol = Color.Green;
+            }
+
+            Add(LineArray);
+            Add(CircleArray);
         }
+
+
 
         private void Frame()
         {
-            SQ1.Centre.X += SQ1V.X;
-            SQ1.Centre.Y += SQ1V.Y;
-
-            //SQ2.Centre = Cursor;
-            SQ_ADV.SetCentre(Cursor);
-
-            DCA.Centre = SQ_ADV.CornerA;
-            DCB.Centre = SQ_ADV.CornerB;
-            DCC.Centre = SQ_ADV.CornerC;
-            DCD.Centre = SQ_ADV.CornerD;
-
-            if
-            ((SQ1.Centre.X + (SQ1.Width / 2)) >= (Display.X + Display.Width) ||
-             (SQ1.Centre.X - (SQ1.Width / 2)) <= Display.X)
-            { SQ1V.X *= -1; }
-
-            if
-            ((SQ1.Centre.Y + (SQ1.Height / 2)) >= (Display.Y + Display.Height) ||
-             (SQ1.Centre.Y - (SQ1.Height / 2)) <= Display.Y)
-            { SQ1V.Y *= -1; }
-
-            //DSQ_SQ.X = SQ1.Centre.X - SQ2.Centre.X;
-            //DSQ_SQ.Y = SQ1.Centre.Y - SQ2.Centre.Y;
-            DSQ_SQ.X = SQ1.Centre.X - SQ_ADV.Centre.X;
-            DSQ_SQ.Y = SQ1.Centre.Y - SQ_ADV.Centre.Y;
-
-            Distance = (int)Math.Sqrt((DSQ_SQ.X * DSQ_SQ.X) + (DSQ_SQ.Y * DSQ_SQ.Y));
-
-            //Debug.WriteLine($"Dist:{Distance}, SQ_ADV.X:{SQ_ADV.Centre.X}, SQ_ADV.Y:{SQ_ADV.Centre.Y}");
-
-            if (Distance <= 51)
+            for (int i = 0; i < CircleArray.Count(); i++)
             {
-                //Debug.WriteLine("Collision!");
+                CircleArray[i].Centre += BC_Vel[i];
 
-                //CollisionNormal = (new Vector2(((Vector2)SQ1.Centre) - ((Vector2)SQ2.Centre))).Normalise();
-                CollisionNormal = (new Vector2(((Vector2)SQ1.Centre) - ((Vector2)SQ_ADV.Centre))).Normalise();
+                if (i < CircleArray.Count()-1)
+                {
+                    LineArray[i].A = CircleArray[i].Centre;
+                    LineArray[i].B = CircleArray[i+1].Centre;
+                }
 
-                DotP = Vector2.Dot(CollisionNormal, (Vector2)SQ1.Centre);
 
-                Reflect = ((CollisionNormal * (int)DotP) * 2) - SQ1V;
+                if
+                ((CircleArray[i].Centre.X + (CircleArray[i].Width / 2)) >= (Display.X + Display.Width) ||
+                 (CircleArray[i].Centre.X - (CircleArray[i].Width / 2)) <= Display.X)
+                {BC_Vel[i].X *= -1;}
 
-                SQ1V = Reflect;
-
-                //if ((SQ1.Centre.X - SQ2.Centre.X) < (SQ1.Centre.Y - SQ2.Centre.Y))
-                //{SQ1V.X *= -1;}
-                //else
-                //{SQ1V.Y *= -1;}
-            }
-
-            
+                if
+                ((CircleArray[i].Centre.Y + (CircleArray[i].Height / 2)) >= (Display.Y + Display.Height) ||
+                 (CircleArray[i].Centre.Y - (CircleArray[i].Height / 2)) <= Display.Y)
+                {BC_Vel[i].Y *= -1;}
+            }      
         }
     }
 }

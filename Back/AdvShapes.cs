@@ -6,8 +6,8 @@ namespace BasicGraphicsEngine
     /// </summary>
     public class DrawObject
     {
-        public Color PrimaryCol = new Color();
-        public Color SecondaryCol = new Color();
+        public Color PrimaryCol = Color.Red;
+        public Color SecondaryCol = Color.Green;
 
         /// <summary>
         /// Method <c>Draw</c> renders the object using the inputted Graphics object.

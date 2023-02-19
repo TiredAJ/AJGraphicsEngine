@@ -10,21 +10,35 @@ namespace BasicGraphicsEngine
         private List<DrawObject> ShapeList = new List<DrawObject>();
         public Rectangle Display = new Rectangle();
         public Vector2 Cursor = new Vector2(0, 0);
+        public Vector2 DisplayCentre = new Vector2();
 
         public Drawer()
         {}
         
         /// <summary>
-        /// Method <c>Init</c> Sets up the display area.
+        /// Sets up the display area.
         /// </summary>
         public void Init(Rectangle _Display)
-        { Display = _Display; }
+        { 
+            Display = _Display;
+            DisplayCentre.X = _Display.Width / 2;
+            DisplayCentre.Y = _Display.Height / 2;
+        }
 
         /// <summary>
-        /// Method <c>Add</c> adds an object to the draw list.
+        /// Adds an object to the draw list.
         /// </summary>
         public void Add(DrawObject _NewShape)
         { ShapeList.Add(_NewShape); }
+        
+        /// <summary>
+        /// Adds an array of objects to the draw list.
+        /// </summary>
+        public void Add(DrawObject[] _NewShapes)
+        {
+            foreach (DrawObject DO in _NewShapes)
+            {ShapeList.Add(DO);}
+        }
 
         /// <summary>
         /// Method <c>CallDraw</c> Goes through the draw list and draws.
@@ -36,6 +50,9 @@ namespace BasicGraphicsEngine
             foreach (DrawObject S in ShapeList)
             { S.Draw(G); }
         }
+
+        public int Map(int _Val, int _InMax, int InMin, int _OutMax, int _OutMin)
+        {return (_Val - InMin) * (_OutMax - _OutMin) / (_InMax - InMin) + _OutMin;}
 
         /// <summary>
         /// Method <c>InitDraw</c> Draws the draw list once.
@@ -59,10 +76,21 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Method <c>RandomValue</c> Returns a random value between two integers.
         /// </summary>
-        public static int RandomValue(int Min, int Max)
+        public static int RandomValue(int Min, int Max, bool IncludeZero)
         {
+            int Temp = 0;
+
             Random R = new Random(DateTime.Now.Microsecond);
-            return R.Next(Min, Max);
+
+            R.Next(Min, Max);
+
+            if (!IncludeZero)
+            {
+                while (Temp == 0)
+                {Temp = R.Next(Min, Max);}
+            }
+
+            return Temp;
         }
 
         /// <summary>

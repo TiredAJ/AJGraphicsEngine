@@ -145,6 +145,12 @@ namespace BasicGraphicsEngine
         /// </summary>
         public BasicCircle(float _Radius)
         {Width = Height = (int)_Radius * 2;}
+        
+        /// <summary>
+        /// Constructor that takes a <c>float</c> for radius.
+        /// </summary>
+        public void SetRadius(float _Radius)
+        {Width = Height = (int)_Radius * 2;}
 
         /// <summary>
         /// Potentially subject to removal. Calculates the bounds of the object.
