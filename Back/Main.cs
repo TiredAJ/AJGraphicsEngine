@@ -92,7 +92,21 @@ namespace BasicGraphicsEngine
                 FirstTime = false;
             }
             else
-            {DrawerHandler.CallDraw(e.Graphics);}
+            { DrawerHandler.CallDraw(e.Graphics); }
+        }
+
+        private void frm_Main_Resize(object sender, EventArgs e)
+        {
+            DrawerHandler.ResizeCanvas
+                (new Rectangle
+                    (
+                        pbx_DisplayCanvas.DisplayRectangle.Location,
+                    new Size
+                        (
+                            pbx_DisplayCanvas.DisplayRectangle.Width,
+                            pbx_DisplayCanvas.DisplayRectangle.Height
+                        )
+                ));
         }
     }
 }

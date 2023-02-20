@@ -25,6 +25,13 @@ namespace BasicGraphicsEngine
             DisplayCentre.Y = _Display.Height / 2;
         }
 
+        public void ResizeCanvas(Rectangle _Display)
+        {
+            Display = _Display;
+            DisplayCentre.X = _Display.Width / 2;
+            DisplayCentre.Y = _Display.Height / 2;
+        }
+
         /// <summary>
         /// Adds an object to the draw list.
         /// </summary>

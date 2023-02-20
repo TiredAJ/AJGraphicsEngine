@@ -36,6 +36,7 @@
             // 
             // pbx_DisplayCanvas
             // 
+            pbx_DisplayCanvas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbx_DisplayCanvas.BackColor = SystemColors.ButtonHighlight;
             pbx_DisplayCanvas.BorderStyle = BorderStyle.Fixed3D;
             pbx_DisplayCanvas.Location = new Point(14, 14);
@@ -85,6 +86,7 @@
             Text = "Form1";
             Load += frm_Main_Load;
             MouseMove += frm_Main_MouseMove;
+            Resize += frm_Main_Resize;
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).EndInit();
             ResumeLayout(false);
         }
