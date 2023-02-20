@@ -9,6 +9,7 @@ namespace BasicGraphicsEngine
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
         public Rectangle Display = new Rectangle();
+        public Color CanvasColour = Color.White;
         public Vector2 Cursor = new Vector2(0, 0);
         public Vector2 DisplayCentre = new Vector2();
 
@@ -107,7 +108,6 @@ namespace BasicGraphicsEngine
         /// </summary>
         public void SetCursorPos(Point _Loc)
         { Cursor = (Vector2)_Loc; }
-
     }
 
     //public struct ShapeColours

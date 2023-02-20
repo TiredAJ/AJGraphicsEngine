@@ -28,11 +28,18 @@ namespace BasicGraphicsEngine
             Task.Run(() =>
             {
                 pbx_DisplayCanvas.Invalidate();
+                pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
             });
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
         {
+            btn_Reset.Enabled = true;
+            btn_Stop.Enabled = true;
+            btn_Start.Enabled = false;
+
+            DrawerHandler.CleanUp();
+
             DrawerHandler.SetUp();
 
             Run = true;
@@ -43,7 +50,7 @@ namespace BasicGraphicsEngine
 
         private void Refresher()
         {
-            while (Run)
+            do
             {
                 Start = DateTime.Now.TimeOfDay;
 
@@ -52,6 +59,7 @@ namespace BasicGraphicsEngine
                     pbx_DisplayCanvas.Invoke(new Action(() =>
                     {
                         pbx_DisplayCanvas.Invalidate();
+                        pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
                     }));
                 });
 
@@ -59,15 +67,18 @@ namespace BasicGraphicsEngine
                 Delta = (End - Start) - LastTime;
                 LastTime = End - Start;
 
-                Thread.Sleep(1);
-            }
+                Thread.Sleep(20);
+
+            } while (Run);
         }
 
         private void btn_Stop_Click(object sender, EventArgs e)
         {
             Run = false;
 
-            DrawerHandler.CleanUp();
+            btn_Reset.Enabled = false;
+            btn_Stop.Enabled = false;
+            btn_Start.Enabled = true;
         }
 
         private void pbx_DisplayCanvas_MouseMove(object sender, MouseEventArgs e)
@@ -109,6 +120,28 @@ namespace BasicGraphicsEngine
                 ));
 
             Debug.WriteLine("Resized!");
+        }
+
+        private void frm_Main_FormClosing(object sender, FormClosingEventArgs e)
+        { DrawerHandler.CleanUp(); }
+
+        private void btn_Reset_Click(object sender, EventArgs e)
+        {
+            Run = false;
+
+            btn_Stop.Enabled = false;
+            btn_Start.Enabled = true;
+
+            DrawerHandler.CleanUp();
+
+            DrawerHandler.SetUp();
+
+            Task.Run(() =>
+            {
+                pbx_DisplayCanvas.Invalidate();
+                pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
+            });
+
         }
     }
 }
