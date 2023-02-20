@@ -15,15 +15,15 @@ namespace BasicGraphicsEngine
         private void frm_Main_Load(object sender, EventArgs e)
         {
             DrawerHandler.Init
-                (new Rectangle
+            (new Rectangle
+                (
+                    pbx_DisplayCanvas.DisplayRectangle.Location,
+                new Size
                     (
-                        pbx_DisplayCanvas.DisplayRectangle.Location,
-                    new Size
-                        (
-                            pbx_DisplayCanvas.DisplayRectangle.Width,
-                            pbx_DisplayCanvas.DisplayRectangle.Height
-                        )
-                ));
+                        pbx_DisplayCanvas.DisplayRectangle.Width,
+                        pbx_DisplayCanvas.DisplayRectangle.Height
+                    )
+            ));
 
             Task.Run(() =>
             {
@@ -107,6 +107,8 @@ namespace BasicGraphicsEngine
                             pbx_DisplayCanvas.DisplayRectangle.Height
                         )
                 ));
+
+            Debug.WriteLine("Resized!");
         }
     }
 }

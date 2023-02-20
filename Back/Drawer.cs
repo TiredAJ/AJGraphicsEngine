@@ -30,6 +30,8 @@ namespace BasicGraphicsEngine
             Display = _Display;
             DisplayCentre.X = _Display.Width / 2;
             DisplayCentre.Y = _Display.Height / 2;
+
+            Resize();
         }
 
         /// <summary>
