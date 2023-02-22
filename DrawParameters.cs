@@ -18,16 +18,14 @@
 
 
 
-        private void Resize()
-        {
-            
-        }
-
-
-
         private void Frame()
         {
             
         }
+
+
+
+        private void Resize()
+        {}
     }
 }
