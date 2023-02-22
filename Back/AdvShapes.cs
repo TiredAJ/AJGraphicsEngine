@@ -129,6 +129,15 @@ namespace BasicGraphicsEngine
         /// </summary>
         public override void Draw(Graphics G)
         {}
+
+        public virtual void Transform() 
+        {}
+
+        public virtual void Rotate(Vector2 _RotationPoint, float _Angle) 
+        { }
+        
+        public virtual void Rotate(float _Angle) 
+        { }
     }
 
     /// <summary>
@@ -199,6 +208,18 @@ namespace BasicGraphicsEngine
             );
         }
 
+        public Square(Vector2 _Centre, int _Width, int _Height) 
+        {
+            Centre = _Centre;
+            Width = _Width;
+            Height = _Height;
+
+            CornerA = new Vector2(Centre.X - (Width / 2), Centre.Y - (Height / 2));
+            CornerB = new Vector2(Centre.X + (Width / 2), Centre.Y - (Height / 2));
+            CornerC = new Vector2(Centre.X + (Width / 2), Centre.Y + (Height / 2));
+            CornerD = new Vector2(Centre.X - (Width / 2), Centre.Y + (Height / 2));
+        }
+
         /// <summary>
         /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
@@ -210,15 +231,16 @@ namespace BasicGraphicsEngine
                 CornerC.ToPoint(), CornerD.ToPoint()
             };
 
+
             G.FillPolygon
             (
-                new SolidBrush(SecondaryCol),
+                new SolidBrush(PrimaryCol),
                TempPointArr
             );
 
             G.DrawPolygon
             (
-                new Pen(PrimaryCol, BorderWidth),
+                new Pen(SecondaryCol, BorderWidth),
                TempPointArr
             );
         }
@@ -234,6 +256,57 @@ namespace BasicGraphicsEngine
             CornerB = new Vector2(_Centre.X + (Width / 2), _Centre.Y - (Height / 2));
             CornerC = new Vector2(_Centre.X + (Width / 2), _Centre.Y + (Height / 2));
             CornerD = new Vector2(_Centre.X - (Width / 2), _Centre.Y + (Height / 2));
+        }
+
+        public override void Transform() 
+        {
+            
+        }
+
+        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        {
+            CornerA = new Vector2
+            (
+                (int)(Math.Cos(_Radians) * (CornerA.X - _RotationPoint.X) -
+                Math.Sin(_Radians) * (CornerA.Y - _RotationPoint.Y) + _RotationPoint.X),
+                (int)(Math.Sin(_Radians) * (CornerA.X - _RotationPoint.X) +
+                Math.Cos(_Radians) * (CornerA.Y - _RotationPoint.Y) + _RotationPoint.Y)
+            );
+        }
+        
+        public override void Rotate(float _Radians)
+        {
+            CornerA = new Vector2
+            (
+                (int)(Math.Cos(_Radians) * (CornerA.X - Centre.X) -
+                Math.Sin(_Radians) * (CornerA.Y - Centre.Y) + Centre.X),
+                (int)(Math.Sin(_Radians) * (CornerA.X - Centre.X) +
+                Math.Cos(_Radians) * (CornerA.Y - Centre.Y) + Centre.Y)
+            );
+            
+            CornerB = new Vector2
+            (
+                (int)(Math.Cos(_Radians) * (CornerB.X - Centre.X) -
+                Math.Sin(_Radians) * (CornerB.Y - Centre.Y) + Centre.X),
+                (int)(Math.Sin(_Radians) * (CornerB.X - Centre.X) +
+                Math.Cos(_Radians) * (CornerB.Y - Centre.Y) + Centre.Y)
+            );
+            
+            CornerC = new Vector2
+            (
+                (int)(Math.Cos(_Radians) * (CornerC.X - Centre.X) -
+                Math.Sin(_Radians) * (CornerC.Y - Centre.Y) + Centre.X),
+                (int)(Math.Sin(_Radians) * (CornerC.X - Centre.X) +
+                Math.Cos(_Radians) * (CornerC.Y - Centre.Y) + Centre.Y)
+            );
+            
+            CornerD = new Vector2
+            (
+                (int)(Math.Cos(_Radians) * (CornerD.X - Centre.X) -
+                Math.Sin(_Radians) * (CornerD.Y - Centre.Y) + Centre.X),
+                (int)(Math.Sin(_Radians) * (CornerD.X - Centre.X) +
+                Math.Cos(_Radians) * (CornerD.Y - Centre.Y) + Centre.Y)
+            );
         }
     }
 }

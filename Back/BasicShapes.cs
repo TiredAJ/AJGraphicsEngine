@@ -78,8 +78,8 @@ namespace BasicGraphicsEngine
             G.FillRectangle
             (
                 new SolidBrush(SecondaryCol),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
@@ -87,8 +87,8 @@ namespace BasicGraphicsEngine
             G.DrawRectangle
             (
                 new Pen(PrimaryCol, BorderWidth),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
@@ -104,7 +104,7 @@ namespace BasicGraphicsEngine
         {
             return new Rectangle
             (
-                Centre.X - (Width/2), Centre.Y - (Height/2),
+                (int)Centre.X - (Width/2), (int)Centre.Y - (Height/2),
                 Width, Height
             );
         }
@@ -166,8 +166,8 @@ namespace BasicGraphicsEngine
             G.FillEllipse
             (
                 new SolidBrush(SecondaryCol),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
@@ -175,8 +175,8 @@ namespace BasicGraphicsEngine
             G.DrawEllipse
             (
                 new Pen(PrimaryCol, BorderWidth),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
@@ -229,8 +229,8 @@ namespace BasicGraphicsEngine
             G.FillEllipse
             (
                 new SolidBrush(SecondaryCol),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );
@@ -238,8 +238,8 @@ namespace BasicGraphicsEngine
             G.DrawEllipse
             (
                 new Pen(PrimaryCol, 2f),
-                Centre.X - ((float)Width) / 2,
-                Centre.Y - ((float)Height) / 2,
+                (float)Centre.X - ((float)Width) / 2,
+                (float)Centre.Y - ((float)Height) / 2,
                 (float)Width,
                 (float)Height
             );

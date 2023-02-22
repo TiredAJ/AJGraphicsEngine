@@ -12,6 +12,7 @@ namespace BasicGraphicsEngine
         public Color CanvasColour = Color.White;
         public Vector2 Cursor = new Vector2(0, 0);
         public Vector2 DisplayCentre = new Vector2();
+        //public bool ResetCanvasOnFrame = true; <- to implement
 
         public Drawer()
         {}
@@ -108,6 +109,9 @@ namespace BasicGraphicsEngine
         /// </summary>
         public void SetCursorPos(Point _Loc)
         { Cursor = (Vector2)_Loc; }
+
+        public float DegToRad(float _Deg) 
+        {return (float)(_Deg * (Math.PI / 180));}
     }
 
     //public struct ShapeColours
@@ -123,7 +127,7 @@ namespace BasicGraphicsEngine
     /// </summary>
     public struct Vector2
     {
-        public int X, Y;
+        public int? X, Y;
 
         public Vector2()
         {
@@ -134,7 +138,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Method <c>Vector2</c> Constructor that takes two integers for X and Y.
         /// </summary>
-        public Vector2(int _X, int _Y)
+        public Vector2(int? _X, int? _Y)
         {
             X = _X;
             Y = _Y;
@@ -162,7 +166,7 @@ namespace BasicGraphicsEngine
         /// Method <c>GetMagnitude</c> returns an integer representing the magnitude of the vector
         /// </summary>
         public int GetMagnitude()
-        { return (int)MathF.Sqrt((X * X) + (Y * Y)); }
+        { return (int)MathF.Sqrt(((float)X * (float)X) + ((float)Y * (float)Y)); }
 
         /// <summary>
         /// Method <c>Normalise</c> Normalises the vector.
@@ -186,11 +190,17 @@ namespace BasicGraphicsEngine
             throw new DivideByZeroException();
         }
 
+        public bool IsNull() 
+        {
+            if (X == null || Y == null) {return true;}
+            else {return true;}
+        }
+
         /// <summary>
         /// Method <c>Dot</c> returns the dot product of two vectors.
         /// </summary>
         public static float Dot(Vector2 _VA, Vector2 _VB)
-        {return (_VA.X * _VB.X) + (_VA.Y * _VB.Y);}
+        {return ((float)_VA.X * (float)_VB.X) + ((float)_VA.Y * (float)_VB.Y);}
 
         /// <summary>
         /// Method <c>ToString()</c> returns a string of the vector.
@@ -202,7 +212,7 @@ namespace BasicGraphicsEngine
         /// Method <c>ToPoint</c> returns a point representing the vector.
         /// </summary>
         public Point ToPoint()
-        {return new Point(X, Y);}
+        {return new Point((int)X, (int)Y);}
 
         /// <summary>
         /// Method <c>ToPointArray</c> returns an array of points from an array of vectors.
