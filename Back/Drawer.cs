@@ -212,7 +212,21 @@ namespace BasicGraphicsEngine
         /// Method <c>ToPoint</c> returns a point representing the vector.
         /// </summary>
         public Point ToPoint()
-        {return new Point((int)X, (int)Y);}
+        {
+            Point Temp = new Point();
+
+            if(X == null)
+            {Temp.X = 0;}
+            else
+            {Temp.X = (int)X;}
+
+            if(Y == null)
+            {Temp.Y = 0;}
+            else
+            {Temp.Y = (int)Y;}
+
+            return Temp;
+        }
 
         /// <summary>
         /// Method <c>ToPointArray</c> returns an array of points from an array of vectors.

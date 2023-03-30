@@ -67,7 +67,7 @@ namespace BasicGraphicsEngine
                 Delta = (End - Start) - LastTime;
                 LastTime = End - Start;
 
-                Thread.Sleep(80);
+                Thread.Sleep(1);
 
             } while (Run);
         }
