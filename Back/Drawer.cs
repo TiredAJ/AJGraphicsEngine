@@ -15,13 +15,13 @@ namespace BasicGraphicsEngine
         //public bool ResetCanvasOnFrame = true; <- to implement
 
         public Drawer()
-        {}
-        
+        { }
+
         /// <summary>
         /// Sets up the display area.
         /// </summary>
         public void Init(Rectangle _Display)
-        { 
+        {
             Display = _Display;
             DisplayCentre.X = _Display.Width / 2;
             DisplayCentre.Y = _Display.Height / 2;
@@ -40,15 +40,22 @@ namespace BasicGraphicsEngine
         /// Adds an object to the draw list.
         /// </summary>
         public void Add(DrawObject _NewShape)
-        { ShapeList.Add(_NewShape); }
-        
+        {
+            ShapeList.Add(_NewShape);
+
+            Task.Run(new Action(() =>
+            {
+                Debug.WriteLine(ShapeList.Count());
+            }));
+        }
+
         /// <summary>
         /// Adds an array of objects to the draw list.
         /// </summary>
         public void Add(DrawObject[] _NewShapes)
         {
-            foreach (DrawObject DO in _NewShapes)
-            {ShapeList.Add(DO);}
+            foreach(DrawObject DO in _NewShapes)
+            { ShapeList.Add(DO); }
         }
 
         /// <summary>
@@ -58,12 +65,12 @@ namespace BasicGraphicsEngine
         {
             Frame();
 
-            foreach (DrawObject S in ShapeList)
+            foreach(DrawObject S in ShapeList)
             { S.Draw(G); }
         }
 
         public int Map(int _Val, int _InMax, int InMin, int _OutMax, int _OutMin)
-        {return (_Val - InMin) * (_OutMax - _OutMin) / (_InMax - InMin) + _OutMin;}
+        { return (_Val - InMin) * (_OutMax - _OutMin) / (_InMax - InMin) + _OutMin; }
 
         /// <summary>
         /// Method <c>InitDraw</c> Draws the draw list once.
@@ -72,7 +79,7 @@ namespace BasicGraphicsEngine
         {
             SetUp();
 
-            foreach (DrawObject S in ShapeList)
+            foreach(DrawObject S in ShapeList)
             { S.Draw(G); }
 
             ShapeList.Clear();
@@ -95,10 +102,10 @@ namespace BasicGraphicsEngine
 
             R.Next(Min, Max);
 
-            if (!IncludeZero)
+            if(!IncludeZero)
             {
-                while (Temp == 0)
-                {Temp = R.Next(Min, Max);}
+                while(Temp == 0)
+                { Temp = R.Next(Min, Max); }
             }
 
             return Temp;
@@ -110,8 +117,8 @@ namespace BasicGraphicsEngine
         public void SetCursorPos(Point _Loc)
         { Cursor = (Vector2)_Loc; }
 
-        public float DegToRad(float _Deg) 
-        {return (float)(_Deg * (Math.PI / 180));}
+        public float DegToRad(float _Deg)
+        { return (float)(_Deg * (Math.PI / 180)); }
     }
 
     //public struct ShapeColours
@@ -127,7 +134,7 @@ namespace BasicGraphicsEngine
     /// </summary>
     public struct Vector2
     {
-        public int? X, Y;
+        public float? X, Y;
 
         public Vector2()
         {
@@ -138,7 +145,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Method <c>Vector2</c> Constructor that takes two integers for X and Y.
         /// </summary>
-        public Vector2(int? _X, int? _Y)
+        public Vector2(float? _X, float? _Y)
         {
             X = _X;
             Y = _Y;
@@ -163,19 +170,42 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>GetMagnitude</c> returns an integer representing the magnitude of the vector
+        /// Method <c>GetMagnitude</c> returns a float representing the magnitude of the vector
         /// </summary>
-        public int GetMagnitude()
-        { return (int)MathF.Sqrt(((float)X * (float)X) + ((float)Y * (float)Y)); }
+        public float GetMagnitude()
+        { return MathF.Sqrt(((float)X * (float)X) + ((float)Y * (float)Y)); }
+
+        /// <summary>
+        /// Method <c>GetMagnitudeSQ</c> returns a float representing the squared magnitude of the vector
+        /// </summary>
+        /// <returns></returns>
+        public float GetMagnitudeSQ()
+        { return (((float)X * (float)X) + ((float)Y * (float)Y)); }
 
         /// <summary>
         /// Method <c>Normalise</c> Normalises the vector.
         /// </summary>
-        public Vector2 Normalise()
+        public void NormaliseVoid()
         {
-            int Temp = GetMagnitude();
+            float Temp = GetMagnitude();
 
-            if (Temp != 0)
+            if(Temp != 0)
+            {
+                X = X / Temp;
+                Y = Y / Temp;
+            }
+            else
+            { throw new DivideByZeroException(); }
+        }
+
+        /// <summary>
+        /// Method <c>Normalise</c> Normalises the vector.
+        /// </summary>
+        public Vector2 NormaliseS()
+        {
+            float Temp = GetMagnitude();
+
+            if(Temp != 0)
             { return new Vector2((X / Temp), (Y / Temp)); }
             throw new DivideByZeroException();
         }
@@ -185,22 +215,42 @@ namespace BasicGraphicsEngine
         /// </summary>
         public Vector2 Normalise(int _Scalar)
         {
-            if (_Scalar > 0)
-            {return new Vector2((X / _Scalar), (Y / _Scalar));}
+            if(_Scalar > 0)
+            { return new Vector2((X / _Scalar), (Y / _Scalar)); }
             throw new DivideByZeroException();
         }
 
-        public bool IsNull() 
+        /// <summary>
+        /// Method <c>Normalise</c> Normalises based off a scalar value.
+        /// </summary>
+        public Vector2 Normalise(float _Scalar)
         {
-            if (X == null || Y == null) {return true;}
-            else {return true;}
+            if(_Scalar > 0)
+            { return new Vector2((X / _Scalar), (Y / _Scalar)); }
+            throw new DivideByZeroException();
+        }
+
+        public bool IsNull()
+        {
+            if(X == null || Y == null) { return true; }
+            else { return true; }
         }
 
         /// <summary>
         /// Method <c>Dot</c> returns the dot product of two vectors.
         /// </summary>
         public static float Dot(Vector2 _VA, Vector2 _VB)
-        {return ((float)_VA.X * (float)_VB.X) + ((float)_VA.Y * (float)_VB.Y);}
+        { return ((float)_VA.X * (float)_VB.X) + ((float)_VA.Y * (float)_VB.Y); }
+
+        public void Limit(float Max)
+        {
+            if(GetMagnitudeSQ() > (Max * Max))
+            {
+                this = Vector2.Div(this, GetMagnitude());
+
+                this = Vector2.Multi(this, Max);
+            }
+        }
 
         /// <summary>
         /// Method <c>ToString()</c> returns a string of the vector.
@@ -216,14 +266,14 @@ namespace BasicGraphicsEngine
             Point Temp = new Point();
 
             if(X == null)
-            {Temp.X = 0;}
+            { Temp.X = 0; }
             else
-            {Temp.X = (int)X;}
+            { Temp.X = (int)X; }
 
             if(Y == null)
-            {Temp.Y = 0;}
+            { Temp.Y = 0; }
             else
-            {Temp.Y = (int)Y;}
+            { Temp.Y = (int)Y; }
 
             return Temp;
         }
@@ -234,8 +284,8 @@ namespace BasicGraphicsEngine
         public static Point[] ToPointArray(Vector2[] _V2Arr)
         {
             List<Point> Temp = new List<Point>();
-            for (int i = 0; i < _V2Arr.Length; i++)
-            {Temp.Add(_V2Arr[i].ToPoint());}
+            for(int i = 0; i < _V2Arr.Length; i++)
+            { Temp.Add(_V2Arr[i].ToPoint()); }
 
             return Temp.ToArray();
         }
@@ -247,8 +297,8 @@ namespace BasicGraphicsEngine
         {
             List<Point> Temp = new List<Point>();
 
-            foreach (Vector2 V2 in _V2List)
-            {Temp.Add(V2.ToPoint());}
+            foreach(Vector2 V2 in _V2List)
+            { Temp.Add(V2.ToPoint()); }
 
             return Temp.ToArray();
         }
@@ -263,6 +313,16 @@ namespace BasicGraphicsEngine
         public static Vector2 operator +(Vector2 Va, int Scalar)
         => new Vector2(Va.X + Scalar, Va.Y);
 
+        public static Vector2 Add(Vector2 Va, Vector2 Vb)
+        => new Vector2
+        (
+            Va.X + Vb.X,
+            Va.Y + Vb.Y
+        );
+
+        public static Vector2 Add(Vector2 Va, int Scalar)
+        => new Vector2(Va.X + Scalar, Va.Y);
+
         public static Vector2 operator -(Vector2 Va, Vector2 Vb)
         => new Vector2
         (
@@ -273,13 +333,40 @@ namespace BasicGraphicsEngine
         public static Vector2 operator -(Vector2 Va, int Scalar)
         => new Vector2(Va.X - Scalar, Va.Y - Scalar);
 
+        public static Vector2 Sub(Vector2 Va, Vector2 Vb)
+        => new Vector2
+        (
+            Va.X - Vb.X,
+            Va.Y - Vb.Y
+        );
+
+        public static Vector2 Sub(Vector2 Va, int Scalar)
+        => new Vector2(Va.X - Scalar, Va.Y - Scalar);
+
         public static Vector2 operator *(Vector2 Va, int Scalar)
+        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
+
+        public static Vector2 operator *(Vector2 Va, float Scalar)
+        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
+
+        public static Vector2 Multi(Vector2 Va, int Scalar)
+        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
+
+        public static Vector2 Multi(Vector2 Va, float Scalar)
         => new Vector2(Va.X * Scalar, Va.Y * Scalar);
 
         public static Vector2 operator /(Vector2 Va, int Scalar)
         => new Vector2(Va.X / Scalar, Va.Y / Scalar);
-        
-        public static explicit operator Vector2(Point _P) => new Vector2(_P);
 
+        public static Vector2 operator /(Vector2 Va, float Scalar)
+        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
+
+        public static Vector2 Div(Vector2 Va, int Scalar)
+        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
+
+        public static Vector2 Div(Vector2 Va, float Scalar)
+        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
+
+        public static explicit operator Vector2(Point _P) => new Vector2(_P);
     }
 }

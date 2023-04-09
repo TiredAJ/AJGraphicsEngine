@@ -1,4 +1,4 @@
-﻿namespace BasicGraphicsEngine
+namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {

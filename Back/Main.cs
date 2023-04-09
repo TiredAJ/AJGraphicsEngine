@@ -69,7 +69,7 @@ namespace BasicGraphicsEngine
 
                 Thread.Sleep(1);
 
-            } while (Run);
+            } while(Run);
         }
 
         private void btn_Stop_Click(object sender, EventArgs e)
@@ -97,7 +97,7 @@ namespace BasicGraphicsEngine
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            if (FirstTime)
+            if(FirstTime)
             {
                 DrawerHandler.InitDraw(e.Graphics);
                 FirstTime = false;
