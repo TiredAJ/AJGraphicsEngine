@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -30,6 +31,8 @@ namespace BasicGraphicsEngine
                 pbx_DisplayCanvas.Invalidate();
                 pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
             });
+
+            DrawerHandler.ControlsAreaSize = new Vector2(flp_FlowPanel.Width, flp_FlowPanel.Height);
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -101,6 +104,7 @@ namespace BasicGraphicsEngine
             {
                 DrawerHandler.InitDraw(e.Graphics);
                 FirstTime = false;
+                LoadControls();
             }
             else
             { DrawerHandler.CallDraw(e.Graphics); }
@@ -142,6 +146,12 @@ namespace BasicGraphicsEngine
                 pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
             });
 
+        }
+
+        private void LoadControls()
+        {
+            foreach(Control CTRL in DrawerHandler.Controls)
+            { flp_FlowPanel.Controls.Add(CTRL); }
         }
     }
 }

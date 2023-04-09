@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -8,10 +9,12 @@ namespace BasicGraphicsEngine
     public partial class Drawer
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
+        public List<Control> Controls = new List<Control>();
         public Rectangle Display = new Rectangle();
         public Color CanvasColour = Color.White;
         public Vector2 Cursor = new Vector2(0, 0);
         public Vector2 DisplayCentre = new Vector2();
+        public Vector2 ControlsAreaSize = new Vector2();
         //public bool ResetCanvasOnFrame = true; <- to implement
 
         public Drawer()
@@ -58,6 +61,9 @@ namespace BasicGraphicsEngine
             { ShapeList.Add(DO); }
         }
 
+        public void AddControl(Control _Control)
+        { Controls.Add(_Control); }
+
         /// <summary>
         /// Method <c>CallDraw</c> Goes through the draw list and draws.
         /// </summary>
@@ -89,7 +95,10 @@ namespace BasicGraphicsEngine
         /// Method <c>CleanUp</c> Cleans up ¯\_(ツ)_/¯.
         /// </summary>
         public void CleanUp()
-        { ShapeList.Clear(); }
+        {
+            ShapeList.Clear();
+            Controls.Clear();
+        }
 
         /// <summary>
         /// Method <c>RandomValue</c> Returns a random value between two integers.
@@ -115,168 +124,55 @@ namespace BasicGraphicsEngine
         /// Method <c>SetCursorPos</c> Sets the position of the cursor.
         /// </summary>
         public void SetCursorPos(Point _Loc)
-        { Cursor = (Vector2)_Loc; }
+        { Cursor = V2Ext.ToVector(_Loc); }
 
         public float DegToRad(float _Deg)
         { return (float)(_Deg * (Math.PI / 180)); }
+
     }
 
-    //public struct ShapeColours
-    //{
-    //    Color Primary;
-    //    Color Secondary;
-    //    Color Tertiary;
-    //    Color Border;
-    //}
-
-    /// <summary>
-    /// Class <c>Vector2</c> A class representing a 2D Vector datatype.
-    /// </summary>
-    public struct Vector2
+    struct V2Ext
     {
-        public float? X, Y;
-
-        public Vector2()
-        {
-            X = 0;
-            Y = 0;
-        }
-
         /// <summary>
-        /// Method <c>Vector2</c> Constructor that takes two integers for X and Y.
+        /// Method <c>ToVector</c> converts a Point to Vector2
         /// </summary>
-        public Vector2(float? _X, float? _Y)
-        {
-            X = _X;
-            Y = _Y;
-        }
-
-        /// <summary>
-        /// Method <c>Vector2</c> Constructor that takes a pre-existing Vector2 object.
-        /// </summary>
-        public Vector2(Vector2 _V)
-        {
-            X = _V.X;
-            Y = _V.Y;
-        }
-
-        /// <summary>
-        /// Method <c>Vector2</c> Constructor that takes a point object.
-        /// </summary>
-        public Vector2(Point _P)
-        {
-            X = _P.X;
-            Y = _P.Y;
-        }
+        public static Vector2 ToVector(Point _P)
+        => new Vector2(_P.X, _P.Y);
 
         /// <summary>
         /// Method <c>GetMagnitude</c> returns a float representing the magnitude of the vector
         /// </summary>
-        public float GetMagnitude()
-        { return MathF.Sqrt(((float)X * (float)X) + ((float)Y * (float)Y)); }
+        public static float GetMagnitude(Vector2 V2)
+        { return MathF.Sqrt(((float)V2.X * (float)V2.X) + ((float)V2.Y * (float)V2.Y)); }
 
         /// <summary>
         /// Method <c>GetMagnitudeSQ</c> returns a float representing the squared magnitude of the vector
         /// </summary>
         /// <returns></returns>
-        public float GetMagnitudeSQ()
-        { return (((float)X * (float)X) + ((float)Y * (float)Y)); }
-
-        /// <summary>
-        /// Method <c>Normalise</c> Normalises the vector.
-        /// </summary>
-        public void NormaliseVoid()
-        {
-            float Temp = GetMagnitude();
-
-            if(Temp != 0)
-            {
-                X = X / Temp;
-                Y = Y / Temp;
-            }
-            else
-            { throw new DivideByZeroException(); }
-        }
-
-        /// <summary>
-        /// Method <c>Normalise</c> Normalises the vector.
-        /// </summary>
-        public Vector2 NormaliseS()
-        {
-            float Temp = GetMagnitude();
-
-            if(Temp != 0)
-            { return new Vector2((X / Temp), (Y / Temp)); }
-            throw new DivideByZeroException();
-        }
+        public static float GetMagnitudeSQ(Vector2 V2)
+        { return (((float)V2.X * (float)V2.X) + ((float)V2.Y * (float)V2.Y)); }
 
         /// <summary>
         /// Method <c>Normalise</c> Normalises based off a scalar value.
         /// </summary>
-        public Vector2 Normalise(int _Scalar)
+        public static Vector2 Normalise(Vector2 V2, float _Scalar)
         {
             if(_Scalar > 0)
-            { return new Vector2((X / _Scalar), (Y / _Scalar)); }
+            { return new Vector2((V2.X / _Scalar), (V2.Y / _Scalar)); }
             throw new DivideByZeroException();
         }
-
-        /// <summary>
-        /// Method <c>Normalise</c> Normalises based off a scalar value.
-        /// </summary>
-        public Vector2 Normalise(float _Scalar)
-        {
-            if(_Scalar > 0)
-            { return new Vector2((X / _Scalar), (Y / _Scalar)); }
-            throw new DivideByZeroException();
-        }
-
-        public bool IsNull()
-        {
-            if(X == null || Y == null) { return true; }
-            else { return true; }
-        }
-
-        /// <summary>
-        /// Method <c>Dot</c> returns the dot product of two vectors.
-        /// </summary>
-        public static float Dot(Vector2 _VA, Vector2 _VB)
-        { return ((float)_VA.X * (float)_VB.X) + ((float)_VA.Y * (float)_VB.Y); }
-
-        public void Limit(float Max)
-        {
-            if(GetMagnitudeSQ() > (Max * Max))
-            {
-                this = Vector2.Div(this, GetMagnitude());
-
-                this = Vector2.Multi(this, Max);
-            }
-        }
-
-        /// <summary>
-        /// Method <c>ToString()</c> returns a string of the vector.
-        /// </summary>
-        public override string ToString()
-        { return $"X:{X}, Y:{Y}"; }
 
         /// <summary>
         /// Method <c>ToPoint</c> returns a point representing the vector.
         /// </summary>
-        public Point ToPoint()
-        {
-            Point Temp = new Point();
+        public static Point ToPoint(Vector2 V2)
+        => new Point((int)V2.X, (int)V2.Y);
 
-            if(X == null)
-            { Temp.X = 0; }
-            else
-            { Temp.X = (int)X; }
-
-            if(Y == null)
-            { Temp.Y = 0; }
-            else
-            { Temp.Y = (int)Y; }
-
-            return Temp;
-        }
+        /// <summary>
+        /// Method <c>ToV2</c> returns a Vector2 representing the Point.
+        /// </summary>
+        public static Vector2 ToV2(Point V2)
+        => new Vector2(V2.X, V2.Y);
 
         /// <summary>
         /// Method <c>ToPointArray</c> returns an array of points from an array of vectors.
@@ -284,8 +180,9 @@ namespace BasicGraphicsEngine
         public static Point[] ToPointArray(Vector2[] _V2Arr)
         {
             List<Point> Temp = new List<Point>();
-            for(int i = 0; i < _V2Arr.Length; i++)
-            { Temp.Add(_V2Arr[i].ToPoint()); }
+
+            foreach(Vector2 V2 in _V2Arr)
+            { Temp.Add(ToPoint(V2)); }
 
             return Temp.ToArray();
         }
@@ -298,75 +195,20 @@ namespace BasicGraphicsEngine
             List<Point> Temp = new List<Point>();
 
             foreach(Vector2 V2 in _V2List)
-            { Temp.Add(V2.ToPoint()); }
+            { Temp.Add(ToPoint(V2)); }
 
             return Temp.ToArray();
         }
 
-        public static Vector2 operator +(Vector2 Va, Vector2 Vb)
-        => new Vector2
-        (
-            Va.X + Vb.X,
-            Va.Y + Vb.Y
-        );
+        public static Vector2 Limit(Vector2 V2, float Max)
+        {
+            if(GetMagnitudeSQ(V2) > (Max * Max))
+            {
+                V2 = Vector2.Divide(V2, GetMagnitude(V2));
 
-        public static Vector2 operator +(Vector2 Va, int Scalar)
-        => new Vector2(Va.X + Scalar, Va.Y);
-
-        public static Vector2 Add(Vector2 Va, Vector2 Vb)
-        => new Vector2
-        (
-            Va.X + Vb.X,
-            Va.Y + Vb.Y
-        );
-
-        public static Vector2 Add(Vector2 Va, int Scalar)
-        => new Vector2(Va.X + Scalar, Va.Y);
-
-        public static Vector2 operator -(Vector2 Va, Vector2 Vb)
-        => new Vector2
-        (
-            Va.X - Vb.X,
-            Va.Y - Vb.Y
-        );
-
-        public static Vector2 operator -(Vector2 Va, int Scalar)
-        => new Vector2(Va.X - Scalar, Va.Y - Scalar);
-
-        public static Vector2 Sub(Vector2 Va, Vector2 Vb)
-        => new Vector2
-        (
-            Va.X - Vb.X,
-            Va.Y - Vb.Y
-        );
-
-        public static Vector2 Sub(Vector2 Va, int Scalar)
-        => new Vector2(Va.X - Scalar, Va.Y - Scalar);
-
-        public static Vector2 operator *(Vector2 Va, int Scalar)
-        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
-
-        public static Vector2 operator *(Vector2 Va, float Scalar)
-        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
-
-        public static Vector2 Multi(Vector2 Va, int Scalar)
-        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
-
-        public static Vector2 Multi(Vector2 Va, float Scalar)
-        => new Vector2(Va.X * Scalar, Va.Y * Scalar);
-
-        public static Vector2 operator /(Vector2 Va, int Scalar)
-        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
-
-        public static Vector2 operator /(Vector2 Va, float Scalar)
-        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
-
-        public static Vector2 Div(Vector2 Va, int Scalar)
-        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
-
-        public static Vector2 Div(Vector2 Va, float Scalar)
-        => new Vector2(Va.X / Scalar, Va.Y / Scalar);
-
-        public static explicit operator Vector2(Point _P) => new Vector2(_P);
+                V2 = Vector2.Multiply(V2, Max);
+            }
+            return V2;
+        }
     }
 }

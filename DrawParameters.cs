@@ -1,4 +1,6 @@
-﻿namespace BasicGraphicsEngine
+﻿using System.Numerics;
+
+namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
@@ -11,6 +13,8 @@
         Vector2 Accl = new Vector2(),
                 Velocity = new Vector2(),
                 Direction = new Vector2();
+
+        NumericUpDown NUD_Limit = new NumericUpDown();
 
         //                      //
 
@@ -25,8 +29,17 @@
 
             Connector.PrimaryCol = Color.Aqua;
 
+            NUD_Limit.Maximum = 45;
+            NUD_Limit.Minimum = 0;
+
+            NUD_Limit.Name = "nud_Limit";
+
+            NUD_Limit.Width = (int)ControlsAreaSize.X - 10;
+
             Add(Connector);
             Add(Mover);
+
+            AddControl(NUD_Limit);
         }
 
 
@@ -38,9 +51,9 @@
 
         private void Frame()
         {
-            Direction = Vector2.Sub(Cursor, Mover.Centre);
+            Direction = Vector2.Subtract(Cursor, Mover.Centre);
 
-            Direction.NormaliseVoid();
+            Direction = Vector2.Normalize(Direction);
 
             Direction *= 0.5f;
 
@@ -48,7 +61,7 @@
 
             Velocity += Accl;
 
-            Velocity.Limit(10f);
+            Velocity = V2Ext.Limit(Velocity, (float)NUD_Limit.Value);
 
             Mover.SetCentre(Mover.Centre + Velocity);
 

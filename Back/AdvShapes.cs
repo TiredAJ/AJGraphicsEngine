@@ -1,5 +1,4 @@
-﻿
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+﻿using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -29,7 +28,7 @@ namespace BasicGraphicsEngine
         public LineBase() { }
 
         public override void Draw(Graphics G)
-        {}
+        { }
     }
 
     /// <summary>
@@ -69,7 +68,7 @@ namespace BasicGraphicsEngine
             G.DrawLine
             (
                 new Pen(PrimaryCol, LineWidth),
-                A.ToPoint(), B.ToPoint()
+                V2Ext.ToPoint(A), V2Ext.ToPoint(B)
             );
         }
     }
@@ -107,7 +106,7 @@ namespace BasicGraphicsEngine
             G.DrawLines
             (
                 new Pen(PrimaryCol, LineWidth),
-                Vector2.ToPointArray(Points)
+                V2Ext.ToPointArray(Points)
             );
         }
     }
@@ -125,21 +124,21 @@ namespace BasicGraphicsEngine
         /// Potentially subject to removal. Calculates the bounds of the object
         /// </summary>
         public virtual void CalculateBounds()
-        {}
+        { }
 
         /// <summary>
         /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
-        {}
-
-        public virtual void Transform() 
-        {}
-
-        public virtual void Rotate(Vector2 _RotationPoint, float _Angle) 
         { }
-        
-        public virtual void Rotate(float _Angle) 
+
+        public virtual void Transform()
+        { }
+
+        public virtual void Rotate(Vector2 _RotationPoint, float _Angle)
+        { }
+
+        public virtual void Rotate(float _Angle)
         { }
     }
 
@@ -156,21 +155,21 @@ namespace BasicGraphicsEngine
         public Vector2 CornerC { get; private set; }
         public Vector2 CornerD { get; private set; }
 
-        public Square() 
-        {Centre = new Vector2();}
+        public Square()
+        { Centre = new Vector2(); }
 
         /// <summary>
         /// Square constructor, takes in an array of <c>Vector2</c>s.
         /// </summary>
         public Square(Vector2[] _Corners)
         {
-            if (_Corners.Length < 4 || _Corners.Length > 4)
-            {throw new ArgumentException("Array must contain 4 values!");}
+            if(_Corners.Length < 4 || _Corners.Length > 4)
+            { throw new ArgumentException("Array must contain 4 values!"); }
 
             Centre = new Vector2
             (
-                CornerA.X + (Width/2),
-                CornerA.Y + (Height/2)
+                CornerA.X + (Width / 2),
+                CornerA.Y + (Height / 2)
             );
 
             CornerA = _Corners[0];
@@ -211,7 +210,7 @@ namespace BasicGraphicsEngine
             );
         }
 
-        public Square(Vector2 _Centre, int _Width, int _Height) 
+        public Square(Vector2 _Centre, int _Width, int _Height)
         {
             Centre = _Centre;
             Width = _Width;
@@ -226,12 +225,12 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
-        public override void Draw(Graphics G) 
+        public override void Draw(Graphics G)
         {
             Point[] TempPointArr = new Point[]
             {
-                CornerA.ToPoint(), CornerB.ToPoint(),
-                CornerC.ToPoint(), CornerD.ToPoint()
+                V2Ext.ToPoint(CornerA), V2Ext.ToPoint(CornerB),
+                V2Ext.ToPoint(CornerC), V2Ext.ToPoint(CornerD)
             };
 
 
@@ -261,9 +260,9 @@ namespace BasicGraphicsEngine
             CornerD = new Vector2(_Centre.X - (Width / 2), _Centre.Y + (Height / 2));
         }
 
-        public override void Transform() 
+        public override void Transform()
         {
-            
+
         }
 
         public override void Rotate(Vector2 _RotationPoint, float _Radians)
@@ -274,7 +273,7 @@ namespace BasicGraphicsEngine
             CornerA = new Vector2
             (
                 (int)((CornerA.X - _RotationPoint.X) * Cos - (CornerA.Y - _RotationPoint.Y) * Sin + _RotationPoint.X),
-                (int)((CornerA.X - _RotationPoint.X)* Sin + (CornerA.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
+                (int)((CornerA.X - _RotationPoint.X) * Sin + (CornerA.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
             );
 
             CornerB = new Vector2
@@ -295,7 +294,7 @@ namespace BasicGraphicsEngine
                 (int)((CornerD.X - _RotationPoint.X) * Sin + (CornerD.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
             );
         }
-        
+
         public override void Rotate(float _Radians)
         {
             double Cos = Math.Cos(_Radians);

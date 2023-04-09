@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -22,7 +19,7 @@ namespace BasicGraphicsEngine
         /// Renders the basic square object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
-        {}
+        { }
 
         /// <summary>
         /// Potentially subject to removal. Calculates the bounds of the object.
@@ -68,7 +65,7 @@ namespace BasicGraphicsEngine
         /// Potentially subject to removal. Calculates the bounds of the object.
         /// </summary>
         public override void CalculateBounds()
-        {}
+        { }
 
         /// <summary>
         /// Renders the <c>BasicSquare</c> object using the inputted <c>Graphics</c> object.
@@ -104,7 +101,7 @@ namespace BasicGraphicsEngine
         {
             return new Rectangle
             (
-                (int)Centre.X - (Width/2), (int)Centre.Y - (Height/2),
+                (int)Centre.X - (Width / 2), (int)Centre.Y - (Height / 2),
                 Width, Height
             );
         }
@@ -144,19 +141,19 @@ namespace BasicGraphicsEngine
         /// Constructor that takes a <c>float</c> for radius.
         /// </summary>
         public BasicCircle(float _Radius)
-        {Width = Height = (int)_Radius * 2;}
-        
+        { Width = Height = (int)_Radius * 2; }
+
         /// <summary>
         /// Constructor that takes a <c>float</c> for radius.
         /// </summary>
         public void SetRadius(float _Radius)
-        {Width = Height = (int)_Radius * 2;}
+        { Width = Height = (int)_Radius * 2; }
 
         /// <summary>
         /// Potentially subject to removal. Calculates the bounds of the object.
         /// </summary>
         public override void CalculateBounds()
-        {}
+        { }
 
         /// <summary>
         /// Renders the object using the inputted <c>Graphics</c> object.
@@ -184,7 +181,7 @@ namespace BasicGraphicsEngine
             CalculateBounds();
         }
     }
-    
+
     /// <summary>
     /// Base class for debug shapes. Do not use directly
     /// </summary>
@@ -207,8 +204,8 @@ namespace BasicGraphicsEngine
     /// </summary>
     public class DebugCircle : DebugShape
     {
-        public DebugCircle() 
-        {}
+        public DebugCircle()
+        { }
 
         /// <summary>
         /// Constructor that takes in a <c>Vector2</c> for a centre point and a <c>float</c> for radius.
