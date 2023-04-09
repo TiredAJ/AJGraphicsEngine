@@ -70,6 +70,14 @@ namespace BasicGraphicsEngine
                 Delta = (End - Start) - LastTime;
                 LastTime = End - Start;
 
+                Task.Run(() =>
+                {
+                    lblFrameTime.Invoke(new Action(() =>
+                    {
+                        lblFrameTime.Text = $"{LastTime.TotalMilliseconds}ms";
+                    }));
+                });
+
                 Thread.Sleep(1);
 
             } while(Run);

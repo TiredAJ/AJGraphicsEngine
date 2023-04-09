@@ -15,6 +15,8 @@ namespace BasicGraphicsEngine
                 Direction = new Vector2();
 
         NumericUpDown NUD_Limit = new NumericUpDown();
+        NumericUpDown NUD_SizeWidth = new NumericUpDown();
+        NumericUpDown NUD_SizeHeight = new NumericUpDown();
 
         //                      //
 
@@ -29,17 +31,30 @@ namespace BasicGraphicsEngine
 
             Connector.PrimaryCol = Color.Aqua;
 
-            NUD_Limit.Maximum = 45;
-            NUD_Limit.Minimum = 0;
-
+            NUD_Limit.Maximum = 500;
+            NUD_Limit.Minimum = 1m;
+            NUD_Limit.Value = 25m;
             NUD_Limit.Name = "nud_Limit";
-
             NUD_Limit.Width = (int)ControlsAreaSize.X - 10;
+
+            NUD_SizeWidth.Maximum = 200;
+            NUD_SizeWidth.Minimum = 5;
+            NUD_SizeWidth.Value = 40;
+            NUD_SizeWidth.Name = "nud_SizeWidth";
+            NUD_SizeWidth.Width = (int)ControlsAreaSize.X - 10;
+
+            NUD_SizeHeight.Maximum = 200;
+            NUD_SizeHeight.Minimum = 5;
+            NUD_SizeHeight.Value = 40;
+            NUD_SizeHeight.Name = "nud_SizeHeight";
+            NUD_SizeHeight.Width = (int)ControlsAreaSize.X - 10;
 
             Add(Connector);
             Add(Mover);
 
             AddControl(NUD_Limit);
+            AddControl(NUD_SizeWidth);
+            AddControl(NUD_SizeHeight);
         }
 
 
@@ -51,32 +66,11 @@ namespace BasicGraphicsEngine
 
         private void Frame()
         {
-            Direction = Vector2.Subtract(Cursor, Mover.Centre);
+            Mover.Rotate((float)NUD_Limit.Value / 1000);
 
-            Direction = Vector2.Normalize(Direction);
+            Mover.MoveTransform(Cursor);
 
-            Direction *= 0.5f;
-
-            Accl = Direction;
-
-            Velocity += Accl;
-
-            Velocity = V2Ext.Limit(Velocity, (float)NUD_Limit.Value);
-
-            Mover.SetCentre(Mover.Centre + Velocity);
-
-            if
-            ((Mover.Centre.X + (Mover.Width / 2)) >= (Display.X + Display.Width) ||
-             (Mover.Centre.X - (Mover.Width / 2)) <= Display.X)
-            { Velocity.X *= -1; }
-
-            if
-            ((Mover.Centre.Y + (Mover.Height / 2)) >= (Display.Y + Display.Height) ||
-             (Mover.Centre.Y - (Mover.Height / 2)) <= Display.Y)
-            { Velocity.Y *= -1; }
-
-            Connector.A = Mover.Centre;
-            Connector.B = Cursor;
+            Mover.SizeTransform(new Vector2((float)NUD_SizeWidth.Value, (float)NUD_SizeHeight.Value));
         }
     }
 }

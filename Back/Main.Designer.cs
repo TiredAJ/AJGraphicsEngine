@@ -33,6 +33,7 @@
             btn_Stop = new Button();
             btn_Reset = new Button();
             flp_FlowPanel = new FlowLayoutPanel();
+            lblFrameTime = new Label();
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).BeginInit();
             SuspendLayout();
             // 
@@ -100,12 +101,22 @@
             flp_FlowPanel.TabIndex = 4;
             flp_FlowPanel.WrapContents = false;
             // 
+            // lblFrameTime
+            // 
+            lblFrameTime.AutoSize = true;
+            lblFrameTime.Location = new Point(839, 19);
+            lblFrameTime.Name = "lblFrameTime";
+            lblFrameTime.Size = new Size(83, 20);
+            lblFrameTime.TabIndex = 5;
+            lblFrameTime.Text = "FrameTime";
+            // 
             // frm_Main
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDark;
             ClientSize = new Size(1128, 529);
+            Controls.Add(lblFrameTime);
             Controls.Add(flp_FlowPanel);
             Controls.Add(btn_Reset);
             Controls.Add(btn_Stop);
@@ -120,6 +131,7 @@
             Resize += frm_Main_Resize;
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -128,5 +140,6 @@
         private Button btn_Stop;
         private Button btn_Reset;
         private FlowLayoutPanel flp_FlowPanel;
+        private Label lblFrameTime;
     }
 }

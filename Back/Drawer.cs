@@ -145,6 +145,13 @@ namespace BasicGraphicsEngine
         public static float GetMagnitude(Vector2 V2)
         { return MathF.Sqrt(((float)V2.X * (float)V2.X) + ((float)V2.Y * (float)V2.Y)); }
 
+        public static float GetMagnitude(Vector2 V2A, Vector2 V2B)
+        {
+            Vector2 AB = new Vector2(V2A.X - V2B.X, V2A.Y - V2B.Y);
+
+            return MathF.Sqrt(((float)AB.X * (float)AB.X) + ((float)AB.Y * (float)AB.Y));
+        }
+
         /// <summary>
         /// Method <c>GetMagnitudeSQ</c> returns a float representing the squared magnitude of the vector
         /// </summary>

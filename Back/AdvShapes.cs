@@ -117,7 +117,7 @@ namespace BasicGraphicsEngine
     public class AdvShapes : DrawObject
     {
         public float BorderWidth = 5f;
-        public Vector2 Centre = new Vector2();
+        public Vector2 Centre { get; protected set; } = new Vector2();
         public Color TertiaryCol = Color.Transparent;
 
         /// <summary>
@@ -132,8 +132,12 @@ namespace BasicGraphicsEngine
         public override void Draw(Graphics G)
         { }
 
-        public virtual void Transform()
+        public virtual void MoveTransform(Vector2 V2)
         { }
+
+        public virtual void SizeTransform(Vector2 V2)
+        { }
+
 
         public virtual void Rotate(Vector2 _RotationPoint, float _Angle)
         { }
@@ -260,66 +264,105 @@ namespace BasicGraphicsEngine
             CornerD = new Vector2(_Centre.X - (Width / 2), _Centre.Y + (Height / 2));
         }
 
-        public override void Transform()
+        public override void MoveTransform(Vector2 V2)
         {
+            Vector2 Delta = Vector2.Subtract(V2, Centre);
 
+            CornerA += Delta;
+            CornerB += Delta;
+            CornerC += Delta;
+            CornerD += Delta;
+            Centre += Delta;
         }
 
-        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        public override void SizeTransform(Vector2 V2)
         {
-            double Cos = Math.Cos(_Radians);
-            double Sin = Math.Sin(_Radians);
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), Centre);
 
-            CornerA = new Vector2
+            Matrix3x2 Scaler = new Matrix3x2
             (
-                (int)((CornerA.X - _RotationPoint.X) * Cos - (CornerA.Y - _RotationPoint.Y) * Sin + _RotationPoint.X),
-                (int)((CornerA.X - _RotationPoint.X) * Sin + (CornerA.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
+                V2.X / Width, 0,
+                0, V2.Y / Height,
+                0, 0
             );
 
-            CornerB = new Vector2
-            (
-                (int)((CornerB.X - _RotationPoint.X) * Cos - (CornerB.Y - _RotationPoint.Y) * Sin + _RotationPoint.X),
-                (int)((CornerB.X - _RotationPoint.X) * Sin + (CornerB.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
-            );
+            Width = (int)V2.X;
+            Height = (int)V2.Y;
 
-            CornerC = new Vector2
-            (
-                (int)((CornerC.X - _RotationPoint.X) * Cos - (CornerC.Y - _RotationPoint.Y) * Sin + _RotationPoint.X),
-                (int)((CornerC.X - _RotationPoint.X) * Sin + (CornerC.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
-            );
+            CornerA = Vector2.Add(Delta, CornerA);
+            CornerB = Vector2.Add(Delta, CornerB);
+            CornerC = Vector2.Add(Delta, CornerC);
+            CornerD = Vector2.Add(Delta, CornerD);
 
-            CornerD = new Vector2
-            (
-                (int)((CornerD.X - _RotationPoint.X) * Cos - (CornerD.Y - _RotationPoint.Y) * Sin + _RotationPoint.X),
-                (int)((CornerD.X - _RotationPoint.X) * Sin + (CornerD.Y - _RotationPoint.Y) * Cos + _RotationPoint.Y)
-            );
+            CornerA = Vector2.Transform(CornerA, Scaler);
+            CornerB = Vector2.Transform(CornerB, Scaler);
+            CornerC = Vector2.Transform(CornerC, Scaler);
+            CornerD = Vector2.Transform(CornerD, Scaler);
+
+            CornerA = Vector2.Add(Centre, CornerA);
+            CornerB = Vector2.Add(Centre, CornerB);
+            CornerC = Vector2.Add(Centre, CornerC);
+            CornerD = Vector2.Add(Centre, CornerD);
         }
 
         public override void Rotate(float _Radians)
         {
-            double Cos = Math.Cos(_Radians);
-            double Sin = Math.Sin(_Radians);
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), Centre);
 
-            CornerA = new Vector2
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
             (
-                (int)((CornerA.X - DisplayCentre.X) * Cos - (CornerA.Y - DisplayCentre.Y) * Sin + DisplayCentre.X),
-                (int)((CornerA.X - DisplayCentre.X) * Sin + (CornerA.Y - DisplayCentre.Y) * Cos + DisplayCentre.Y)
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
             );
-            CornerB = new Vector2
+
+            CornerA = Vector2.Add(Delta, CornerA);
+            CornerB = Vector2.Add(Delta, CornerB);
+            CornerC = Vector2.Add(Delta, CornerC);
+            CornerD = Vector2.Add(Delta, CornerD);
+
+            CornerA = Vector2.Transform(CornerA, Rotation);
+            CornerB = Vector2.Transform(CornerB, Rotation);
+            CornerC = Vector2.Transform(CornerC, Rotation);
+            CornerD = Vector2.Transform(CornerD, Rotation);
+
+            CornerA = Vector2.Add(Centre, CornerA);
+            CornerB = Vector2.Add(Centre, CornerB);
+            CornerC = Vector2.Add(Centre, CornerC);
+            CornerD = Vector2.Add(Centre, CornerD);
+        }
+
+        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        {
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), _RotationPoint);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
             (
-                (int)((CornerB.X - DisplayCentre.X) * Cos - (CornerB.Y - DisplayCentre.Y) * Sin + DisplayCentre.X),
-                (int)((CornerB.X - DisplayCentre.X) * Sin + (CornerB.Y - DisplayCentre.Y) * Cos + DisplayCentre.Y)
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
             );
-            CornerC = new Vector2
-            (
-                (int)((CornerC.X - DisplayCentre.X) * Cos - (CornerC.Y - DisplayCentre.Y) * Sin + DisplayCentre.X),
-                (int)((CornerC.X - DisplayCentre.X) * Sin + (CornerC.Y - DisplayCentre.Y) * Cos + DisplayCentre.Y)
-            );
-            CornerD = new Vector2
-            (
-                (int)((CornerD.X - DisplayCentre.X) * Cos - (CornerD.Y - DisplayCentre.Y) * Sin + DisplayCentre.X),
-                (int)((CornerD.X - DisplayCentre.X) * Sin + (CornerD.Y - DisplayCentre.Y) * Cos + DisplayCentre.Y)
-            );
+
+            CornerA = Vector2.Add(Delta, CornerA);
+            CornerB = Vector2.Add(Delta, CornerB);
+            CornerC = Vector2.Add(Delta, CornerC);
+            CornerD = Vector2.Add(Delta, CornerD);
+
+            CornerA = Vector2.Transform(CornerA, Rotation);
+            CornerB = Vector2.Transform(CornerB, Rotation);
+            CornerC = Vector2.Transform(CornerC, Rotation);
+            CornerD = Vector2.Transform(CornerD, Rotation);
+
+            CornerA = Vector2.Add(_RotationPoint, CornerA);
+            CornerB = Vector2.Add(_RotationPoint, CornerB);
+            CornerC = Vector2.Add(_RotationPoint, CornerC);
+            CornerD = Vector2.Add(_RotationPoint, CornerD);
         }
     }
 }
