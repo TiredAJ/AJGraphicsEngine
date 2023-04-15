@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Numerics;
 
 namespace BasicGraphicsEngine
@@ -38,7 +37,7 @@ namespace BasicGraphicsEngine
         private void btn_Start_Click(object sender, EventArgs e)
         {
             btn_Reset.Enabled = true;
-            btn_Stop.Enabled = true;
+            btn_Pause.Enabled = true;
             btn_Start.Enabled = false;
 
             DrawerHandler.CleanUp();
@@ -46,6 +45,13 @@ namespace BasicGraphicsEngine
             DrawerHandler.SetUp();
 
             Run = true;
+
+            StartTDrawer();
+        }
+
+        private void StartTDrawer()
+        {
+            DrawerHandler.Running = true;
 
             TDrawer = new Thread(Refresher);
             TDrawer.Start();
@@ -83,25 +89,24 @@ namespace BasicGraphicsEngine
             } while(Run);
         }
 
-        private void btn_Stop_Click(object sender, EventArgs e)
+        private void btn_Pause_Click(object sender, EventArgs e)
         {
-            Run = false;
+            if(Run)
+            {
+                Run = false;
+                DrawerHandler.Running = false;
 
-            btn_Reset.Enabled = false;
-            btn_Stop.Enabled = false;
-            btn_Start.Enabled = true;
-        }
+                btn_Pause.Text = "Play";
+            }
+            else
+            {
+                Run = true;
+                DrawerHandler.Running = true;
 
-        private void pbx_DisplayCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            Task.Run(new Action(() =>
-            { DrawerHandler.SetCursorPos(e.Location); }));
-        }
+                btn_Pause.Text = "Pause";
 
-        private void frm_Main_MouseMove(object sender, MouseEventArgs e)
-        {
-            Task.Run(new Action(() =>
-            { DrawerHandler.SetCursorPos(e.Location); }));
+                StartTDrawer();
+            }
         }
 
         private void pbx_DisplayCanvas_Paint(object sender, PaintEventArgs e)
@@ -130,8 +135,6 @@ namespace BasicGraphicsEngine
                             pbx_DisplayCanvas.DisplayRectangle.Height
                         )
                 ));
-
-            Debug.WriteLine("Resized!");
         }
 
         private void frm_Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -139,27 +142,67 @@ namespace BasicGraphicsEngine
 
         private void btn_Reset_Click(object sender, EventArgs e)
         {
-            Run = false;
+            DrawerHandler.Running = false;
 
-            btn_Stop.Enabled = false;
+            btn_Pause.Enabled = false;
             btn_Start.Enabled = true;
 
             DrawerHandler.CleanUp();
 
-            DrawerHandler.SetUp();
+            Run = false;
 
             Task.Run(() =>
             {
                 pbx_DisplayCanvas.Invalidate();
                 pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
             });
-
         }
 
         private void LoadControls()
         {
             foreach(Control CTRL in DrawerHandler.Controls)
             { flp_FlowPanel.Controls.Add(CTRL); }
+        }
+
+        private void MouseDownFnc(object sender, MouseEventArgs e)
+        {
+            Task.Run(new Action(() =>
+            {
+                DrawerHandler.MainCursorEvent(e, CState.Down);
+            }));
+        }
+
+        private void MouseUpFnc(object sender, MouseEventArgs e)
+        {
+            if(Run)
+            {
+                Task.Run(new Action(() =>
+                {
+                    DrawerHandler.MainCursorEvent(e, CState.Up);
+                }));
+            }
+        }
+
+        private void MouseMoveFnc(object sender, MouseEventArgs e)
+        {
+            if(Run)
+            {
+                Task.Run(new Action(() =>
+                {
+                    DrawerHandler.MainCursorEvent(e, CState.NoChange);
+                }));
+            }
+        }
+
+        private void MouseDoubleClickFnc(object sender, MouseEventArgs e)
+        {
+            if(Run)
+            {
+                Task.Run(new Action(() =>
+                {
+                    DrawerHandler.MainCursorEvent(e, CState.DoubleClick);
+                }));
+            }
         }
     }
 }

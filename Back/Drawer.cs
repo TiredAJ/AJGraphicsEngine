@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -12,10 +11,13 @@ namespace BasicGraphicsEngine
         public List<Control> Controls = new List<Control>();
         public Rectangle Display = new Rectangle();
         public Color CanvasColour = Color.White;
-        public Vector2 Cursor = new Vector2(0, 0);
+        public Vector2 CursorPos = new Vector2(0, 0);
         public Vector2 DisplayCentre = new Vector2();
         public Vector2 ControlsAreaSize = new Vector2();
+        public event EventHandler<CursorEventArgs> CursorEvent;
+        public bool Running = false;
         //public bool ResetCanvasOnFrame = true; <- to implement
+
 
         public Drawer()
         { }
@@ -43,14 +45,13 @@ namespace BasicGraphicsEngine
         /// Adds an object to the draw list.
         /// </summary>
         public void Add(DrawObject _NewShape)
-        {
-            ShapeList.Add(_NewShape);
+        { ShapeList.Add(_NewShape); }
 
-            Task.Run(new Action(() =>
-            {
-                Debug.WriteLine(ShapeList.Count());
-            }));
-        }
+        /// <summary>
+        /// Removes an object from the draw list.
+        /// </summary>
+        public void Remove(DrawObject _NewShape)
+        { ShapeList.Remove(_NewShape); }
 
         /// <summary>
         /// Adds an array of objects to the draw list.
@@ -69,6 +70,8 @@ namespace BasicGraphicsEngine
         /// </summary>
         public void CallDraw(Graphics G)
         {
+            Running = true;
+
             Frame();
 
             foreach(DrawObject S in ShapeList)
@@ -103,7 +106,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Method <c>RandomValue</c> Returns a random value between two integers.
         /// </summary>
-        public static int RandomValue(int Min, int Max, bool IncludeZero)
+        public int RandomValue(int Min, int Max, bool IncludeZero)
         {
             int Temp = 0;
 
@@ -121,14 +124,27 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>SetCursorPos</c> Sets the position of the cursor.
+        /// Method <c>RandomValue</c> Returns a random value between two integers. (includes 0)
         /// </summary>
-        public void SetCursorPos(Point _Loc)
-        { Cursor = V2Ext.ToVector(_Loc); }
+        public int RandomValue(int Min, int Max)
+        {
+
+            Random R = new Random(DateTime.Now.Microsecond);
+
+            return R.Next(Min, Max);
+        }
 
         public float DegToRad(float _Deg)
         { return (float)(_Deg * (Math.PI / 180)); }
 
+        public void MainCursorEvent(MouseEventArgs Me, CState _State)
+        {
+            if(Running)
+            {
+                CursorPos = V2Ext.ToV2(Me.Location);
+                CursorEvent?.Invoke(this, new CursorEventArgs(Me, _State));
+            }
+        }
     }
 
     struct V2Ext
@@ -217,5 +233,33 @@ namespace BasicGraphicsEngine
             }
             return V2;
         }
+
+        public static Vector2 Offset(Vector2 V2, int XOff, int YOff)
+        => new Vector2(V2.X + XOff, V2.Y + YOff);
+    }
+
+    public class CursorEventArgs : EventArgs
+    {
+        public CState State { get; private set; }
+        public Vector2 Location { get; private set; }
+        public MouseButtons CButton { get; private set; }
+
+        public CursorEventArgs() { }
+
+        public CursorEventArgs(MouseEventArgs Me, CState _State)
+        {
+            State = _State;
+            Location = V2Ext.ToV2(Me.Location);
+            CButton = Me.Button;
+        }
+
+    }
+
+    public enum CState
+    {
+        Up,
+        Down,
+        NoChange,
+        DoubleClick
     }
 }

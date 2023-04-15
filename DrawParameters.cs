@@ -1,22 +1,14 @@
-﻿using System.Numerics;
-
-namespace BasicGraphicsEngine
+﻿namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
 
         //      Declaration     //
-        Square Mover = new Square(new Vector2(0, 0), 40, 40);
+        const int NoCircles = 2;
 
-        Line Connector = new Line();
-
-        Vector2 Accl = new Vector2(),
-                Velocity = new Vector2(),
-                Direction = new Vector2();
-
-        NumericUpDown NUD_Limit = new NumericUpDown();
-        NumericUpDown NUD_SizeWidth = new NumericUpDown();
-        NumericUpDown NUD_SizeHeight = new NumericUpDown();
+        Lines Trail;
+        BasicCircle[] Circles;
+        Line[] Connections;
 
         //                      //
 
@@ -24,53 +16,50 @@ namespace BasicGraphicsEngine
 
         public void SetUp()
         {
-            Mover.SetCentre(DisplayCentre);
+            Trail = new Lines();
 
-            Connector.A = Mover.Centre;
-            Connector.B = DisplayCentre;
+            Circles = new BasicCircle[NoCircles];
+            Connections = new Line[NoCircles];
 
-            Connector.PrimaryCol = Color.Aqua;
+            Circles[0] = new BasicCircle(DisplayCentre, 40);
+            Circles[1] = new BasicCircle(V2Ext.Offset(DisplayCentre, 40, 0), 40);
 
-            NUD_Limit.Maximum = 500;
-            NUD_Limit.Minimum = 1m;
-            NUD_Limit.Value = 25m;
-            NUD_Limit.Name = "nud_Limit";
-            NUD_Limit.Width = (int)ControlsAreaSize.X - 10;
+            Connections[0] = new Line(Circles[0].Centre, V2Ext.Offset(Circles[0].Centre, 40, 0));
+            Connections[1] = new Line(Circles[1].Centre, V2Ext.Offset(Circles[1].Centre, 40, 0));
 
-            NUD_SizeWidth.Maximum = 200;
-            NUD_SizeWidth.Minimum = 5;
-            NUD_SizeWidth.Value = 40;
-            NUD_SizeWidth.Name = "nud_SizeWidth";
-            NUD_SizeWidth.Width = (int)ControlsAreaSize.X - 10;
+            Connections[0].PrimaryCol = Color.Blue;
+            Connections[1].PrimaryCol = Color.Magenta;
 
-            NUD_SizeHeight.Maximum = 200;
-            NUD_SizeHeight.Minimum = 5;
-            NUD_SizeHeight.Value = 40;
-            NUD_SizeHeight.Name = "nud_SizeHeight";
-            NUD_SizeHeight.Width = (int)ControlsAreaSize.X - 10;
+            for(int i = 0; i < NoCircles; i++)
+            {
+                //Circles[i] = new BasicCircle(V2Ext.Offset(DisplayCentre, 20 * i, 0), 40);
+                Circles[i].SecondaryCol = Color.Transparent;
+                //Connections[i] = new Line(Circles[i].Centre, V2Ext.Offset(Circles[i].Centre, 40 * (i + 1), 0));
+                //Connections[i].PrimaryCol = Color.Blue;
+                Connections[i].LineWidth = 10f;
+            }
 
-            Add(Connector);
-            Add(Mover);
+            Trail.PrimaryCol = Color.Green;
 
-            AddControl(NUD_Limit);
-            AddControl(NUD_SizeWidth);
-            AddControl(NUD_SizeHeight);
+            Add(Trail);
+            Add(Circles);
+            Add(Connections);
         }
 
 
 
         private void Resize()
-        { Mover.SetCentre(DisplayCentre); }
+        { }
 
 
 
         private void Frame()
         {
-            Mover.Rotate((float)NUD_Limit.Value / 1000);
+            Connections[0].Rotate(Circles[0].Centre, DegToRad(2));
+            Circles[1].Centre = Connections[0].B;
 
-            Mover.MoveTransform(Cursor);
-
-            Mover.SizeTransform(new Vector2((float)NUD_SizeWidth.Value, (float)NUD_SizeHeight.Value));
+            Connections[1].MoveTransform(Circles[1].Centre);
+            Connections[1].Rotate(Circles[1].Centre, DegToRad(2));
         }
     }
 }

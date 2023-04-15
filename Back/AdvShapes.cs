@@ -5,30 +5,28 @@ namespace BasicGraphicsEngine
     /// <summary>
     /// Base object for all drawn objects. Do not use directly.
     /// </summary>
-    public class DrawObject
+    public abstract class DrawObject
     {
         public Color PrimaryCol = Color.Red;
-        public Color SecondaryCol = Color.Green;
         public Vector2 DisplayCentre = new Vector2();
 
         /// <summary>
         /// Method <c>Draw</c> renders the object using the inputted Graphics object.
         /// </summary>
-        public virtual void Draw(Graphics G)
-        { }
+        public abstract void Draw(Graphics G);
     }
 
     /// <summary>
     /// Base object for lines. Do not use directly.
     /// </summary>
-    public class LineBase : DrawObject
+    public abstract class LineBase : DrawObject
     {
         public float LineWidth = 5f;
 
-        public LineBase() { }
-
-        public override void Draw(Graphics G)
-        { }
+        public abstract void MoveTransform(Vector2 V2);
+        public abstract void Rotate(Vector2 _RotationPoint, float _Radians);
+        public abstract void Rotate(float _Radians);
+        public abstract Vector2 CalculateCentre();
     }
 
     /// <summary>
@@ -37,8 +35,13 @@ namespace BasicGraphicsEngine
     public class Line : LineBase
     {
         public Vector2 A, B;
+        public Vector2 Centre { get; private set; }
 
-        public Line() { }
+        public Line()
+        {
+            A = new Vector2(0, 0);
+            B = new Vector2(0, 0);
+        }
 
         /// <summary>
         /// Constructor that takes in two <c>Vectors</c> for points.
@@ -47,6 +50,8 @@ namespace BasicGraphicsEngine
         {
             A = _A;
             B = _B;
+
+            CalculateCentre();
         }
 
         /// <summary>
@@ -58,6 +63,8 @@ namespace BasicGraphicsEngine
             B = _L.B;
             LineWidth = _L.LineWidth;
             PrimaryCol = _L.PrimaryCol;
+
+            CalculateCentre();
         }
 
         /// <summary>
@@ -71,6 +78,78 @@ namespace BasicGraphicsEngine
                 V2Ext.ToPoint(A), V2Ext.ToPoint(B)
             );
         }
+
+        public override void MoveTransform(Vector2 V2)
+        {
+            Centre = CalculateCentre();
+
+            Vector2 Delta = Vector2.Subtract(V2, Centre);
+
+            A += Delta;
+            B += Delta;
+            Centre += Delta;
+        }
+
+        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        {
+            Centre = CalculateCentre();
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), _RotationPoint);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
+            (
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
+            );
+
+            A = Vector2.Add(Delta, A);
+            B = Vector2.Add(Delta, B);
+            Centre = Vector2.Add(Delta, Centre);
+
+            A = Vector2.Transform(A, Rotation);
+            B = Vector2.Transform(B, Rotation);
+            Centre = Vector2.Transform(Centre, Rotation);
+
+            A = Vector2.Add(_RotationPoint, A);
+            B = Vector2.Add(_RotationPoint, B);
+            Centre = Vector2.Add(_RotationPoint, Centre);
+        }
+
+        public override void Rotate(float _Radians)
+        {
+            Centre = CalculateCentre();
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), Centre);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
+            (
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
+            );
+
+            A = Vector2.Add(Delta, A);
+            B = Vector2.Add(Delta, B);
+
+            A = Vector2.Transform(A, Rotation);
+            B = Vector2.Transform(B, Rotation);
+
+            A = Vector2.Add(Centre, A);
+            B = Vector2.Add(Centre, B);
+        }
+
+        public override Vector2 CalculateCentre()
+        {
+            if(A.Length() != 0 && B.Length() != 0)
+            { return new Vector2((A.X + B.X) / 2, (A.Y + B.Y) / 2); }
+            else
+            { throw new DivideByZeroException(); }
+        }
     }
 
     /// <summary>
@@ -79,6 +158,7 @@ namespace BasicGraphicsEngine
     public class Lines : LineBase
     {
         public List<Vector2> Points = new List<Vector2>();
+        public Vector2 Centre { get; private set; }
 
         public Lines() { }
 
@@ -103,47 +183,133 @@ namespace BasicGraphicsEngine
         /// </summary>
         public override void Draw(Graphics G)
         {
-            G.DrawLines
+            if(Points.Count > 1)
+            {
+                G.DrawLines
+                (
+                    new Pen(PrimaryCol, LineWidth),
+                    V2Ext.ToPointArray(Points)
+                );
+            }
+        }
+
+        public void AddPoint(Vector2 NewPoint, bool Back)
+        {
+            if(Back)
+            { Points.Add(NewPoint); }
+            else
+            { Points.Prepend(NewPoint); }
+        }
+
+        public override void MoveTransform(Vector2 V2)
+        {
+            Centre = CalculateCentre();
+
+            Vector2 Delta = Vector2.Subtract(V2, Centre);
+
+            Vector2 TempPoint;
+
+            foreach(Vector2 V2P in Points)
+            {
+                TempPoint = V2P;
+                TempPoint += Delta;
+            }
+
+            Centre += Delta;
+        }
+
+        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        {
+            Centre = CalculateCentre();
+
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), _RotationPoint);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
             (
-                new Pen(PrimaryCol, LineWidth),
-                V2Ext.ToPointArray(Points)
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
             );
+
+            Vector2 TempPoint;
+
+            foreach(Vector2 V2P in Points)
+            {
+                TempPoint = V2P;
+                TempPoint = Vector2.Add(Delta, TempPoint);
+                TempPoint = Vector2.Transform(TempPoint, Rotation);
+                TempPoint = Vector2.Add(_RotationPoint, TempPoint);
+            }
+
+            Centre = Vector2.Add(Delta, Centre);
+            Centre = Vector2.Transform(Centre, Rotation);
+            Centre = Vector2.Add(_RotationPoint, Centre);
+        }
+
+        public override void Rotate(float _Radians)
+        {
+            Centre = CalculateCentre();
+
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), Centre);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
+            (
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
+            );
+
+            Vector2 TempPoint;
+
+            foreach(Vector2 V2P in Points)
+            {
+                TempPoint = V2P;
+                TempPoint = Vector2.Add(Delta, TempPoint);
+                TempPoint = Vector2.Transform(TempPoint, Rotation);
+                TempPoint = Vector2.Add(Centre, TempPoint);
+            }
+        }
+
+        public override Vector2 CalculateCentre()
+        {
+            if(Points.Count <= 1)
+            { throw new Exception("Not enough Points"); }
+
+            Vector2 Average = new Vector2(0, 0);
+
+            foreach(Vector2 V2 in Points)
+            {
+                Average.X += V2.X;
+                Average.Y += V2.Y;
+            }
+
+            Average.X /= Points.Count();
+            Average.Y /= Points.Count();
+
+            return Average;
         }
     }
 
     /// <summary>
     /// Base object for all drawn objects. Do not use directly.
     /// </summary>
-    public class AdvShapes : DrawObject
+    public abstract class AdvShapes : DrawObject
     {
         public float BorderWidth = 5f;
         public Vector2 Centre { get; protected set; } = new Vector2();
+        public Color SecondaryCol = Color.Green;
         public Color TertiaryCol = Color.Transparent;
 
-        /// <summary>
-        /// Potentially subject to removal. Calculates the bounds of the object
-        /// </summary>
-        public virtual void CalculateBounds()
-        { }
-
-        /// <summary>
-        /// Renders the object using the inputted <c>Graphics</c> object.
-        /// </summary>
-        public override void Draw(Graphics G)
-        { }
-
-        public virtual void MoveTransform(Vector2 V2)
-        { }
-
-        public virtual void SizeTransform(Vector2 V2)
-        { }
-
-
-        public virtual void Rotate(Vector2 _RotationPoint, float _Angle)
-        { }
-
-        public virtual void Rotate(float _Angle)
-        { }
+        public abstract void MoveTransform(Vector2 V2);
+        public abstract void SizeTransform(Vector2 V2);
+        public abstract void Rotate(Vector2 _RotationPoint, float _Angle);
+        public abstract void Rotate(float _Angle);
     }
 
     /// <summary>
@@ -305,6 +471,39 @@ namespace BasicGraphicsEngine
             CornerD = Vector2.Add(Centre, CornerD);
         }
 
+        public override void Rotate(Vector2 _RotationPoint, float _Radians)
+        {
+            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), _RotationPoint);
+
+            float Cos = (float)Math.Cos(_Radians);
+            float Sin = (float)Math.Sin(_Radians);
+
+            Matrix3x2 Rotation = new Matrix3x2
+            (
+                Cos, -Sin,
+                Sin, Cos,
+                0, 0
+            );
+
+            CornerA = Vector2.Add(Delta, CornerA);
+            CornerB = Vector2.Add(Delta, CornerB);
+            CornerC = Vector2.Add(Delta, CornerC);
+            CornerD = Vector2.Add(Delta, CornerD);
+            Centre = Vector2.Add(Delta, Centre);
+
+            CornerA = Vector2.Transform(CornerA, Rotation);
+            CornerB = Vector2.Transform(CornerB, Rotation);
+            CornerC = Vector2.Transform(CornerC, Rotation);
+            CornerD = Vector2.Transform(CornerD, Rotation);
+            Centre = Vector2.Transform(Centre, Rotation);
+
+            CornerA = Vector2.Add(_RotationPoint, CornerA);
+            CornerB = Vector2.Add(_RotationPoint, CornerB);
+            CornerC = Vector2.Add(_RotationPoint, CornerC);
+            CornerD = Vector2.Add(_RotationPoint, CornerD);
+            Centre = Vector2.Add(_RotationPoint, Centre);
+        }
+
         public override void Rotate(float _Radians)
         {
             Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), Centre);
@@ -333,36 +532,6 @@ namespace BasicGraphicsEngine
             CornerB = Vector2.Add(Centre, CornerB);
             CornerC = Vector2.Add(Centre, CornerC);
             CornerD = Vector2.Add(Centre, CornerD);
-        }
-
-        public override void Rotate(Vector2 _RotationPoint, float _Radians)
-        {
-            Vector2 Delta = Vector2.Subtract(new Vector2(0, 0), _RotationPoint);
-
-            float Cos = (float)Math.Cos(_Radians);
-            float Sin = (float)Math.Sin(_Radians);
-
-            Matrix3x2 Rotation = new Matrix3x2
-            (
-                Cos, -Sin,
-                Sin, Cos,
-                0, 0
-            );
-
-            CornerA = Vector2.Add(Delta, CornerA);
-            CornerB = Vector2.Add(Delta, CornerB);
-            CornerC = Vector2.Add(Delta, CornerC);
-            CornerD = Vector2.Add(Delta, CornerD);
-
-            CornerA = Vector2.Transform(CornerA, Rotation);
-            CornerB = Vector2.Transform(CornerB, Rotation);
-            CornerC = Vector2.Transform(CornerC, Rotation);
-            CornerD = Vector2.Transform(CornerD, Rotation);
-
-            CornerA = Vector2.Add(_RotationPoint, CornerA);
-            CornerB = Vector2.Add(_RotationPoint, CornerB);
-            CornerC = Vector2.Add(_RotationPoint, CornerC);
-            CornerD = Vector2.Add(_RotationPoint, CornerD);
         }
     }
 }

@@ -30,7 +30,7 @@
         {
             pbx_DisplayCanvas = new PictureBox();
             btn_Start = new Button();
-            btn_Stop = new Button();
+            btn_Pause = new Button();
             btn_Reset = new Button();
             flp_FlowPanel = new FlowLayoutPanel();
             lblFrameTime = new Label();
@@ -49,7 +49,10 @@
             pbx_DisplayCanvas.TabIndex = 0;
             pbx_DisplayCanvas.TabStop = false;
             pbx_DisplayCanvas.Paint += pbx_DisplayCanvas_Paint;
-            pbx_DisplayCanvas.MouseMove += pbx_DisplayCanvas_MouseMove;
+            pbx_DisplayCanvas.MouseDoubleClick += MouseDoubleClickFnc;
+            pbx_DisplayCanvas.MouseDown += MouseDownFnc;
+            pbx_DisplayCanvas.MouseMove += MouseMoveFnc;
+            pbx_DisplayCanvas.MouseUp += MouseUpFnc;
             // 
             // btn_Start
             // 
@@ -63,18 +66,18 @@
             btn_Start.UseVisualStyleBackColor = true;
             btn_Start.Click += btn_Start_Click;
             // 
-            // btn_Stop
+            // btn_Pause
             // 
-            btn_Stop.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_Stop.Enabled = false;
-            btn_Stop.Location = new Point(972, 90);
-            btn_Stop.Margin = new Padding(3, 4, 3, 4);
-            btn_Stop.Name = "btn_Stop";
-            btn_Stop.Size = new Size(147, 30);
-            btn_Stop.TabIndex = 2;
-            btn_Stop.Text = "Stop";
-            btn_Stop.UseVisualStyleBackColor = true;
-            btn_Stop.Click += btn_Stop_Click;
+            btn_Pause.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_Pause.Enabled = false;
+            btn_Pause.Location = new Point(972, 90);
+            btn_Pause.Margin = new Padding(3, 4, 3, 4);
+            btn_Pause.Name = "btn_Pause";
+            btn_Pause.Size = new Size(147, 30);
+            btn_Pause.TabIndex = 2;
+            btn_Pause.Text = "Pause";
+            btn_Pause.UseVisualStyleBackColor = true;
+            btn_Pause.Click += btn_Pause_Click;
             // 
             // btn_Reset
             // 
@@ -103,6 +106,7 @@
             // 
             // lblFrameTime
             // 
+            lblFrameTime.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             lblFrameTime.AutoSize = true;
             lblFrameTime.Location = new Point(839, 19);
             lblFrameTime.Name = "lblFrameTime";
@@ -119,7 +123,7 @@
             Controls.Add(lblFrameTime);
             Controls.Add(flp_FlowPanel);
             Controls.Add(btn_Reset);
-            Controls.Add(btn_Stop);
+            Controls.Add(btn_Pause);
             Controls.Add(btn_Start);
             Controls.Add(pbx_DisplayCanvas);
             Margin = new Padding(3, 4, 3, 4);
@@ -127,7 +131,10 @@
             Text = "Form1";
             FormClosing += frm_Main_FormClosing;
             Load += frm_Main_Load;
-            MouseMove += frm_Main_MouseMove;
+            MouseDoubleClick += MouseDoubleClickFnc;
+            MouseDown += MouseDownFnc;
+            MouseMove += MouseMoveFnc;
+            MouseUp += MouseUpFnc;
             Resize += frm_Main_Resize;
             ((System.ComponentModel.ISupportInitialize)pbx_DisplayCanvas).EndInit();
             ResumeLayout(false);
@@ -137,7 +144,7 @@
         #endregion
         private Button btn_Start;
         public PictureBox pbx_DisplayCanvas;
-        private Button btn_Stop;
+        private Button btn_Pause;
         private Button btn_Reset;
         private FlowLayoutPanel flp_FlowPanel;
         private Label lblFrameTime;

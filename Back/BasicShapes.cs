@@ -5,27 +5,13 @@ namespace BasicGraphicsEngine
     /// <summary>
     /// Base object for all basic shapes. Do not use directly.
     /// </summary>
-    public class BasicShape : DrawObject
+    public abstract class BasicShape : DrawObject
     {
         public float BorderWidth = 2f;
         public Vector2 Centre = new Vector2();
         public int Width, Height;
+        public Color SecondaryCol = Color.Green;
         public Color TertiaryCol = Color.Transparent;
-
-        public BasicShape()
-        { }
-
-        /// <summary>
-        /// Renders the basic square object using the inputted <c>Graphics</c> object.
-        /// </summary>
-        public override void Draw(Graphics G)
-        { }
-
-        /// <summary>
-        /// Potentially subject to removal. Calculates the bounds of the object.
-        /// </summary>
-        public virtual void CalculateBounds()
-        { }
     }
 
     /// <summary>
@@ -60,12 +46,6 @@ namespace BasicGraphicsEngine
             SecondaryCol = _S.SecondaryCol;
             TertiaryCol = _S.TertiaryCol;
         }
-
-        /// <summary>
-        /// Potentially subject to removal. Calculates the bounds of the object.
-        /// </summary>
-        public override void CalculateBounds()
-        { }
 
         /// <summary>
         /// Renders the <c>BasicSquare</c> object using the inputted <c>Graphics</c> object.
@@ -150,12 +130,6 @@ namespace BasicGraphicsEngine
         { Width = Height = (int)_Radius * 2; }
 
         /// <summary>
-        /// Potentially subject to removal. Calculates the bounds of the object.
-        /// </summary>
-        public override void CalculateBounds()
-        { }
-
-        /// <summary>
         /// Renders the object using the inputted <c>Graphics</c> object.
         /// </summary>
         public override void Draw(Graphics G)
@@ -177,26 +151,17 @@ namespace BasicGraphicsEngine
                 (float)Width,
                 (float)Height
             );
-
-            CalculateBounds();
         }
     }
 
     /// <summary>
     /// Base class for debug shapes. Do not use directly
     /// </summary>
-    public class DebugShape : DrawObject
+    public abstract class DebugShape : DrawObject
     {
-        public int Width, Height;
+        public int Width = 10, Height = 10;
         public Vector2 Centre = new Vector2();
-
-        public DebugShape()
-        {
-            PrimaryCol = Color.Green;
-            SecondaryCol = Color.Red;
-
-            Width = Height = 10;
-        }
+        public Color SecondaryCol = Color.Green;
     }
 
     /// <summary>
