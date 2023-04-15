@@ -1,16 +1,16 @@
+using System.Numerics;
+
 namespace BasicGraphicsEngine
 {
     public partial class Drawer
     {
 
         //      Declaration     //
-        Square Mover = new Square(new Vector2(0, 0), 40, 40);
+        Square Mover;
 
-        Line Connector = new Line();
+        Line Connector;
 
-        Vector2 Accl = new Vector2(),
-                Velocity = new Vector2(),
-                Direction = new Vector2();
+        Vector2 Accl, Velocity, Direction;
 
         //                      //
 
@@ -18,6 +18,16 @@ namespace BasicGraphicsEngine
 
         public void SetUp()
         {
+            Mover = new Square(new Vector2(0, 0), 40, 40);
+
+            Connector = new Line();
+
+            Accl = new Vector2();
+            Velocity = new Vector2();
+            Direction = new Vector2();
+
+
+
             Mover.SetCentre(DisplayCentre);
 
             Connector.A = Mover.Centre;
@@ -25,45 +35,50 @@ namespace BasicGraphicsEngine
 
             Connector.PrimaryCol = Color.Aqua;
 
+            DisplayEvent += Resize;
+
             Add(Connector);
             Add(Mover);
         }
 
 
 
-        private void Resize()
+        private void Resize(object Sender, DisplayEventArgs De)
         { Mover.SetCentre(DisplayCentre); }
 
 
 
         private void Frame()
         {
-            Direction = Vector2.Sub(Cursor, Mover.Centre);
+            Direction = Vector2.Subtract(CursorPos, Mover.Centre);
 
-            Direction.NormaliseVoid();
+            if(Direction.Length() > 1)
+            {
+                Direction = Vector2.Normalize(Direction);
 
-            Direction *= 0.5f;
+                if
+                ((Mover.Centre.X + (Mover.Width / 2)) >= DisplaySize.X ||
+                 (Mover.Centre.X - (Mover.Width / 2)) <= 0)
+                { Velocity.X = 0; }
 
-            Accl = Direction;
+                if
+                ((Mover.Centre.Y + (Mover.Height / 2)) >= DisplaySize.Y ||
+                 (Mover.Centre.Y - (Mover.Height / 2)) <= 0)
+                { Velocity.Y = 0; }
 
-            Velocity += Accl;
+                Direction *= 0.5f;
 
-            Velocity.Limit(10f);
+                Accl = Direction;
 
-            Mover.SetCentre(Mover.Centre + Velocity);
+                Velocity += Accl;
 
-            if
-            ((Mover.Centre.X + (Mover.Width / 2)) >= (Display.X + Display.Width) ||
-             (Mover.Centre.X - (Mover.Width / 2)) <= Display.X)
-            { Velocity.X *= -1; }
+                Velocity = V2Ext.Limit(Velocity, 4f);
 
-            if
-            ((Mover.Centre.Y + (Mover.Height / 2)) >= (Display.Y + Display.Height) ||
-             (Mover.Centre.Y - (Mover.Height / 2)) <= Display.Y)
-            { Velocity.Y *= -1; }
+                Mover.SetCentre(Mover.Centre + Velocity);
+            }
 
             Connector.A = Mover.Centre;
-            Connector.B = Cursor;
+            Connector.B = CursorPos;
         }
     }
 }

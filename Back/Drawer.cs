@@ -9,12 +9,13 @@ namespace BasicGraphicsEngine
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
         public List<Control> Controls = new List<Control>();
-        public Rectangle Display = new Rectangle();
         public Color CanvasColour = Color.White;
-        public Vector2 CursorPos = new Vector2(0, 0);
+        public Vector2 DisplaySize = new Vector2();
         public Vector2 DisplayCentre = new Vector2();
+        public Vector2 CursorPos = new Vector2(0, 0);
         public Vector2 ControlsAreaSize = new Vector2();
         public event EventHandler<CursorEventArgs> CursorEvent;
+        public event EventHandler<DisplayEventArgs> DisplayEvent;
         public bool Running = false;
         //public bool ResetCanvasOnFrame = true; <- to implement
 
@@ -25,20 +26,11 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Sets up the display area.
         /// </summary>
-        public void Init(Rectangle _Display)
+        public void Init(Vector2 _Display)
         {
-            Display = _Display;
-            DisplayCentre.X = _Display.Width / 2;
-            DisplayCentre.Y = _Display.Height / 2;
-        }
-
-        public void ResizeCanvas(Rectangle _Display)
-        {
-            Display = _Display;
-            DisplayCentre.X = _Display.Width / 2;
-            DisplayCentre.Y = _Display.Height / 2;
-
-            Resize();
+            DisplaySize = _Display;
+            DisplayCentre.X = _Display.X / 2;
+            DisplayCentre.Y = _Display.Y / 2;
         }
 
         /// <summary>
@@ -110,7 +102,7 @@ namespace BasicGraphicsEngine
         {
             int Temp = 0;
 
-            Random R = new Random(DateTime.Now.Microsecond);
+            Random R = new Random((int)DateTime.Now.Ticks);
 
             R.Next(Min, Max);
 
@@ -128,8 +120,7 @@ namespace BasicGraphicsEngine
         /// </summary>
         public int RandomValue(int Min, int Max)
         {
-
-            Random R = new Random(DateTime.Now.Microsecond);
+            Random R = new Random((int)DateTime.Now.Ticks);
 
             return R.Next(Min, Max);
         }
@@ -143,6 +134,16 @@ namespace BasicGraphicsEngine
             {
                 CursorPos = V2Ext.ToV2(Me.Location);
                 CursorEvent?.Invoke(this, new CursorEventArgs(Me, _State));
+            }
+        }
+
+        public void MainDisplayEvent(Vector2 _DisplaySize, bool _FullScreen)
+        {
+            if(Running)
+            {
+                DisplaySize = _DisplaySize;
+                DisplayCentre = new Vector2(DisplaySize.X / 2, DisplaySize.Y / 2);
+                DisplayEvent?.Invoke(this, new DisplayEventArgs(_DisplaySize, _FullScreen));
             }
         }
     }
@@ -211,7 +212,7 @@ namespace BasicGraphicsEngine
         }
 
         /// <summary>
-        /// Method <c>ToPointArray</c> returns an array of points from a list of vectors.
+        /// Returns an array of points from a list of vectors.
         /// </summary>
         public static Point[] ToPointArray(List<Vector2> _V2List)
         {
@@ -223,6 +224,12 @@ namespace BasicGraphicsEngine
             return Temp.ToArray();
         }
 
+        /// <summary>
+        /// Limits a vector to a maximum magnitude
+        /// </summary>
+        /// <param name="V2">Vector to limit</param>
+        /// <param name="Max">Maximum magnitude</param>
+        /// <returns>A vector who's magnitude <= Max</returns>
         public static Vector2 Limit(Vector2 V2, float Max)
         {
             if(GetMagnitudeSQ(V2) > (Max * Max))
@@ -234,8 +241,68 @@ namespace BasicGraphicsEngine
             return V2;
         }
 
+        /// <summary>
+        /// Ensures V2's components are no larger than Max's
+        /// </summary>
+        /// <param name="V2">Vector to limit</param>
+        /// <param name="Max">Vector of maximum components</param>
+        /// <returns>A Vector who's components are <= Max's</returns>
+        public static Vector2 Limit(Vector2 V2, Vector2 Max)
+        {
+            if(V2.X > Max.X)
+            { V2.X = Max.X; }
+            if(V2.Y > Max.Y)
+            { V2.Y = Max.Y; }
+
+            return V2;
+        }
+
+        /// <summary>
+        /// Ensures V2's components are within Max's and Min's components
+        /// </summary>
+        /// <param name="V2">Vector to limit</param>
+        /// <param name="Max">Vector of maximum components</param>
+        /// <param name="Min">Vector of minimum components</param>
+        /// <returns>A Vector who's components are <= Max's and >= Min's</returns>
+        public static Vector2 Limit(Vector2 V2, Vector2 Max, Vector2 Min)
+        {
+            if(V2.X > Max.X)
+            { V2.X = Max.X; }
+            else if(V2.X < Min.X)
+            { V2.X = Min.X; }
+
+            if(V2.Y > Max.Y)
+            { V2.Y = Max.Y; }
+            else if(V2.Y < Min.Y)
+            { V2.Y = Min.Y; }
+
+            return V2;
+        }
+
+        /// <summary>
+        /// Offsets a vector by a specific amount
+        /// </summary>
+        /// <param name="V2">Vector to offset</param>
+        /// <param name="XOff">X offset</param>
+        /// <param name="YOff">Y offset</param>
+        /// <returns>A vector offsetted by XOff and YOff</returns>
         public static Vector2 Offset(Vector2 V2, int XOff, int YOff)
         => new Vector2(V2.X + XOff, V2.Y + YOff);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Point"></param>
+        /// <param name="Destination"></param>
+        /// <returns></returns>
+        public static Vector2 MoveTransform(Vector2 Point, Vector2 Destination)
+        {
+            Vector2 Delta = Vector2.Subtract(Destination, Point);
+
+            Point += Delta;
+
+            return Point;
+        }
     }
 
     public class CursorEventArgs : EventArgs
@@ -261,5 +328,19 @@ namespace BasicGraphicsEngine
         Down,
         NoChange,
         DoubleClick
+    }
+
+    public class DisplayEventArgs : EventArgs
+    {
+        public Vector2 DisplaySize { get; private set; }
+        public bool FullScreen { get; private set; }
+
+        public DisplayEventArgs() { }
+
+        public DisplayEventArgs(Vector2 _DisplaySize, bool _FullScreen)
+        {
+            DisplaySize = _DisplaySize;
+            FullScreen = _FullScreen;
+        }
     }
 }

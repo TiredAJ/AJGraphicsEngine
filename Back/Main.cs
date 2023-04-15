@@ -15,14 +15,10 @@ namespace BasicGraphicsEngine
         private void frm_Main_Load(object sender, EventArgs e)
         {
             DrawerHandler.Init
-            (new Rectangle
+            (new Vector2
                 (
-                    pbx_DisplayCanvas.DisplayRectangle.Location,
-                new Size
-                    (
                         pbx_DisplayCanvas.DisplayRectangle.Width,
                         pbx_DisplayCanvas.DisplayRectangle.Height
-                    )
             ));
 
             Task.Run(() =>
@@ -125,16 +121,22 @@ namespace BasicGraphicsEngine
 
         private void frm_Main_Resize(object sender, EventArgs e)
         {
-            DrawerHandler.ResizeCanvas
-                (new Rectangle
-                    (
-                        pbx_DisplayCanvas.DisplayRectangle.Location,
-                    new Size
-                        (
-                            pbx_DisplayCanvas.DisplayRectangle.Width,
-                            pbx_DisplayCanvas.DisplayRectangle.Height
-                        )
-                ));
+            bool FullScreen;
+
+            if(WindowState == FormWindowState.Maximized)
+            { FullScreen = true; }
+            else
+            { FullScreen = false; }
+
+            DrawerHandler.MainDisplayEvent
+            (
+                new Vector2
+                (
+                    pbx_DisplayCanvas.DisplayRectangle.Width,
+                    pbx_DisplayCanvas.DisplayRectangle.Height
+                ),
+                FullScreen
+            );
         }
 
         private void frm_Main_FormClosing(object sender, FormClosingEventArgs e)

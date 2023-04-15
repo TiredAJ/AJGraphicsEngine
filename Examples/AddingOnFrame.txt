@@ -1,0 +1,41 @@
+using System.Diagnostics;
+using System.Numerics;
+
+namespace BasicGraphicsEngine
+{
+    public partial class Drawer
+    {
+
+        //      Declaration     //
+        Vector2 LastPos = new Vector2(-1, -2), NewPos;
+
+        //                      //
+
+
+
+        public void SetUp()
+        { }
+
+
+
+        private void Resize()
+        { }
+
+
+
+        private void Frame()
+        {
+            NewPos = new Vector2(RandomValue(0, Display.Width), RandomValue(0, Display.Height));
+
+            if(LastPos.X != -1)
+            {
+                Add(new Line { A = NewPos, B = LastPos, LineWidth = 1f });
+            }
+
+            Add(new DebugCircle(NewPos, 5));
+
+            LastPos = new Vector2(NewPos.X, NewPos.Y);
+       
+        }
+    }
+}

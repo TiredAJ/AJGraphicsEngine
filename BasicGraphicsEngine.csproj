@@ -12,8 +12,4 @@
     <Compile Remove="Examples\DrawParameters.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NGraphics" Version="0.5.0" />
-  </ItemGroup>
-
 </Project>
