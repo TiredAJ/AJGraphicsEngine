@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace BasicGraphicsEngine
 {
@@ -6,8 +8,9 @@ namespace BasicGraphicsEngine
     {
         private Drawer DrawerHandler = new Drawer();
         private bool Run = false, FirstTime = true;
-        private TimeSpan Start, End, LastTime = new TimeSpan(), Delta;
+        private TimeSpan FrameTime, End, LastTime = new TimeSpan(), Delta;
         private Thread? TDrawer;
+        private double MSPerFrame = 16.66666667;
 
         public frm_Main()
         { InitializeComponent(); }
@@ -49,38 +52,39 @@ namespace BasicGraphicsEngine
         {
             DrawerHandler.Running = true;
 
+            MSPerFrame = 1000d / DrawerHandler.TargetFPS;
+
+            Debug.WriteLine(MSPerFrame);
+
             TDrawer = new Thread(Refresher);
             TDrawer.Start();
         }
 
         private void Refresher()
         {
+            Stopwatch SW = new Stopwatch();
+            SW.Start();
+
             do
             {
-                Start = DateTime.Now.TimeOfDay;
+                SW.Restart();
+
+                pbx_DisplayCanvas.Invoke(new Action(() =>
+                {
+                    pbx_DisplayCanvas.Invalidate();
+                    pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
+                }));
+
+                FrameTime = SW.Elapsed;
+
+                lblFrameTime.Invoke(new Action(() =>
+                {lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms";}));
 
                 Task.Run(() =>
-                {
-                    pbx_DisplayCanvas.Invoke(new Action(() =>
-                    {
-                        pbx_DisplayCanvas.Invalidate();
-                        pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
-                    }));
-                });
+                {Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds);});
 
-                End = DateTime.Now.TimeOfDay;
-                Delta = (End - Start) - LastTime;
-                LastTime = End - Start;
-
-                Task.Run(() =>
-                {
-                    lblFrameTime.Invoke(new Action(() =>
-                    {
-                        lblFrameTime.Text = $"{LastTime.TotalMilliseconds}ms";
-                    }));
-                });
-
-                Thread.Sleep(1);
+                if(FrameTime.TotalMilliseconds < MSPerFrame)
+                {Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds));}
 
             } while(Run);
         }

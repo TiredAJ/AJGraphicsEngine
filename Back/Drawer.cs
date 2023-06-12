@@ -8,20 +8,24 @@ namespace BasicGraphicsEngine
     public partial class Drawer
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
+
         public List<Control> Controls = new List<Control>();
         public Color CanvasColour = Color.White;
         public Vector2 DisplaySize = new Vector2();
         public Vector2 DisplayCentre = new Vector2();
         public Vector2 CursorPos = new Vector2(0, 0);
         public Vector2 ControlsAreaSize = new Vector2();
-        public event EventHandler<CursorEventArgs> CursorEvent;
-        public event EventHandler<DisplayEventArgs> DisplayEvent;
+        public event EventHandler<CursorEventArgs>? CursorEvent;
+        public event EventHandler<DisplayEventArgs>? DisplayEvent;
         public bool Running = false;
+        public int TargetFPS = 60;
         //public bool ResetCanvasOnFrame = true; <- to implement
 
 
         public Drawer()
-        { }
+        {
+            
+        }
 
         /// <summary>
         /// Sets up the display area.
@@ -36,7 +40,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Adds an object to the draw list.
         /// </summary>
-        public void Add(DrawObject _NewShape)
+        public void AddShape(DrawObject _NewShape)
         { ShapeList.Add(_NewShape); }
 
         /// <summary>
@@ -48,7 +52,7 @@ namespace BasicGraphicsEngine
         /// <summary>
         /// Adds an array of objects to the draw list.
         /// </summary>
-        public void Add(DrawObject[] _NewShapes)
+        public void AddShapes(DrawObject[] _NewShapes)
         {
             foreach(DrawObject DO in _NewShapes)
             { ShapeList.Add(DO); }
@@ -311,7 +315,12 @@ namespace BasicGraphicsEngine
         public Vector2 Location { get; private set; }
         public MouseButtons CButton { get; private set; }
 
-        public CursorEventArgs() { }
+        public CursorEventArgs() 
+        {
+            State = CState.NoChange;
+            Location = new Vector2(0,0);
+            CButton = MouseButtons.None;
+        }
 
         public CursorEventArgs(MouseEventArgs Me, CState _State)
         {
