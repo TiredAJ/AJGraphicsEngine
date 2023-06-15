@@ -3,11 +3,15 @@ using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
+
     public partial class Drawer
     {
+        const int NoRows = 50;
+        const int NoColumns = 50;
+
 
         //      Declaration     //
-        BasicSquare[] Tiles = new BasicSquare[100]; //10x10
+        BasicSquare[] Tiles = new BasicSquare[NoRows * NoColumns];
 
         //                      //
 
@@ -19,10 +23,10 @@ namespace BasicGraphicsEngine
 
             Array.Fill<BasicSquare>(Tiles, new BasicSquare());
 
-            Size TileSize = new Size((int)DisplaySize.X/10, (int)DisplaySize.Y/10);
-            PointF StartPos = new PointF(TileSize.Width/2, (TileSize.Height/2)+1);
+            Size TileSize = new Size((int)DisplaySize.X/NoColumns, (int)DisplaySize.Y/NoRows);
+            PointF StartPos = new PointF((TileSize.Width/2)+1, (TileSize.Height/2)+1);
 
-            for(int i = 0; i < 100; i++)
+            for(int i = 0; i < (NoRows * NoColumns); i++)
             {
                 Tiles[i] = new BasicSquare
                 (new RectangleF(StartPos, TileSize))
@@ -30,9 +34,9 @@ namespace BasicGraphicsEngine
 
                 StartPos.X += TileSize.Width;
 
-                if((StartPos.X + TileSize.Width) > DisplaySize.X)
+                if((StartPos.X + (TileSize.Width/2)) > DisplaySize.X)
                 {
-                    StartPos.X = TileSize.Width/2;
+                    StartPos.X = (TileSize.Width/2)+1;
                     StartPos.Y += TileSize.Height;
                     Debug.WriteLine($"{StartPos}, I= {i}");
                 }
