@@ -8,7 +8,7 @@ namespace BasicGraphicsEngine
     {
         private Drawer DrawerHandler = new Drawer();
         private bool Run = false, FirstTime = true;
-        private TimeSpan FrameTime, End, LastTime = new TimeSpan(), Delta;
+        private TimeSpan FrameTime;
         private Thread? TDrawer;
         private double MSPerFrame = 16.66666667;
 
@@ -78,13 +78,13 @@ namespace BasicGraphicsEngine
                 FrameTime = SW.Elapsed;
 
                 lblFrameTime.Invoke(new Action(() =>
-                {lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms";}));
+                { lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms"; }));
 
                 Task.Run(() =>
-                {Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds);});
+                { Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds); });
 
                 if(FrameTime.TotalMilliseconds < MSPerFrame)
-                {Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds));}
+                { Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds)); }
 
             } while(Run);
         }

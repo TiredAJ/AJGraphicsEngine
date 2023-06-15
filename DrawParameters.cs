@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -6,11 +7,7 @@ namespace BasicGraphicsEngine
     {
 
         //      Declaration     //
-        Square Mover;
-
-        NumericUpDown NUD_Limit = new NumericUpDown();
-        NumericUpDown NUD_SizeWidth = new NumericUpDown();
-        NumericUpDown NUD_SizeHeight = new NumericUpDown();
+        BasicSquare[] Tiles = new BasicSquare[100]; //10x10
 
         //                      //
 
@@ -20,51 +17,40 @@ namespace BasicGraphicsEngine
         {
             TargetFPS = 60;
 
-            Mover = new Square(new Vector2(0, 0), 40, 40);
+            Array.Fill<BasicSquare>(Tiles, new BasicSquare());
 
-            Mover.SetCentre(DisplayCentre);
+            Size TileSize = new Size((int)DisplaySize.X/10, (int)DisplaySize.Y/10);
+            PointF StartPos = new PointF(TileSize.Width/2, (TileSize.Height/2)+1);
 
-            NUD_Limit.Maximum = 500;
-            NUD_Limit.Minimum = 0m;
-            NUD_Limit.Value = 25m;
-            NUD_Limit.Name = "nud_Limit";
-            NUD_Limit.Width = (int)ControlsAreaSize.X - 10;
+            for(int i = 0; i < 100; i++)
+            {
+                Tiles[i] = new BasicSquare
+                (new RectangleF(StartPos, TileSize))
+                { BorderWidth = 2f,PrimaryCol = Color.Red,SecondaryCol = Color.Transparent };
 
-            NUD_SizeWidth.Maximum = 200;
-            NUD_SizeWidth.Minimum = 5;
-            NUD_SizeWidth.Value = 40;
-            NUD_SizeWidth.Name = "nud_SizeWidth";
-            NUD_SizeWidth.Width = (int)ControlsAreaSize.X - 10;
+                StartPos.X += TileSize.Width;
 
-            NUD_SizeHeight.Maximum = 200;
-            NUD_SizeHeight.Minimum = 5;
-            NUD_SizeHeight.Value = 40;
-            NUD_SizeHeight.Name = "nud_SizeHeight";
-            NUD_SizeHeight.Width = (int)ControlsAreaSize.X - 10;
+                if((StartPos.X + TileSize.Width) > DisplaySize.X)
+                {
+                    StartPos.X = TileSize.Width/2;
+                    StartPos.Y += TileSize.Height;
+                    Debug.WriteLine($"{StartPos}, I= {i}");
+                }
+            }
 
-            DisplayEvent += Resize;
-
-            AddShape(Mover);
-
-            AddControl(NUD_Limit);
-            AddControl(NUD_SizeWidth);
-            AddControl(NUD_SizeHeight);
+            AddShapes(Tiles);
         }
 
 
 
         private void Resize(object? Sender, DisplayEventArgs De)
-        { Mover.SetCentre(DisplayCentre); }
+        {}
 
 
 
         private void Frame()
         {
-            Mover.MoveTransform(CursorPos);
-
-            Mover.SizeTransform(new Vector2((float)NUD_SizeWidth.Value, (float)NUD_SizeHeight.Value));
-
-            Mover.Rotate((float)NUD_Limit.Value / 1000);
+            
         }
     }
 }

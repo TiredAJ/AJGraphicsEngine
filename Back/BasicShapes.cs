@@ -27,10 +27,21 @@ namespace BasicGraphicsEngine
         /// </summary>
         public BasicSquare(Rectangle _Rect)
         {
-            Centre = new Vector2(0, 0);
+            Centre = V2Ext.ToV2(_Rect.Location);
 
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
+        }
+
+        /// <summary>
+        /// Constructor that takes in a <c>RectangleF</c>.
+        /// </summary>
+        public BasicSquare(RectangleF _Rect)
+        {
+            Centre = V2Ext.ToV2(_Rect.Location);
+
+            Width = (int)_Rect.Size.Width;
+            Height = (int)_Rect.Size.Height;
         }
 
         /// <summary>

@@ -203,6 +203,12 @@ namespace BasicGraphicsEngine
         => new Vector2(V2.X, V2.Y);
 
         /// <summary>
+        /// Method <c>ToV2</c> returns a Vector2 representing the Point.
+        /// </summary>
+        public static Vector2 ToV2(PointF V2)
+        => new Vector2(V2.X, V2.Y);
+
+        /// <summary>
         /// Method <c>ToPointArray</c> returns an array of points from an array of vectors.
         /// </summary>
         public static Point[] ToPointArray(Vector2[] _V2Arr)
