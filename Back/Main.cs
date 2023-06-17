@@ -20,8 +20,8 @@ namespace BasicGraphicsEngine
             DrawerHandler.Init
             (new Vector2
                 (
-                        pbx_DisplayCanvas.DisplayRectangle.Width,
-                        pbx_DisplayCanvas.DisplayRectangle.Height
+                        pbx_DisplayCanvas.Size.Width,
+                        pbx_DisplayCanvas.Size.Height
             ));
 
             Task.Run(() =>

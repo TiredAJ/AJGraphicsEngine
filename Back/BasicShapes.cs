@@ -7,11 +7,12 @@ namespace BasicGraphicsEngine
     /// </summary>
     public abstract class BasicShape : DrawObject
     {
-        public float BorderWidth = 2f;
         public Vector2 Centre = new Vector2();
+        public float BorderWidth = 2f;
         public int Width, Height;
         public Color SecondaryCol = Color.Green;
         public Color TertiaryCol = Color.Transparent;
+
     }
 
     /// <summary>
@@ -28,7 +29,6 @@ namespace BasicGraphicsEngine
         public BasicSquare(Rectangle _Rect)
         {
             Centre = V2Ext.ToV2(_Rect.Location);
-
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
         }

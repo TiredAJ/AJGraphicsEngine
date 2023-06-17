@@ -39,6 +39,7 @@
             // 
             // pbx_DisplayCanvas
             // 
+            pbx_DisplayCanvas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbx_DisplayCanvas.BackColor = SystemColors.ButtonHighlight;
             pbx_DisplayCanvas.BorderStyle = BorderStyle.Fixed3D;
             pbx_DisplayCanvas.Location = new Point(0, 0);

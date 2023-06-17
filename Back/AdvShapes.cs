@@ -9,11 +9,15 @@ namespace BasicGraphicsEngine
     {
         public Color PrimaryCol = Color.Red;
         public Vector2 DisplayCentre = new Vector2();
+        public object? Tag = null;
 
         /// <summary>
         /// Method <c>Draw</c> renders the object using the inputted Graphics object.
         /// </summary>
         public abstract void Draw(Graphics G);
+
+        public override string ToString()
+        {return $"Primary Col:{PrimaryCol}, DisplayCentre:{DisplayCentre}";}
     }
 
     /// <summary>
@@ -27,6 +31,9 @@ namespace BasicGraphicsEngine
         public abstract void Rotate(Vector2 _RotationPoint, float _Radians);
         public abstract void Rotate(float _Radians);
         public abstract Vector2 CalculateCentre();
+
+        public override string ToString()
+        {return base.ToString() + $", LineWidth:{LineWidth}";}
     }
 
     /// <summary>

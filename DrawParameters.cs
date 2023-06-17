@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace BasicGraphicsEngine
@@ -6,55 +7,55 @@ namespace BasicGraphicsEngine
 
     public partial class Drawer
     {
-        const int NoRows = 50;
-        const int NoColumns = 50;
 
 
         //      Declaration     //
-        BasicSquare[] Tiles = new BasicSquare[NoRows * NoColumns];
+        const int NoRows = 20;
+        const int NoColumns = 20;
+                                                //x       y
+        BitArray Tiles = new BitArray(NoColumns*NoRows, false);
+        Size CellSize = new Size(5, 5);
 
+        readonly BasicSquare DefaultCell = new BasicSquare()
+
+        List<BasicSquare> Cells = new List<BasicSquare>();
         //                      //
 
 
 
         public void SetUp()
         {
+            DisplayEvent += Resize;
+
             TargetFPS = 60;
 
-            Array.Fill<BasicSquare>(Tiles, new BasicSquare());
+            Cells.Add(new BasicSquare());
 
-            Size TileSize = new Size((int)DisplaySize.X/NoColumns, (int)DisplaySize.Y/NoRows);
-            PointF StartPos = new PointF((TileSize.Width/2)+1, (TileSize.Height/2)+1);
 
-            for(int i = 0; i < (NoRows * NoColumns); i++)
-            {
-                Tiles[i] = new BasicSquare
-                (new RectangleF(StartPos, TileSize))
-                { BorderWidth = 2f,PrimaryCol = Color.Red,SecondaryCol = Color.Transparent };
-
-                StartPos.X += TileSize.Width;
-
-                if((StartPos.X + (TileSize.Width/2)) > DisplaySize.X)
-                {
-                    StartPos.X = (TileSize.Width/2)+1;
-                    StartPos.Y += TileSize.Height;
-                    Debug.WriteLine($"{StartPos}, I= {i}");
-                }
-            }
-
-            AddShapes(Tiles);
         }
 
 
 
         private void Resize(object? Sender, DisplayEventArgs De)
-        {}
+        {
+            CalcCellSize();
+        }
 
 
 
         private void Frame()
         {
             
+        }
+
+
+        private void CalcCellSize()
+        {
+            CellSize = new Size
+            (
+                (int)DisplaySize.X/NoColumns,
+                (int)DisplaySize.Y/NoRows
+            );
         }
     }
 }
