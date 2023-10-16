@@ -1,3 +1,5 @@
+!!! Project is currently on hold as I work on my final year project !!!
+
 # AJGraphicsEngine
 (not sure of it's technically a "Graphics Engine", but oh well)
 
