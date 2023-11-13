@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using BasicGraphicsEngine.Back.Extensions;
+using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -82,7 +83,7 @@ namespace BasicGraphicsEngine
             G.DrawLine
             (
                 new Pen(PrimaryCol, LineWidth),
-                V2Ext.ToPoint(A), V2Ext.ToPoint(B)
+                A.ToPoint(), B.ToPoint()
             );
         }
 
@@ -195,7 +196,7 @@ namespace BasicGraphicsEngine
                 G.DrawLines
                 (
                     new Pen(PrimaryCol, LineWidth),
-                    V2Ext.ToPointArray(Points)
+                    Points.ToPointArray()
                 );
             }
         }
@@ -406,8 +407,8 @@ namespace BasicGraphicsEngine
         {
             Point[] TempPointArr = new Point[]
             {
-                V2Ext.ToPoint(CornerA), V2Ext.ToPoint(CornerB),
-                V2Ext.ToPoint(CornerC), V2Ext.ToPoint(CornerD)
+                CornerA.ToPoint(), CornerB.ToPoint(),
+                CornerC.ToPoint(), CornerD.ToPoint()
             };
 
 

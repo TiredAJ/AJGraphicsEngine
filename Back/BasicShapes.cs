@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using BasicGraphicsEngine.Back.Extensions;
+using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
@@ -28,7 +29,7 @@ namespace BasicGraphicsEngine
         /// </summary>
         public BasicSquare(Rectangle _Rect)
         {
-            Centre = V2Ext.ToV2(_Rect.Location);
+            Centre = _Rect.Location.ToV2();
             Width = _Rect.Size.Width;
             Height = _Rect.Size.Height;
         }
@@ -38,7 +39,7 @@ namespace BasicGraphicsEngine
         /// </summary>
         public BasicSquare(RectangleF _Rect)
         {
-            Centre = V2Ext.ToV2(_Rect.Location);
+            Centre = _Rect.Location.ToV2();
 
             Width = (int)_Rect.Size.Width;
             Height = (int)_Rect.Size.Height;
