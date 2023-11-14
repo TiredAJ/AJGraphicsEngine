@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using BasicGraphicsEngine.Back.Utilities;
 
 namespace BasicGraphicsEngine
 {
@@ -62,12 +62,12 @@ namespace BasicGraphicsEngine
 
         private void Refresher()
         {
-            Stopwatch SW = new Stopwatch();
-            SW.Start();
+            //Stopwatch SW = new Stopwatch();
+            //SW.Start();
 
             do
             {
-                SW.Restart();
+                //SW.Restart();
 
                 pbx_DisplayCanvas.Invoke(new Action(() =>
                 {
@@ -75,16 +75,16 @@ namespace BasicGraphicsEngine
                     pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
                 }));
 
-                FrameTime = SW.Elapsed;
+                //FrameTime = SW.Elapsed;
 
-                lblFrameTime.Invoke(new Action(() =>
-                { lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms"; }));
+                //lblFrameTime.Invoke(new Action(() =>
+                //{ lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms"; }));
 
-                Task.Run(() =>
-                { Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds); });
-
-                if(FrameTime.TotalMilliseconds < MSPerFrame)
-                { Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds)); }
+                //Task.Run(() =>
+                //{ Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds); });
+                //
+                //if(FrameTime.TotalMilliseconds < MSPerFrame)
+                //{ Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds)); }
 
             } while(Run);
         }
@@ -97,6 +97,8 @@ namespace BasicGraphicsEngine
                 DrawerHandler.Running = false;
 
                 btn_Pause.Text = "Play";
+
+                DrawerHandler.GetAverageFrameTime();
             }
             else
             {
@@ -162,6 +164,8 @@ namespace BasicGraphicsEngine
                 pbx_DisplayCanvas.Invalidate();
                 pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
             });
+
+            DrawerHandler.GetAverageFrameTime();
         }
 
         private void LoadControls()
