@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
 namespace BasicGraphicsEngine.Back.Extensions
 {
@@ -52,7 +47,7 @@ namespace BasicGraphicsEngine.Back.Extensions
         /// Returns a <c>PointF</c> representing this vector.
         /// </summary>
         public static PointF ToPointF(this Vector2 V2)
-        => new PointF((int)V2.X, (int)V2.Y);
+        => new PointF(V2.X, V2.Y);
 
         /// <summary>
         /// Returns a <c>Vector2</c> representing this point.
