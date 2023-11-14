@@ -1,8 +1,11 @@
-﻿using BasicGraphicsEngine.Back.Extensions;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace BasicGraphicsEngine
 {
+    //moved here to prevent ambigous errors with this newfound vector extension methods in
+    //System.Numerics.VectorExtensions
+    using BasicGraphicsEngine.Back.Extensions;
+
     /// <summary>
     /// Base object for all drawn objects. Do not use directly.
     /// </summary>
