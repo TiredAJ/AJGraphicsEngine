@@ -140,7 +140,7 @@ namespace BasicGraphicsEngine.Back.Utilities
             await Task.Run(() =>
             {
                 SW.Stop();
-                Debug.WriteLine($"{Message} {SW.Elapsed.TotalMilliseconds}ms");
+                //Debug.WriteLine($"{Message} {SW.Elapsed.TotalMilliseconds}ms");
 
                 Average = (Average + SW.ElapsedMilliseconds) / 2;
             });

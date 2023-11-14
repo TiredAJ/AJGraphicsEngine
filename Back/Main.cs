@@ -9,7 +9,7 @@ namespace BasicGraphicsEngine
         private Drawer DrawerHandler = new Drawer();
         private bool Run = false, FirstTime = true;
         private TimeSpan FrameTime;
-        private Thread? TDrawer;
+        private Thread? TDrawer, TPhysicser;
         private double MSPerFrame = 16.66666667;
 
         public frm_Main()
@@ -54,16 +54,19 @@ namespace BasicGraphicsEngine
 
             MSPerFrame = 1000d / DrawerHandler.TargetFPS;
 
-            Debug.WriteLine(MSPerFrame);
+            //Debug.WriteLine($"{MSPerFrame}ms Target frametime");
 
             TDrawer = new Thread(Refresher);
+            TPhysicser = new Thread(PhysicsFrame);
+
             TDrawer.Start();
+            TPhysicser.Start();
         }
 
         private void Refresher()
         {
-            //Stopwatch SW = new Stopwatch();
-            //SW.Start();
+            Stopwatch SW = new Stopwatch();
+            SW.Start();
 
             do
             {
@@ -75,18 +78,35 @@ namespace BasicGraphicsEngine
                     pbx_DisplayCanvas.BackColor = DrawerHandler.CanvasColour;
                 }));
 
-                //FrameTime = SW.Elapsed;
+                FrameTime = SW.Elapsed;
 
                 //lblFrameTime.Invoke(new Action(() =>
                 //{ lblFrameTime.Text = $"{FrameTime.TotalMilliseconds}ms"; }));
 
                 //Task.Run(() =>
                 //{ Debug.WriteLine(MSPerFrame - FrameTime.TotalMilliseconds); });
-                //
-                //if(FrameTime.TotalMilliseconds < MSPerFrame)
-                //{ Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds)); }
+
+                if(FrameTime.TotalMilliseconds < MSPerFrame)
+                { Thread.Sleep((int)(MSPerFrame - FrameTime.TotalMilliseconds)); }
 
             } while(Run);
+        }
+
+        private void PhysicsFrame()
+        {
+            double MSPerPFrame = 1000d / 60;
+            Stopwatch SW = new Stopwatch();
+            SW.Start();
+
+            do
+            {
+                SW.Start();
+
+                DrawerHandler.CallPhysics();
+
+                if (SW.ElapsedMilliseconds < MSPerPFrame)
+                {Thread.Sleep((int)(MSPerPFrame - SW.ElapsedMilliseconds));}
+            } while (Run);
         }
 
         private void btn_Pause_Click(object sender, EventArgs e)

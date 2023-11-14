@@ -12,8 +12,9 @@ namespace BasicGraphicsEngine
     {
         private List<DrawObject> ShapeList = new List<DrawObject>();
         private Logger InitLog = new Logger("Init took");
-        private Logger FrameLog = new Logger("Frame took");
-        private Logger ShapesFrameLog = new Logger("shapes (frame) took");
+        private Logger GFrameLog = new Logger("Graphics Frame took");
+        private Logger PFrameLog = new Logger("Physics Frame took");
+        private Logger DFrameLog = new Logger("Draw Frame took");
 
         private Graphics[] GArr = new Graphics[8];
 
@@ -77,23 +78,36 @@ namespace BasicGraphicsEngine
             Running = true;
 
 #if DEBUG
-            FrameLog.Start();
+            GFrameLog.Start();
 #endif
-            Frame();
+            GraphicsFrame();
 
 #if DEBUG
-            FrameLog.Stop();
+            GFrameLog.Stop();
 #endif
 
+
 #if DEBUG
-            ShapesFrameLog.Start();
+            DFrameLog.Start();
 #endif
 
             foreach (DrawObject S in ShapeList)
             { S.Draw(G); }
 
 #if DEBUG
-            ShapesFrameLog.Stop();
+            DFrameLog.Stop();
+#endif
+        }
+
+        public void CallPhysics()
+        {
+#if DEBUG
+            PFrameLog.Start();
+#endif
+            PhysicsFrame();
+
+#if DEBUG
+            PFrameLog.Stop();
 #endif
         }
 
@@ -113,7 +127,6 @@ namespace BasicGraphicsEngine
 #if DEBUG
             InitLog.Stop();
 #endif
-
 
             ShapeList.Clear();
         }
@@ -147,6 +160,10 @@ namespace BasicGraphicsEngine
         }
 
         public void GetAverageFrameTime()
-        {Debug.WriteLine($"Average shapes-Frametime: {ShapesFrameLog.Average}ms");}
+        {
+            Debug.WriteLine($"Average Draw Frametime:     {DFrameLog.Average}ms");
+            Debug.WriteLine($"Average Graphics Frametime: {GFrameLog.Average}ms");
+            Debug.WriteLine($"Average Physics Frametime:  {PFrameLog.Average}ms");
+        }
     }    
 }

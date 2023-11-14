@@ -51,7 +51,7 @@
 
 
 
-//        private void Frame()
+//        private void GraphicsFrame()
 //        {
 //            //for (int i = 0; i < CircleArray.Count(); i++)
 //            //{
@@ -133,9 +133,10 @@ namespace BasicGraphicsEngine
             { CircleArray[i].Centre = DisplayCentre; }
         }
 
-
-
-        private void Frame()
+        /// <summary>
+        /// Triggers 60 times a sec
+        /// </summary>
+        private void PhysicsFrame()
         {
             for (int i = 0; i < CircleArray.Count(); i++)
             {
@@ -157,6 +158,14 @@ namespace BasicGraphicsEngine
                  (CircleArray[i].Centre.Y - (CircleArray[i].Height / 2)) <= 0)
                 { BC_Vel[i].Y *= -1; }
             }
+        }
+
+        /// <summary>
+        /// Triggers x times a second, depends on target framerate
+        /// </summary>
+        private void GraphicsFrame()
+        {
+            
         }
     }
 }
